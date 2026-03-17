@@ -252,3 +252,4 @@ User-editable. Initialization creates this default; users can modify it to fit t
 - **Social Platform Publishing**: Generate X/Twitter threads from finished articles.
 - **Meta Skill**: Orchestrate the four skills into a guided end-to-end workflow.
 - **Idea Pool Expansion**: Migrate from single file to per-idea files when volume demands it.
+- **Published Archive**: Move finalized articles from `articles/` to `published/{year}/{slug}/` for easier browsing by year.
