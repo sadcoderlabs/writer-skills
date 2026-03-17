@@ -30,17 +30,17 @@ articles/
 If `config.md` does not exist, the workspace needs initialization:
 
 1. Create the directory structure above (if any part is missing)
-2. Guide the user to describe who they are and their writing goals
+2. Copy `${CLAUDE_SKILL_DIR}/assets/ideas-template.md` to `ideas.md`
+3. Copy the brief template from the article-preparation skill's assets to `templates/brief-template.md`
+4. Guide the user to describe who they are and their writing goals
    - Propose suggestions based on what you know from the conversation
    - User confirms or adjusts
-3. Guide the user to describe their preferred writing style
+5. Guide the user to describe their preferred writing style
    - Propose a style based on the goals and context from the conversation
    - The user can also provide links to articles they like as style references
    - If the user wants to skip this for now, write a placeholder: "Not yet defined"
    - User confirms or adjusts
-4. Write the result to `config.md` — see [config format](references/config-format.md)
-5. Create `ideas.md` with empty sections — see [ideas format](references/ideas-format.md)
-6. Create `templates/brief-template.md` with the default brief template
+6. Write the result to `config.md` — see [config format](references/config-format.md) and template at `${CLAUDE_SKILL_DIR}/assets/config-template.md`
 
 ### 2. Receive New Ideas
 

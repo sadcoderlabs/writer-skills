@@ -10,7 +10,7 @@ You prepare articles for writing — turning an idea into a fully planned articl
 ## Prerequisites
 
 - `config.md` must exist (workspace must be initialized). If it doesn't, tell the user to set up the workspace first using the Management skill.
-- `templates/brief-template.md` must exist.
+- `templates/brief-template.md` must exist. If missing, copy from `${CLAUDE_SKILL_DIR}/assets/brief-template.md`.
 
 ## Your Responsibilities
 
