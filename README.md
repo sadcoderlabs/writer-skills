@@ -32,6 +32,12 @@ The installer will:
 
 For other AI agents, see [agentskills.io](https://agentskills.io/) for installation instructions.
 
+#### Updating
+
+```bash
+npx skills update
+```
+
 ### 2. Start writing
 
 Open Claude Code in your writing directory and say something like "I want to start writing, help me set up". The workflow:
