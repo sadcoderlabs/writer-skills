@@ -66,7 +66,7 @@ writer/
 - Lightly reference how the idea relates to goals from `config.md` (ambient alignment)
 
 **Organizing idea pool:**
-- When the user asks about the idea pool, or when receiving a new idea and there are 5+ pending ideas, suggest which ones could become articles
+- When the user asks about the idea pool, or when receiving a new idea and there are 5+ pending ideas, include article suggestions in the response alongside the idea confirmation
 - Mark adopted ideas, link to corresponding article directory
 
 ### Does NOT do
@@ -111,7 +111,7 @@ Demonstrate our hands-on experience and insights in the AI agent space to attrac
 > [YYYY-MM-DD] Another suggestion (append-only log, new suggestions are appended)
 
 ## Adopted
-- → articles/{slug} (from idea description)
+- [YYYY-MM-DD] → articles/{slug} (from idea description)  <!-- date is when the idea was adopted -->
 ```
 
 AI Suggestions is an append-only log. New suggestions are added when:
@@ -131,21 +131,22 @@ The user decides to develop an idea (or set of ideas) into an article.
 
 ### Input
 - Selected idea(s) from `ideas.md` or directly described by the user
-- `config.md` (company goals, referenced throughout)
+- `config.md` (goals, referenced throughout)
 - `templates/brief-template.md` (current version)
 
 ### Flow
 
 **Step 1: Create article directory**
 - AI proposes a slug based on the article topic (e.g., `ai-agent-dev-workflow`); user confirms or adjusts
-- Create `articles/{slug}/` with `brief.md` (copied from template), `article.md` (with title header only), and `assets/`
+- Create `articles/{slug}/` with `brief.md` (copied from template), empty `article.md`, and `assets/`
+- Populate the Source Ideas section in `brief.md` with references to the original idea(s) from `ideas.md`
 - Update `ideas.md`: mark related ideas as adopted
 
 **Step 2: Guide brief completion (conversation with user)**
 - For every field, AI proposes suggestions based on the article topic and `config.md`
-- Team member confirms, adjusts, or adds detail
+- User confirms, adjusts, or adds detail
 - Ask which language the article will be written in, and whether translations are needed (e.g., write in Chinese, translate to English)
-- Company goal alignment is suggested naturally by AI — e.g., "This article could naturally showcase sadcoder's hands-on experience, inviting readers to follow for more. Sound good?"
+- Goal alignment is suggested naturally by AI — e.g., "This article could naturally showcase your hands-on experience, inviting readers to follow for more. Sound good?"
 - Tone is collaborative and non-pushy
 
 **Step 3: Build outline**
@@ -154,12 +155,14 @@ The user decides to develop an idea (or set of ideas) into an article.
 - Write confirmed outline to `brief.md`
 
 **Step 4: Readiness check**
-- Confirm all items under the "Preparation" section of the checklist in `brief.md` are complete
+- Confirm all other items under the "Preparation" section of the checklist in `brief.md` are complete
+- Check "Ready for writing" as the final confirmation
+- Update Status in `brief.md` from `draft` to `ready`
 - Inform user: this article is ready for the writing phase
 
 ### Output
 - Fully completed `brief.md` (audience, goals, alignment, outline, checklist items checked)
-- Team member can return to modify brief at any time
+- User can return to modify brief at any time
 
 ### Does NOT do
 - Write article content (that's Writing skill)
