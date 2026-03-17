@@ -2,7 +2,7 @@
 
 ## Overview
 
-A collaborative writing system for sadcoder. The system guides team members — especially those not comfortable with writing — through the process of turning ideas into published articles that align with company goals.
+A writing system that guides users — especially those not comfortable with writing — through the process of turning ideas into published articles that align with their goals. Works for individuals and teams alike.
 
 **Scope of this design:** Management skill and Article Preparation skill only. Writing skill, Review skill, and social platform integration are out of scope for now.
 
@@ -25,7 +25,7 @@ Each skill is independent. Skills communicate through files in the workspace —
 
 | Skill | Responsibility | In Scope |
 |-------|---------------|----------|
-| Management | Init workspace, set company goals, manage idea pool | Yes |
+| Management | Init workspace, set goals, manage idea pool | Yes |
 | Article Preparation | Create article directory, guide brief creation, build outline | Yes |
 | Writing | Ghostwrite article based on brief | No (needs research) |
 | Review | Check goal alignment, quality, iterate feedback | No |
@@ -34,13 +34,14 @@ Each skill is independent. Skills communicate through files in the workspace —
 
 ```
 writer/
-  config.md                # Writing plan goals, company direction
+  config.md                # Writing plan goals and direction
   ideas.md                 # Idea pool
   templates/
     brief-template.md      # Article brief template (user-editable)
   articles/
     {article-slug}/
-      article.md           # Article content (clean, no metadata)
+      article.md           # Article content in original language (clean, no metadata)
+      article.{lang}.md    # Translated versions (e.g., article.en.md, article.zh.md)
       brief.md             # Copied from template, filled during preparation
       assets/              # Images and other assets
 ```
@@ -49,23 +50,23 @@ writer/
 
 ### Responsibilities
 1. Initialize workspace
-2. Set and maintain company goals
+2. Set and maintain writing goals
 3. Manage idea pool
 
 ### Behavior
 
 **Initialization (first use):**
 - Create workspace directory structure if not exists
-- Guide user to describe company direction and writing purpose → write `config.md`
+- Guide user to describe who they are and their writing goals → write `config.md`
 - Create `ideas.md` and `templates/brief-template.md` (default version)
 
 **Receiving new ideas:**
-- Record to `ideas.md` under "Pending" section with date and submitter
+- Record to `ideas.md` under "Pending" section with date and contributor (if applicable)
 - Check for connections with existing ideas; suggest merges in "AI Suggestions" section
-- Lightly reference how the idea relates to company goals from `config.md` (ambient alignment)
+- Lightly reference how the idea relates to goals from `config.md` (ambient alignment)
 
 **Organizing idea pool:**
-- When a team member asks about the idea pool, or when receiving a new idea and there are 5+ pending ideas, suggest which ones could become articles
+- When the user asks about the idea pool, or when receiving a new idea and there are 5+ pending ideas, suggest which ones could become articles
 - Mark adopted ideas, link to corresponding article directory
 
 ### Does NOT do
@@ -77,8 +78,8 @@ writer/
 ```markdown
 # Writing Plan
 
-## About Us
-{One paragraph describing what the company does and its vision}
+## About
+{One paragraph describing who you are — individual or organization — and your vision}
 
 ## Writing Goals
 {One paragraph describing what the writing aims to achieve, who it targets, and the desired tone}
@@ -89,7 +90,7 @@ writer/
 ```markdown
 # Writing Plan
 
-## About Us
+## About
 sadcoder builds AI agent tools. We envision a future where people rely heavily on AI agents to get work done, and we're building products for that world.
 
 ## Writing Goals
@@ -102,20 +103,20 @@ Demonstrate our hands-on experience and insights in the AI agent space to attrac
 # Idea Pool
 
 ## Pending
-- [YYYY-MM-DD] @person: idea description
-- [YYYY-MM-DD] @person: idea description
+- [YYYY-MM-DD] idea description
+- [YYYY-MM-DD] @contributor: idea description  <!-- contributor is optional -->
 
 ## AI Suggestions
 > [YYYY-MM-DD] Suggestion about merging/developing ideas, with alignment notes
 > [YYYY-MM-DD] Another suggestion (append-only log, new suggestions are appended)
 
 ## Adopted
-- → articles/{slug} (merged from @person1 and @person2's ideas)
+- → articles/{slug} (from idea description)
 ```
 
 AI Suggestions is an append-only log. New suggestions are added when:
 - A new idea is received that connects to existing ideas
-- A team member asks for the current state of the idea pool
+- The user asks for the current state of the idea pool
 
 ## Skill 2: Article Preparation
 
@@ -126,34 +127,35 @@ AI Suggestions is an append-only log. New suggestions are added when:
 4. Confirm readiness for writing
 
 ### Trigger
-A team member decides to develop an idea (or set of ideas) into an article.
+The user decides to develop an idea (or set of ideas) into an article.
 
 ### Input
-- Selected idea(s) from `ideas.md` or directly described by the team member
+- Selected idea(s) from `ideas.md` or directly described by the user
 - `config.md` (company goals, referenced throughout)
 - `templates/brief-template.md` (current version)
 
 ### Flow
 
 **Step 1: Create article directory**
-- AI proposes a slug based on the article topic (e.g., `ai-agent-dev-workflow`); team member confirms or adjusts
+- AI proposes a slug based on the article topic (e.g., `ai-agent-dev-workflow`); user confirms or adjusts
 - Create `articles/{slug}/` with `brief.md` (copied from template), `article.md` (with title header only), and `assets/`
 - Update `ideas.md`: mark related ideas as adopted
 
-**Step 2: Guide brief completion (conversation with team member)**
+**Step 2: Guide brief completion (conversation with user)**
 - For every field, AI proposes suggestions based on the article topic and `config.md`
 - Team member confirms, adjusts, or adds detail
+- Ask which language the article will be written in, and whether translations are needed (e.g., write in Chinese, translate to English)
 - Company goal alignment is suggested naturally by AI — e.g., "This article could naturally showcase sadcoder's hands-on experience, inviting readers to follow for more. Sound good?"
 - Tone is collaborative and non-pushy
 
 **Step 3: Build outline**
 - AI proposes outline draft based on brief information
-- Iterate with team member until each section's purpose is clear
+- Iterate with user until each section's purpose is clear
 - Write confirmed outline to `brief.md`
 
 **Step 4: Readiness check**
 - Confirm all items under the "Preparation" section of the checklist in `brief.md` are complete
-- Inform team member: this article is ready for the writing phase
+- Inform user: this article is ready for the writing phase
 
 ### Output
 - Fully completed `brief.md` (audience, goals, alignment, outline, checklist items checked)
@@ -175,6 +177,8 @@ User-editable. Initialization creates this default; users can modify it to fit t
 - Author:
 - Date:
 - Status: draft  <!-- draft | ready | writing | review | published -->
+- Original language:
+- Translations:  <!-- e.g., en, zh -->
 
 ## Target Audience
 - Who:
@@ -185,7 +189,7 @@ User-editable. Initialization creates this default; users can modify it to fit t
 
 ## Article Goals
 - Reader takeaway:
-- Company alignment:
+- Goal alignment:
 
 ## Outline
 
@@ -195,33 +199,35 @@ User-editable. Initialization creates this default; users can modify it to fit t
 ### Preparation
 - [ ] Target audience confirmed
 - [ ] Article goals confirmed
-- [ ] Company alignment confirmed
+- [ ] Goal alignment confirmed
+- [ ] Language and translations confirmed
 - [ ] Outline completed
 - [ ] Ready for writing
 
 ### Writing & Review (managed by later skills)
 - [ ] First draft completed
 - [ ] Review completed
+- [ ] Translations completed
 - [ ] Finalized
 ```
 
 ## AI Behavior Principles
 
 ### Ambient Goal Alignment (throughout all skills)
-- Company goals from `config.md` are referenced throughout, not just at one checkpoint
+- Goals from `config.md` are referenced throughout, not just at one checkpoint
 - AI suggests alignment naturally, never demands it
 - Tone: "This could be a good opportunity to..." not "You must align with..."
 
 ### Ghostwriter Mode (applies to all skills, not just Writing)
-- AI proposes content; team members confirm or adjust
+- AI proposes content; users confirm or adjust
 - In Article Preparation: AI proposes audience descriptions, goals, alignment points, and outlines
 - In Writing (future): AI drafts full article text
-- Especially important for company alignment — team members shouldn't have to figure out how to align on their own
-- Lower the barrier: team members provide ideas and direction, AI handles the writing
+- Especially important for goal alignment — users shouldn't have to figure out how to align on their own
+- Lower the barrier: users provide ideas and direction, AI handles the writing
 
-### Updating Company Goals
-- Team members can update `config.md` at any time through conversation with the Management skill
-- Updates are full rewrites of the relevant section (company direction, writing purpose, or content direction)
+### Updating Goals
+- Users can update `config.md` at any time through conversation with the Management skill
+- Updates are full rewrites of the relevant section (about, writing goals)
 - Existing articles are not retroactively checked; alignment checks only apply going forward
 
 ### State Transitions via File Status
@@ -232,14 +238,14 @@ User-editable. Initialization creates this default; users can modify it to fit t
 ## Edge Cases
 
 - **Workspace already initialized**: Management skill detects existing `config.md` and skips initialization; offers to update goals instead
-- **Slug collision**: If `articles/{slug}/` already exists, AI appends a number suffix (e.g., `ai-agent-workflow-2`) and confirms with the team member
-- **Article Preparation without config**: AI informs the team member that workspace needs to be initialized first and guides them to set up `config.md`
-- **Re-adopting an idea**: If an idea is already marked as adopted, AI informs the team member and links to the existing article
+- **Slug collision**: If `articles/{slug}/` already exists, AI appends a number suffix (e.g., `ai-agent-workflow-2`) and confirms with the user
+- **Article Preparation without config**: AI informs the user that the workspace needs to be initialized first and guides them to set up `config.md`
+- **Re-adopting an idea**: If an idea is already marked as adopted, AI informs the user and links to the existing article
 
 ## Future Work (Out of Scope)
 
 - **Writing Skill**: Specialized ghostwriting based on brief. Needs research on AI writing quality.
-- **Review Skill**: Goal alignment check, quality review, iterative feedback.
+- **Review Skill**: Alignment check, quality review, iterative feedback.
 - **Social Platform Publishing**: Generate X/Twitter threads from finished articles.
 - **Meta Skill**: Orchestrate the four skills into a guided end-to-end workflow.
 - **Idea Pool Expansion**: Migrate from single file to per-idea files when volume demands it.
