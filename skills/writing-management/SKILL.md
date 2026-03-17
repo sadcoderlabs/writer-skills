@@ -33,9 +33,14 @@ If `config.md` does not exist, the workspace needs initialization:
 2. Guide the user to describe who they are and their writing goals
    - Propose suggestions based on what you know from the conversation
    - User confirms or adjusts
-3. Write the result to `config.md` — see [config format](references/config-format.md)
-4. Create `ideas.md` with empty sections — see [ideas format](references/ideas-format.md)
-5. Create `templates/brief-template.md` with the default brief template
+3. Guide the user to describe their preferred writing style
+   - Propose a style based on the goals and context from the conversation
+   - The user can also provide links to articles they like as style references
+   - If the user wants to skip this for now, write a placeholder: "Not yet defined"
+   - User confirms or adjusts
+4. Write the result to `config.md` — see [config format](references/config-format.md)
+5. Create `ideas.md` with empty sections — see [ideas format](references/ideas-format.md)
+6. Create `templates/brief-template.md` with the default brief template
 
 ### 2. Receive New Ideas
 
