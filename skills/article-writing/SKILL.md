@@ -49,6 +49,16 @@ Produce the complete article in one pass and write it to `article.md`.
 - Use Markdown headings that match the outline sections
 - The article should stand on its own as a readable piece
 
+### Step 3.5: Draft Review Loop
+
+After writing the first draft, dispatch a writing-reviewer subagent to check the draft against the writing rules. See [writing-reviewer-prompt.md](writing-reviewer-prompt.md) for the dispatch template.
+
+1. Dispatch reviewer with the path to `article.md` and `references/writing-rules.md`
+2. If Issues Found: fix the flagged passages in `article.md` and re-dispatch the reviewer
+3. Max 3 iterations — if issues remain after 3 rounds, proceed to Author Review
+
+Do not present the draft to the author until this loop completes or reaches the iteration limit.
+
 ### Step 4: Author Review
 
 Present the draft to the author and ask for feedback. The author can:
