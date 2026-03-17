@@ -16,23 +16,30 @@ Skills follow the [Agent Skills open standard](https://agentskills.io/) and work
 
 ## Quick Start
 
-### Install (Claude Code)
+### 1. Install
+
+Go to the directory where you want to write, and run:
 
 ```bash
-cd your-writing-directory
 npx skills add sadcoderlabs/writer-skills -a claude-code
 ```
 
-### Install (other agents)
+The installer will:
+- Clone this repository
+- Find the 3 skills (writing-management, article-preparation, article-writing)
+- Ask you to select which skills to install (select all)
+- Copy them to `.claude/skills/` in your project
 
-See [agentskills.io](https://agentskills.io/) for how to add skills to your agent. The skills are in the `skills/` directory.
+For other AI agents, see [agentskills.io](https://agentskills.io/) for installation instructions.
 
-### Start writing
+### 2. Start writing
 
-1. Tell your agent "I want to start writing" — the Management skill will initialize the workspace and guide you through setting up your goals
-2. Share ideas — they'll be collected in `ideas.md`
-3. When ready to write, tell your agent to prepare an article — the Article Preparation skill will interview you, extract materials, and build an outline
-4. When the brief is ready, the Writing skill produces a draft based on your materials and revises it with you
+Open Claude Code in your writing directory and say something like "I want to start writing, help me set up". The workflow:
+
+1. **Setup** — The Management skill initializes your workspace and guides you through setting your writing goals and style
+2. **Collect ideas** — Share ideas anytime; they'll be collected in `ideas.md`
+3. **Prepare an article** — The Preparation skill interviews you, extracts your materials, and builds an outline
+4. **Write** — The Writing skill produces a draft from your materials and revises it with your feedback
 
 ## Workspace Structure
 
