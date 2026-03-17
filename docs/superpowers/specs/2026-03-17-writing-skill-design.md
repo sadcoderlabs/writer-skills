@@ -4,7 +4,7 @@
 
 Redesign of the Article Preparation skill and addition of a new Writing skill. The core insight: good tech writing (experience-sharing type) gets its value from the author's real decisions, surprises, and specific details — not from AI's ability to generate fluent text. The system must extract these materials from the author before writing, not after.
 
-**Scope:** Article Preparation skill rework + new Writing skill. Management skill is unchanged. Translation and Review skills remain out of scope.
+**Scope:** Article Preparation skill rework + new Writing skill + minor Management skill update (Writing Style section in config.md). Translation and Review skills remain out of scope.
 
 ### Key Design Decisions
 
@@ -21,6 +21,9 @@ New:       Idea → Brief(info) → Interview → Outline(with materials) → Re
 ```
 
 **State transitions remain:** `draft` → `ready` → `writing` → `review` → `published`
+
+**Definitions:**
+- **Materials** — The specific details, quotes, decisions, numbers, timelines, and examples extracted from the author during the interview. These are the factual foundation of the article that only the author can provide.
 
 ## Article Preparation Skill (Reworked)
 
@@ -65,8 +68,11 @@ No outline in this step — that comes after the interview.
 - If the author gives an abstract answer, follow up asking for a concrete example
 - Don't follow the order rigidly — let the conversation flow naturally
 - Record materials to a `## Raw Materials` section in `brief.md` during the interview (temporary staging area)
+- **Resumability**: If the conversation is interrupted mid-interview, the AI reads existing Raw Materials in `brief.md` and continues from where things left off, rather than restarting
 
-**Interview completion:** When the AI has enough material to build a solid outline, propose wrapping up. The author can always add more.
+**Interview completion:** When the AI has enough material to build a solid outline, propose wrapping up. A good heuristic: at least one concrete detail or author quote per expected section, and the author has addressed at least 3 of the 4 dimensions (decisions, surprises, insights, specifics). The author can always add more.
+
+**Skipping the interview:** If the author already has detailed notes, an existing outline with specifics, or other prepared materials, they can provide these directly. The AI organizes the provided materials into the outline format (Step 4) instead of conducting the full interview. The key requirement is that the outline ends up with concrete materials per section — how they get there is flexible.
 
 ### Step 4: Build Outline with Materials
 
@@ -93,7 +99,7 @@ After the interview, AI proposes an outline where each section includes its purp
 **Key principles:**
 - Structure follows materials — the outline is shaped by what the author actually has to say, not by a generic template
 - Every section must have materials — if a section has no materials, either interview more or cut the section
-- The `## Raw Materials` staging area is removed once all materials are organized into the outline
+- The AI removes the `## Raw Materials` staging area once all materials are organized into the outline (no author confirmation needed — the materials are still there, just reorganized)
 
 Iterate with the author until the outline is solid. Write confirmed outline to `brief.md`.
 
@@ -120,7 +126,9 @@ Verify all checklist items, mark status as `ready`.
 3. **Produce complete first draft** — write to `article.md` in one pass
 4. **Ask author to review** — author can edit `article.md` directly or give feedback via conversation
 5. **Revise based on feedback** — multiple rounds until the author is satisfied
-6. **Complete** — check "First draft completed" in brief checklist, update status to `review`
+6. **Complete** — when the author approves the draft (after any number of revision rounds), check "First draft completed" in brief checklist, update status to `review`
+
+**Note:** The article stays in `writing` status throughout all revision rounds. The transition to `review` only happens when the author explicitly approves the draft.
 
 ### Writing Rules (Anti-Template)
 
@@ -144,7 +152,7 @@ Built-in rules to counter common AI writing patterns:
 ### Style Reference Usage
 
 1. Read `config.md` Writing Style section (global default)
-2. Read `brief.md` Writing Style field (article-level, overrides global if present)
+2. Read `brief.md` Writing Style field (article-level; if present, it **replaces** the global style entirely — no merging)
 3. Style references can be: a prose description, links to reference articles, or specific rules
 4. If no style reference exists at either level, use the anti-template rules as the only style guidance
 
@@ -158,7 +166,7 @@ Built-in rules to counter common AI writing patterns:
 
 - Translate the article (future Translation skill)
 - Review the article against goals (future Review skill)
-- Modify the outline or materials in brief.md
+- Modify the outline or materials in brief.md — if a section has insufficient materials to write well, ask the author to provide more details in conversation rather than fabricating content. If the issue is structural (section should be cut or merged), suggest the author revisit the outline before continuing.
 
 ## File Format Changes
 
@@ -202,7 +210,7 @@ Built-in rules to counter common AI writing patterns:
 - Goal alignment:
 
 ## Writing Style
-{Optional — article-specific style references that override or supplement the global style in config.md. Leave empty to use the global default.}
+{Optional — article-specific style references that replace the global style in config.md. Leave empty to use the global default.}
 
 ## Outline
 
@@ -234,6 +242,31 @@ articles/{YYYY-MM-DD}_{slug}/
   brief.md      # Brief + outline with materials
   assets/       # Images and other assets
 ```
+
+## Affected Artifacts
+
+This design requires changes to the following existing files:
+
+| File | Change |
+|------|--------|
+| `skills/article-preparation/SKILL.md` | Rewrite to match new flow (interview, outline with materials) |
+| `skills/article-preparation/assets/brief-template.md` | Update template (add Writing Style, new checklist items) |
+| `skills/article-preparation/references/brief-format.md` | Update format reference to match new template |
+| `skills/writing-management/SKILL.md` | Add Writing Style section to config.md initialization and update flow |
+| `skills/writing-management/references/config-format.md` | Add Writing Style section |
+| `workspace-template/config.md` | Add Writing Style section |
+| `workspace-template/templates/brief-template.md` | Update to match new template |
+
+New files to create:
+
+| File | Purpose |
+|------|---------|
+| `skills/article-writing/SKILL.md` | New Writing skill |
+| `skills/article-writing/references/writing-rules.md` | Anti-template rules reference |
+
+### Management Skill Update
+
+The Management skill needs a minor update: when initializing a workspace or updating `config.md`, it should include the `## Writing Style` section. During initialization, AI guides the user to describe their preferred writing style (or skip it for now). The rest of the Management skill is unchanged.
 
 ## AI Behavior Principles (unchanged, extended)
 
