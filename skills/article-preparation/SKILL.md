@@ -1,6 +1,6 @@
 ---
 name: article-preparation
-description: Prepare an article for writing. Creates article directory, interviews the author to extract materials, builds an outline based on those materials. Use when the user wants to start writing an article from an idea.
+description: Prepare an article for writing. Creates article directory, collects existing materials, interviews the author to extract additional details, builds an outline based on those materials. Use when the user wants to start writing an article from an idea.
 ---
 
 # Article Preparation
@@ -57,9 +57,28 @@ The fields to complete:
 
 After each field is confirmed, update `brief.md` and check the corresponding checklist item.
 
-### Step 3: Interview the Author
+### Step 3: Collect Existing Materials
+
+Before starting the interview, ask the author if they already have any materials for this article — outlines, notes, drafts, bullet points, reference links, or anything they've jotted down.
+
+**If the author provides materials:**
+1. Read and organize them into a `## Raw Materials` section in `brief.md`
+2. Summarize back to the author what you've received and identify what's already covered vs. what's missing
+3. Proceed to Step 4 (Interview) — but use these materials as the starting point, focusing questions on gaps and areas that need more depth
+
+**If the author has no existing materials:**
+- That's fine — proceed directly to Step 4 (Interview) starting from scratch
+
+### Step 4: Interview the Author
 
 **Purpose:** Extract the specific details, decisions, surprises, and insights that only someone who did the work would know. These materials are the factual foundation of the article.
+
+**If existing materials were collected in Step 3**, adapt your interview strategy:
+- Skip questions already answered by the materials
+- Use the materials as context to ask sharper, more specific follow-ups
+- Propose hypotheses based on the materials for the author to confirm or correct
+- Focus on gaps: missing concrete details, unexplained decisions, or sections that feel thin
+- If the materials are already comprehensive enough (concrete details, author perspectives, specifics per expected section), you may skip directly to Step 5 (Build Outline) — confirm with the author first
 
 **Strategy: Open question → Topic dimensions → Specific follow-ups**
 
@@ -74,16 +93,14 @@ After each field is confirmed, update `brief.md` and check the corresponding che
 - One question at a time
 - If the author gives an abstract answer, follow up asking for a concrete example
 - Don't follow the order rigidly — let the conversation flow naturally
-- Record materials to a `## Raw Materials` section in `brief.md` during the interview (temporary staging area)
+- Record materials to the `## Raw Materials` section in `brief.md` during the interview (append to existing materials if any)
 - **Resumability**: If the conversation was interrupted, read existing Raw Materials in `brief.md` and continue from where things left off
 
 **When to wrap up:** When you have enough material to build a solid outline. A good heuristic: at least one concrete detail or author quote per expected section, and the author has addressed at least 3 of the 4 dimensions (decisions, surprises, insights, specifics). The author can always add more.
 
-**Skipping the interview:** If the author already has detailed notes, an existing outline with specifics, or other prepared materials, they can provide these directly. Organize the provided materials into the outline format (Step 4) instead of conducting the full interview. The key requirement is that the outline ends up with concrete materials per section — how they get there is flexible.
-
 After wrapping up, check "Interview completed" in the checklist.
 
-### Step 4: Build Outline with Materials
+### Step 5: Build Outline with Materials
 
 Based on the interview materials, propose an outline where each section includes its purpose and the materials that belong there.
 
@@ -110,9 +127,10 @@ Based on the interview materials, propose an outline where each section includes
 
 Iterate with the user until the outline is solid. Write the confirmed outline to the **Outline** section of `brief.md`. Check "Outline with materials completed" in the checklist.
 
-### Step 5: Readiness Check
+### Step 6: Readiness Check
 
 1. Verify all Preparation checklist items are checked (except "Ready for writing")
+   - If existing materials were provided and the interview was skipped or abbreviated, "Interview completed" should still be checked
 2. Check "Ready for writing" as the final confirmation
 3. Update **Status** in `brief.md` from `draft` to `ready`
 4. Inform the user: this article is ready for the writing phase
