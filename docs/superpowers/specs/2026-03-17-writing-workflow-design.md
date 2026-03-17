@@ -57,7 +57,7 @@ writer/
 - Lightly reference how the idea relates to company goals from `config.md` (ambient alignment)
 
 **Organizing idea pool:**
-- When ideas accumulate, proactively suggest which ones could become articles
+- When a team member asks about the idea pool, or when receiving a new idea and there are 5+ pending ideas, suggest which ones could become articles
 - Mark adopted ideas, link to corresponding article directory
 
 ### Does NOT do
@@ -89,11 +89,16 @@ writer/
 - [YYYY-MM-DD] @person: idea description
 
 ## AI Suggestions
-> Suggestion about merging/developing ideas, with alignment notes
+> [YYYY-MM-DD] Suggestion about merging/developing ideas, with alignment notes
+> [YYYY-MM-DD] Another suggestion (append-only log, new suggestions are appended)
 
 ## Adopted
 - → articles/{slug} (merged from @person1 and @person2's ideas)
 ```
+
+AI Suggestions is an append-only log. New suggestions are added when:
+- A new idea is received that connects to existing ideas
+- A team member asks for the current state of the idea pool
 
 ## Skill 2: Article Preparation
 
@@ -114,7 +119,8 @@ A team member decides to develop an idea (or set of ideas) into an article.
 ### Flow
 
 **Step 1: Create article directory**
-- Create `articles/{slug}/` with `brief.md` (copied from template), empty `article.md`, and `assets/`
+- AI proposes a slug based on the article topic (e.g., `ai-agent-dev-workflow`); team member confirms or adjusts
+- Create `articles/{slug}/` with `brief.md` (copied from template), `article.md` (with title header only), and `assets/`
 - Update `ideas.md`: mark related ideas as adopted
 
 **Step 2: Guide brief completion (conversation with team member)**
@@ -129,7 +135,7 @@ A team member decides to develop an idea (or set of ideas) into an article.
 - Write confirmed outline to `brief.md`
 
 **Step 4: Readiness check**
-- Confirm all preparation checklist items in `brief.md` are complete
+- Confirm all items under the "Preparation" section of the checklist in `brief.md` are complete
 - Inform team member: this article is ready for the writing phase
 
 ### Output
@@ -151,11 +157,14 @@ User-editable. Initialization creates this default; users can modify it to fit t
 - Title:
 - Author:
 - Date:
-- Status: draft
+- Status: draft  <!-- draft | ready | writing | review | published -->
 
 ## Target Audience
 - Who:
 - Background:
+
+## Source Ideas
+- {references to original ideas from ideas.md, for traceability}
 
 ## Article Goals
 - Reader takeaway:
@@ -165,11 +174,15 @@ User-editable. Initialization creates this default; users can modify it to fit t
 
 
 ## Checklist
+
+### Preparation
 - [ ] Target audience confirmed
 - [ ] Article goals confirmed
 - [ ] Company alignment confirmed
 - [ ] Outline completed
 - [ ] Ready for writing
+
+### Writing & Review (managed by later skills)
 - [ ] First draft completed
 - [ ] Review completed
 - [ ] Finalized
@@ -182,15 +195,29 @@ User-editable. Initialization creates this default; users can modify it to fit t
 - AI suggests alignment naturally, never demands it
 - Tone: "This could be a good opportunity to..." not "You must align with..."
 
-### Ghostwriter Mode
+### Ghostwriter Mode (applies to all skills, not just Writing)
 - AI proposes content; team members confirm or adjust
+- In Article Preparation: AI proposes audience descriptions, goals, alignment points, and outlines
+- In Writing (future): AI drafts full article text
 - Especially important for company alignment — team members shouldn't have to figure out how to align on their own
 - Lower the barrier: team members provide ideas and direction, AI handles the writing
+
+### Updating Company Goals
+- Team members can update `config.md` at any time through conversation with the Management skill
+- Updates are full rewrites of the relevant section (company direction, writing purpose, or content direction)
+- Existing articles are not retroactively checked; alignment checks only apply going forward
 
 ### State Transitions via File Status
 - Each skill reads and writes files; no direct skill-to-skill communication
 - `brief.md` checklist tracks overall article progress across all skills
 - `ideas.md` status tracks idea lifecycle
+
+## Edge Cases
+
+- **Workspace already initialized**: Management skill detects existing `config.md` and skips initialization; offers to update goals instead
+- **Slug collision**: If `articles/{slug}/` already exists, AI appends a number suffix (e.g., `ai-agent-workflow-2`) and confirms with the team member
+- **Article Preparation without config**: AI informs the team member that workspace needs to be initialized first and guides them to set up `config.md`
+- **Re-adopting an idea**: If an idea is already marked as adopted, AI informs the team member and links to the existing article
 
 ## Future Work (Out of Scope)
 
