@@ -19,8 +19,12 @@
 - Reader takeaway:
 - Goal alignment:
 
+## Writing Style
+{Optional — article-specific style references that replace the global style in config.md. Leave empty to use the global default.}
+
 ## Outline
 
+{Built after interview — each section includes purpose and materials.}
 
 ## Checklist
 
@@ -29,7 +33,8 @@
 - [ ] Article goals confirmed
 - [ ] Goal alignment confirmed
 - [ ] Language and translations confirmed
-- [ ] Outline completed
+- [ ] Interview completed
+- [ ] Outline with materials completed
 - [ ] Ready for writing
 
 ### Writing & Review (managed by later skills)
