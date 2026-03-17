@@ -2,9 +2,17 @@
 
 ## Overview
 
-A collaborative writing system for sadcoder, powered by OpenClaw on Slack. The system guides team members — especially those not comfortable with writing — through the process of turning ideas into published articles that align with company goals.
+A collaborative writing system for sadcoder. The system guides team members — especially those not comfortable with writing — through the process of turning ideas into published articles that align with company goals.
 
 **Scope of this design:** Management skill and Article Preparation skill only. Writing skill, Review skill, and social platform integration are out of scope for now.
+
+### Platform Independence
+
+This system is designed to work with any AI agent that can read and write files. The workspace structure (`config.md`, `ideas.md`, `templates/`, `articles/`) is the shared data layer — it contains no platform-specific logic.
+
+Skills (the instructions that tell agents how to operate on workspace files) follow the [Agent Skills open standard](https://agentskills.io/) (`SKILL.md` format with YAML frontmatter). This standard is supported by 30+ platforms including Claude Code, OpenAI Codex, Cursor, Gemini CLI, GitHub Copilot, OpenHands, Goose, Roo Code, and others.
+
+Each skill is packaged as a directory with a `SKILL.md` file and optional `scripts/`, `references/`, and `assets/` subdirectories per the specification.
 
 ## Architecture: State-Driven via Files
 
