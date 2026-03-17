@@ -67,7 +67,7 @@ All three say "preparation matters." By the third time, the reader has stopped c
 </example>
 
 <example type="good">
-State the point once. Each later mention must add something new — a different angle, a concrete method, or a counterexample. If there's nothing new to add, don't bring it up again.
+State the point once. Each later mention must add something new: a different angle, a concrete method, or a counterexample. If there's nothing new to add, don't bring it up again.
 </example>
 
 ### Structure-level
