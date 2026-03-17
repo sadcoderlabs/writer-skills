@@ -5,3 +5,6 @@
 
 ## Writing Goals
 {One paragraph describing what the writing aims to achieve, who it targets, and the desired tone}
+
+## Writing Style
+{Global writing style preferences — prose description, reference article links, or specific rules}
