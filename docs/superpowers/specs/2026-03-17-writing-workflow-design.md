@@ -77,14 +77,23 @@ writer/
 ```markdown
 # Writing Plan
 
-## Company Direction
+## About Us
 {One paragraph describing what the company does and its vision}
 
-## Writing Purpose
-{One paragraph describing what the writing aims to achieve}
+## Writing Goals
+{One paragraph describing what the writing aims to achieve, who it targets, and the desired tone}
+```
 
-## Content Direction
-{One paragraph describing the angle/tone of content}
+**Example (sadcoder):**
+
+```markdown
+# Writing Plan
+
+## About Us
+sadcoder builds AI agent tools. We envision a future where people rely heavily on AI agents to get work done, and we're building products for that world.
+
+## Writing Goals
+Demonstrate our hands-on experience and insights in the AI agent space to attract people interested in AI agents — getting them to follow us on Twitter or leave their email on our website. Tone should be practical and opinionated, like a team that's actually building this stuff sharing what they've learned.
 ```
 
 ### File Format: ideas.md
