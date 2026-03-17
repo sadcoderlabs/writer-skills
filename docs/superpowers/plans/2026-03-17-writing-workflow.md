@@ -207,7 +207,7 @@ Demonstrate our hands-on experience and insights in the AI agent space to attrac
 > [YYYY-MM-DD] Suggestion about merging/developing ideas, with alignment notes
 
 ## Adopted
-- [YYYY-MM-DD] → articles/{slug} (from idea description)  <!-- date is when the idea was adopted -->
+- [YYYY-MM-DD] → articles/{date}_{slug} (from idea description)  <!-- date is when the idea was adopted -->
 ```
 
 ## Sections
@@ -267,7 +267,7 @@ ideas.md                 # Idea pool
 templates/
   brief-template.md      # Article brief template (user-editable)
 articles/
-  {article-slug}/
+  {YYYY-MM-DD}_{slug}/
     article.md           # Article content
     brief.md             # Writing brief
     assets/              # Images and other assets
@@ -504,19 +504,19 @@ You prepare articles for writing — turning an idea into a fully planned articl
 
 When the user wants to develop an idea into an article:
 
-1. Propose a slug based on the article topic (e.g., `ai-agent-dev-workflow`)
-   - Lowercase, hyphens between words, concise but descriptive
-   - User confirms or adjusts
-2. If `articles/{slug}/` already exists, append a number suffix (e.g., `ai-agent-workflow-2`) and confirm with the user
+1. Propose a slug based on the article topic (e.g., `2026-03-17_ai-agent-dev-workflow`)
+   - Format: `{YYYY-MM-DD}_{slug}` where slug is lowercase, hyphens between words, concise but descriptive
+   - Date is today's date, user confirms or adjusts the slug part
+2. If `articles/{date}_{slug}/` already exists, append a number suffix to the slug (e.g., `2026-03-17_ai-agent-workflow-2`) and confirm with the user
 3. Create the directory structure:
    ```
-   articles/{slug}/
+   articles/{date}_{slug}/
      article.md    # Empty file
      brief.md      # Copied from templates/brief-template.md
      assets/       # Empty directory
    ```
 4. Populate the **Source Ideas** section in `brief.md` with references to the original idea(s)
-5. Update `ideas.md`: move related ideas from "Pending" to "Adopted" with today's date and a link to `articles/{slug}`
+5. Update `ideas.md`: move related ideas from "Pending" to "Adopted" with today's date and a link to `articles/{date}_{slug}`
    - If an idea is already in the "Adopted" section, inform the user and link to the existing article instead of re-adopting
 
 ### Step 2: Guide Brief Completion
@@ -560,7 +560,7 @@ After each field is confirmed, update `brief.md` and check the corresponding che
 
 ## Output
 
-A fully completed `brief.md` in `articles/{slug}/` with:
+A fully completed `brief.md` in `articles/{date}_{slug}/` with:
 - All Article Info fields filled
 - Target Audience described
 - Source Ideas linked
@@ -680,7 +680,7 @@ ideas.md                 # Idea pool
 templates/
   brief-template.md      # Article brief template (editable)
 articles/
-  {article-slug}/
+  {YYYY-MM-DD}_{slug}/
     article.md           # Article content
     article.{lang}.md    # Translated versions
     brief.md             # Writing brief and progress tracking

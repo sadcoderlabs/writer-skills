@@ -39,7 +39,7 @@ writer/
   templates/
     brief-template.md      # Article brief template (user-editable)
   articles/
-    {article-slug}/
+    {YYYY-MM-DD}_{slug}/
       article.md           # Article content in original language (clean, no metadata)
       article.{lang}.md    # Translated versions (e.g., article.en.md, article.zh.md)
       brief.md             # Copied from template, filled during preparation
@@ -111,7 +111,7 @@ Demonstrate our hands-on experience and insights in the AI agent space to attrac
 > [YYYY-MM-DD] Another suggestion (append-only log, new suggestions are appended)
 
 ## Adopted
-- [YYYY-MM-DD] → articles/{slug} (from idea description)  <!-- date is when the idea was adopted -->
+- [YYYY-MM-DD] → articles/{date}_{slug} (from idea description)  <!-- date is when the idea was adopted -->
 ```
 
 AI Suggestions is an append-only log. New suggestions are added when:
@@ -137,8 +137,8 @@ The user decides to develop an idea (or set of ideas) into an article.
 ### Flow
 
 **Step 1: Create article directory**
-- AI proposes a slug based on the article topic (e.g., `ai-agent-dev-workflow`); user confirms or adjusts
-- Create `articles/{slug}/` with `brief.md` (copied from template), empty `article.md`, and `assets/`
+- AI proposes a slug based on the article topic (e.g., `2026-03-17_ai-agent-dev-workflow`); user confirms or adjusts the slug part
+- Create `articles/{date}_{slug}/` with `brief.md` (copied from template), empty `article.md`, and `assets/`
 - Populate the Source Ideas section in `brief.md` with references to the original idea(s) from `ideas.md`
 - Update `ideas.md`: mark related ideas as adopted
 
@@ -241,7 +241,7 @@ User-editable. Initialization creates this default; users can modify it to fit t
 ## Edge Cases
 
 - **Workspace already initialized**: Management skill detects existing `config.md` and skips initialization; offers to update goals instead
-- **Slug collision**: If `articles/{slug}/` already exists, AI appends a number suffix (e.g., `ai-agent-workflow-2`) and confirms with the user
+- **Slug collision**: If `articles/{date}_{slug}/` already exists, AI appends a number suffix to the slug (e.g., `2026-03-17_ai-agent-workflow-2`) and confirms with the user
 - **Article Preparation without config**: AI informs the user that the workspace needs to be initialized first and guides them to set up `config.md`
 - **Re-adopting an idea**: If an idea is already marked as adopted, AI informs the user and links to the existing article
 
