@@ -34,6 +34,7 @@ articles/{YYYY-MM-DD}_{slug}/
   article.md                 # Article content (clean prose, no metadata)
   brief.md                   # Brief, materials, outline, progress tracking
   research.md                # External research and fact-check sources
+  reviews/                   # Review reports from automated reviewers
   assets/                    # Images and other assets
 ```
 
@@ -43,7 +44,7 @@ articles/{YYYY-MM-DD}_{slug}/
 
 ## Writing Rules (article-writing skill)
 
-The writing rules in `skills/article-writing/references/writing-rules.md` define prohibited AI patterns and quality requirements. The article-writing skill includes a draft review loop (Step 4) that dispatches a writing reviewer subagent, followed by a fact-check review (Step 5) that dispatches a fact-check reviewer subagent.
+The writing rules in `skills/article-writing/references/writing-rules.md` define prohibited AI patterns and quality requirements. The article-writing skill commits the first draft (Step 4), then runs an author-paced writing review loop (Step 5) that dispatches a writing reviewer subagent, followed by a fact-check review loop (Step 6) that dispatches a fact-check reviewer subagent. Both reviewers produce structured review reports saved to the article's `reviews/` directory.
 
 ## Design Documents
 
