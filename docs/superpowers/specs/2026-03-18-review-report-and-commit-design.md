@@ -41,14 +41,14 @@ articles/{YYYY-MM-DD}_{slug}/
 
 | File | Change |
 |------|--------|
-| `skills/article-writing/SKILL.md` | Rewrite Steps 3-5 to add commits, reports, and author checkpoints |
+| `skills/article-writing/SKILL.md` | Rewrite Steps 4-9 to add commits, reports, and author checkpoints |
 | `skills/article-writing/writing-reviewer-prompt.md` | Change output format to structured review report |
 | `skills/article-writing/fact-check-reviewer-prompt.md` | Change output format to structured review report; reviewer now fixes article directly |
 | `CLAUDE.md` | Update workspace structure to include `reviews/` directory |
 
 ### Step renumbering
 
-Steps are renumbered to accommodate new commit and review steps. The overall step count increases from 8 to 10.
+Steps are renumbered to accommodate the new commit step. The step count increases from 8 to 9.
 
 ## Article Writing: New Step Sequence
 
@@ -64,7 +64,7 @@ Steps are renumbered to accommodate new commit and review steps. The overall ste
 | 8 | Revise based on feedback | Was Step 7 |
 | 9 | Complete | Was Step 8 |
 
-Note: the step count decreases from 10 to 9 because old Steps 7-8 (revise + complete) map to new Steps 8-9, while old Steps 4-5 become new Steps 5-6.
+The new Step 4 (Commit First Draft) is inserted between writing and review. Old Steps 4-5 become new Steps 5-6 (with structural changes), and old Steps 6-8 shift to Steps 7-9.
 
 ### Step 4: Commit First Draft
 
@@ -74,6 +74,8 @@ After writing the complete first draft to `article.md`:
 2. Commit with message: `draft: complete first draft for {slug}`
 
 This preserves the original draft before any automated review modifies it.
+
+**Git availability:** If the workspace is not a git repository, skip all git commit steps (4, 5c, 6c) and continue the workflow normally. The review reports are still written regardless of git availability.
 
 ### Step 5: Writing Review Loop (Author-Paced)
 
@@ -90,6 +92,15 @@ The reviewer:
 
 **5d. Present summary and ask author:**
 
+If the reviewer returned Status "Approved" (no issues found), inform the author and auto-advance to Step 6:
+
+```
+Writing review complete. No issues found — report saved to reviews/review-{NN}-writing.md.
+Moving to fact-check review.
+```
+
+If the reviewer returned Status "Issues Found", present the choice:
+
 ```
 Writing review round {N} complete. Report saved to reviews/review-{NN}-writing.md.
 
@@ -103,7 +114,7 @@ What would you like to do?
 
 **5e. If the author chooses another round:** increment the global sequence number and go back to 5a.
 
-**5f. If the author chooses to move on:** proceed to Step 6.
+**5f. If the author chooses to move on (or auto-advanced):** proceed to Step 6.
 
 ### Step 6: Fact-Check Review Loop (Author-Paced)
 
@@ -117,9 +128,18 @@ The reviewer:
 
 **6b. Main flow writes the report** to `reviews/review-{NN}-factcheck.md`.
 
-**6c. Git commit** with message: `review: fact-check review round {N} for {slug}`.
+**6c. Git commit** with message: `review: fact-check review round {N} for {slug}`. Commit includes modified `article.md`, the new report file, and `research.md` if modified.
 
 **6d. Present summary and ask author:**
+
+If the reviewer returned Status "Approved" (no issues found), inform the author and auto-advance to Step 7:
+
+```
+Fact-check review complete. No issues found — report saved to reviews/review-{NN}-factcheck.md.
+Moving to author review.
+```
+
+If the reviewer returned Status "Issues Found", present the choice:
 
 ```
 Fact-check review round {N} complete. Report saved to reviews/review-{NN}-factcheck.md.
@@ -134,13 +154,13 @@ What would you like to do?
 
 **6e. If the author chooses another round:** increment and go back to 6a.
 
-**6f. If the author chooses to move on:** write verified sources to `research.md` under `## Fact-Check Sources` (create file if needed), check "Fact-check completed" in brief checklist, proceed to Step 7.
+**6f. If the author chooses to move on (or auto-advanced):** write any remaining verified sources to `research.md` under `## Fact-Check Sources` (create file if needed), check "Fact-check completed" in brief checklist. If `research.md` or `brief.md` were modified, git commit with message: `review: finalize fact-check for {slug}`. Proceed to Step 7.
 
 ### Change to fact-check resolution flow
 
-The current design has the fact-check reviewer return results for the author to resolve one-by-one (correct / rephrase / provide source / remove). In the new design, the fact-check reviewer applies fixes directly to `article.md` (like the writing reviewer does) and documents each change in the report.
+**Deliberate design decision:** The current design has the fact-check reviewer return results for the author to resolve one-by-one (correct / rephrase / provide source / remove). This new design changes the fact-check reviewer to apply fixes directly to `article.md` (like the writing reviewer does) and document each change in the report.
 
-The author can still override any change during Step 7 (Author Review), where they see the full article and all review reports. This preserves author authority while reducing the back-and-forth in the fact-check step.
+This is a trade-off: the previous per-claim approval flow gave the author stronger control over each factual correction, but created significant back-and-forth overhead. The new design trades per-claim approval for a faster workflow where the reviewer acts autonomously, but the author retains full authority to override any change during Step 7 (Author Review) — where they see the complete article alongside all review reports with detailed rationale for each change. The git commit history also allows the author to diff before/after any review round.
 
 ## Review Report Format
 
@@ -171,7 +191,7 @@ Both reviewer types use the same base structure. Type-specific fields are noted.
 ...
 ```
 
-When Status is "Approved" (no issues found), the Changes section is empty and the Overview explains why the article passed.
+When Status is "Approved" (no issues found), the Changes section is empty and the Overview explains why the article passed. Both reviewer prompts must include explicit guidance for this case: "If no violations are found, return Status: Approved with an empty Changes section and an Overview explaining why the article passed review."
 
 ## Reviewer Prompt Changes
 
@@ -179,7 +199,7 @@ When Status is "Approved" (no issues found), the Changes section is empty and th
 
 Changes to the existing prompt:
 
-1. **New responsibility:** The reviewer now writes fixes directly to `article.md` (currently, the main flow applies fixes based on the reviewer's suggestions).
+1. **New responsibility:** The reviewer now fixes issues directly in `article.md`. This is a behavioral change — currently, the reviewer only returns a list of issues and the main flow applies fixes before re-dispatching. Moving the fix responsibility to the reviewer ensures the report accurately reflects what was changed.
 2. **New input parameter:** `[REVIEW_ROUND_NUMBER]` — used in the report title.
 3. **New output format:** The full review report format defined above, returned as text. The main flow writes it to a file.
 4. **Removed:** The simple Status/Issues/Recommendations output format.
@@ -203,7 +223,9 @@ The reviewer's identification criteria (factual claims vs. opinion expressions) 
 |--------|---------------|----------------|
 | After first draft (Step 4) | `draft: complete first draft for {slug}` | `article.md`, `brief.md` |
 | After each writing review round (Step 5c) | `review: writing review round {N} for {slug}` | `article.md`, `reviews/review-{NN}-writing.md` |
-| After each fact-check review round (Step 6c) | `review: fact-check review round {N} for {slug}` | `article.md`, `reviews/review-{NN}-factcheck.md` |
+| After each fact-check review round (Step 6c) | `review: fact-check review round {N} for {slug}` | `article.md`, `reviews/review-{NN}-factcheck.md`, `research.md` (if modified) |
+
+**Round number clarification:** `{N}` in commit messages is the type-local round number (e.g., "writing review round 2" for the second writing review). `{NN}` in filenames is the zero-padded global sequence number across all review types.
 
 All git operations are performed by the main flow, never by reviewer subagents.
 
@@ -224,7 +246,7 @@ The main flow tracks this counter. It starts at 1 when Step 5 begins and increme
 
 ### SKILL.md (article-writing)
 
-- Rewrite Steps 3-8 according to the new step sequence
+- Rewrite Steps 4-9 according to the new step sequence
 - Remove the 3-iteration hard limit from the writing review loop
 - Remove the per-claim author resolution flow from fact-check
 - Add git commit instructions at Steps 4, 5c, and 6c
@@ -259,7 +281,7 @@ articles/{YYYY-MM-DD}_{slug}/
   assets/                    # Images and other assets
 ```
 
-Update article-writing skill description to mention review reports and commit tracking.
+Update article-writing skill description to mention review reports and commit tracking. Update step number references (current "Step 4" → "Step 5", current "Step 5" → "Step 6").
 
 ## What Does NOT Change
 
