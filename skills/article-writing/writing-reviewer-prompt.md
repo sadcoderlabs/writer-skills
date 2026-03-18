@@ -1,6 +1,6 @@
 # Writing Reviewer Prompt Template
 
-Use this template when dispatching a writing reviewer subagent during Step 3.5.
+Use this template when dispatching a writing reviewer subagent during Step 4.
 
 **Purpose:** Verify the draft follows writing rules before presenting to the author.
 
