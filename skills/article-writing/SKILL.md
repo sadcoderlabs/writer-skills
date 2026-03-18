@@ -50,42 +50,91 @@ Produce the complete article in one pass and write it to `article.md`. **Write t
 - Use Markdown headings that match the outline sections
 - The article should stand on its own as a readable piece
 
-### Step 4: Draft Review Loop
+### Step 4: Commit First Draft
 
-After writing the first draft, dispatch a writing-reviewer subagent to check the draft against the writing rules. See [writing-reviewer-prompt.md](writing-reviewer-prompt.md) for the dispatch template.
+After writing the complete first draft to `article.md`, commit the current state to preserve the original draft before automated review.
 
-1. Dispatch reviewer with the path to `article.md` and `references/writing-rules.md`
-2. If Issues Found: fix the flagged passages in `article.md` and re-dispatch the reviewer
-3. Max 3 iterations — if issues remain after 3 rounds, proceed to Author Review
+1. Git add `article.md` and `brief.md`
+2. Commit with message: `draft: complete first draft for {slug}`
 
-Do not present the draft to the author until this loop completes or reaches the iteration limit.
+If the workspace is not a git repository, skip this step and proceed to Step 5.
 
-### Step 5: Fact-Check Review
+### Step 5: Writing Review Loop
 
-After the draft review loop (Step 4) completes, dispatch a fact-check reviewer subagent to verify factual claims. See [fact-check-reviewer-prompt.md](fact-check-reviewer-prompt.md) for the dispatch template.
+After committing the first draft, dispatch a writing-reviewer subagent to check the draft against the writing rules. See [writing-reviewer-prompt.md](writing-reviewer-prompt.md) for the dispatch template.
 
-1. Dispatch the fact-check reviewer with paths to `article.md`, `brief.md`, and `research.md` (if it exists)
-2. The reviewer identifies factual claims, skips opinion expressions, and verifies claims online
-3. Present the fact-check report to the author
+The review loop is author-paced: the first round runs automatically, then the author decides whether to continue.
 
-**Resolution flow — for each flagged claim, the author chooses one of:**
-- **Correct:** Accept the finding and update the passage in `article.md`
-- **Rephrase as opinion:** Adjust wording to frame as experience (e.g., add "in my experience")
-- **Provide source:** The author supplies the source; add it to `research.md`
-- **Remove:** Remove the claim from the article
+**Global review sequence counter:** Initialize a counter at 1. This counter increments for every review dispatch (writing or fact-check) and is used for report filenames.
 
-Whether the status is Approved or after all flagged issues are resolved, write verified sources to `research.md` under `## Fact-Check Sources`. If `research.md` does not exist, create it with only the `## Fact-Check Sources` section. Check "Fact-check completed" in the brief checklist.
+**5a.** Dispatch the writing-reviewer subagent with paths to `article.md`, `references/writing-rules.md`, `brief.md`, and the current review round number. The reviewer fixes issues directly in `article.md` and returns a structured review report.
 
-No re-dispatch needed — each resolution is author-confirmed.
+**5b.** Write the returned report to `reviews/review-{NN}-writing.md`, where `{NN}` is the zero-padded global sequence number. Create the `reviews/` directory if it doesn't exist.
 
-### Step 6: Author Review
+**5c.** Git commit with message: `review: writing review round {N} for {slug}`. Include modified `article.md` and the new report file. (`{N}` is the type-local round number; `{NN}` is the global sequence number.) Skip if not a git repository.
 
-Present the draft to the author and ask for feedback. The author can:
+**5d.** Present the result to the author:
+
+If Status is "Approved": inform the author and auto-advance to Step 6.
+
+> Writing review complete. No issues found — report saved to `reviews/review-{NN}-writing.md`. Moving to fact-check review.
+
+If Status is "Issues Found": present the choice.
+
+> Writing review round {N} complete. Report saved to `reviews/review-{NN}-writing.md`.
+>
+> Key findings:
+> - {1-2 sentence summary from the report's Overview}
+>
+> What would you like to do?
+> 1. Run another writing review round
+> 2. Move to fact-check review
+
+**5e.** If the author chooses another round: increment the global sequence counter and go back to 5a.
+
+**5f.** If the author chooses to move on (or auto-advanced): proceed to Step 6.
+
+### Step 6: Fact-Check Review Loop
+
+Dispatch a fact-check reviewer subagent to verify factual claims. See [fact-check-reviewer-prompt.md](fact-check-reviewer-prompt.md) for the dispatch template.
+
+Like the writing review, the first round runs automatically, then the author decides whether to continue.
+
+**6a.** Dispatch the fact-check reviewer with paths to `article.md`, `brief.md`, `research.md` (if it exists), and the current review round number. The reviewer fixes issues directly in `article.md` and returns a structured review report.
+
+**6b.** Write the returned report to `reviews/review-{NN}-factcheck.md`.
+
+**6c.** Git commit with message: `review: fact-check review round {N} for {slug}`. Include modified `article.md`, the new report file, and `research.md` if modified. (`{N}` is the type-local round number; `{NN}` is the global sequence number.) Skip if not a git repository.
+
+**6d.** Present the result to the author:
+
+If Status is "Approved": inform the author and auto-advance to Step 7.
+
+> Fact-check review complete. No issues found — report saved to `reviews/review-{NN}-factcheck.md`. Moving to author review.
+
+If Status is "Issues Found": present the choice.
+
+> Fact-check review round {N} complete. Report saved to `reviews/review-{NN}-factcheck.md`.
+>
+> Key findings:
+> - {1-2 sentence summary from the report's Overview}
+>
+> What would you like to do?
+> 1. Run another fact-check review round
+> 2. Move to author review
+
+**6e.** If the author chooses another round: increment the global sequence counter and go back to 6a.
+
+**6f.** If the author chooses to move on (or auto-advanced): write any remaining verified sources to `research.md` under `## Fact-Check Sources` (create the file if needed). Check "Fact-check completed" in the brief checklist. If `research.md` or `brief.md` were modified, git commit with message: `review: finalize fact-check for {slug}`. Proceed to Step 7.
+
+### Step 7: Author Review
+
+Present the draft to the author and ask for feedback. Point the author to the `reviews/` directory where they can read the full review reports for context on changes made during automated review. The author can:
 - Edit `article.md` directly (you read the changes and continue from there)
 - Give feedback in conversation (you apply the changes)
 - Approve the draft as-is
 
-### Step 7: Revise Based on Feedback
+### Step 8: Revise Based on Feedback
 
 If the author has feedback:
 - Apply the requested changes to `article.md`
@@ -96,7 +145,7 @@ The article stays in `writing` status throughout all revision rounds.
 
 **If materials are insufficient for a section:** Ask the author to provide more details in conversation. Do not fabricate content. If the issue is structural (a section should be cut or merged), suggest the author revisit the outline before continuing.
 
-### Step 8: Complete
+### Step 9: Complete
 
 When the author approves the draft:
 1. Check "First draft completed" in the brief checklist
@@ -107,6 +156,7 @@ When the author approves the draft:
 
 - `article.md` — complete first draft in the article's original language
 - `brief.md` — status updated to `review`, "First draft completed" checked
+- `reviews/` — review reports from each automated review round
 
 ## You Do NOT
 
