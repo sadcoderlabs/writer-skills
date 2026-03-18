@@ -1,20 +1,22 @@
 # Fact-Check Reviewer Prompt Template
 
-Use this template when dispatching a fact-check reviewer subagent during Step 5.
+Use this template when dispatching a fact-check reviewer subagent during Step 6.
 
-**Purpose:** Verify factual claims in the article draft before presenting to the author.
+**Purpose:** Verify factual claims in the article draft, fix issues directly, and produce a structured review report explaining each change.
 
-**Dispatch after:** Draft review loop (Step 4) completes.
+**Dispatch after:** Writing review loop (Step 5) completes.
 
 ~~~
 Agent tool (general-purpose):
-  description: "Fact-check article draft"
+  description: "Fact-check and fix article draft"
   prompt: |
-    You are a fact-check reviewer. Verify the factual claims in this article draft.
+    You are a fact-check reviewer. Verify the factual claims in this article draft,
+    fix any issues directly in the article, and produce a structured review report.
 
-    **Article to review:** [ARTICLE_FILE_PATH]
+    **Article to review and fix:** [ARTICLE_FILE_PATH]
     **Brief (for context):** [BRIEF_FILE_PATH]
     **Research notes (if exists):** [RESEARCH_FILE_PATH]
+    **Review round number:** [REVIEW_ROUND_NUMBER]
 
     Read all provided files, then identify and verify factual claims.
 
@@ -43,20 +45,42 @@ Agent tool (general-purpose):
     - Technical claims about specific tools or APIs should be checked against official documentation
     - Do not flag rounded numbers or approximations unless they are significantly off
 
+    ## Your Process
+
+    1. Read the article and identify all factual claims
+    2. Verify each claim using research.md and online sources
+    3. For claims that are incorrect or unverified, fix them directly in `article.md` using the Edit tool:
+       - Incorrect claims: correct the information
+       - Unverified claims that are non-essential: remove or rephrase as opinion
+       - Unverified claims that are essential: keep but note in the report
+    4. After all fixes are applied, produce the review report below
+
     ## Output Format
 
-    ## Fact-Check Review
+    Return the review report as text. The main flow will save it to a file.
 
-    **Status:** Approved | Issues Found
+    If no issues are found, return Status: Approved with an empty Changes
+    section and an Overview explaining why the article passed review.
 
-    **Verified claims:**
-    - "[quoted passage]" — Verified. Source: [{source title}]({URL})
+    # Review Report — Fact-Check (Round [REVIEW_ROUND_NUMBER])
 
-    **Unverified claims:**
-    - "[quoted passage]" — Could not verify. Suggestion: [remove, rephrase as opinion, or ask author for source]
+    ## Summary
 
-    **Corrections:**
-    - "[quoted passage]" — Contradicted by [{source title}]({URL}). Actual: [correct information]
+    - **Status:** Approved | Issues Found
+    - **Issues count:** {N} issues identified
+    - **Overview:** {1-2 sentence overall assessment}
+
+    ## Changes
+
+    ### 1. {Short description of the change}
+
+    - **Location:** {Section heading or paragraph location}
+    - **Claim:** {The factual claim in question}
+    - **Original:** > {Original text before your fix}
+    - **Revised:** > {Text after your fix}
+    - **Reason:** {Why this change was made — include source URL if applicable}
+
+    ### 2. ...
 ~~~
 
-**Reviewer returns:** Status, Verified claims, Unverified claims, Corrections.
+**Reviewer returns:** The complete review report as text, with all fixes already applied to `article.md`.
