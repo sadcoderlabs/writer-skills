@@ -473,7 +473,7 @@ After the draft review loop (Step 4) completes, dispatch a fact-check reviewer s
 - **Provide source:** The author supplies the source; add it to `research.md`
 - **Remove:** Remove the claim from the article
 
-After all issues are resolved, write verified sources to `research.md` under `## Fact-Check Sources`. If `research.md` does not exist, create it with only the `## Fact-Check Sources` section. Check "Fact-check completed" in the brief checklist.
+Whether the status is Approved or after all flagged issues are resolved, write verified sources to `research.md` under `## Fact-Check Sources`. If `research.md` does not exist, create it with only the `## Fact-Check Sources` section. Check "Fact-check completed" in the brief checklist.
 
 No re-dispatch needed — each resolution is author-confirmed.
 ```
