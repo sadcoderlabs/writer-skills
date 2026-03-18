@@ -50,12 +50,14 @@ Tracks progress across all skills.
 - Article goals confirmed
 - Goal alignment confirmed
 - Language and translations confirmed
+- Research completed (or skipped) — checked after topic research in Step 3, or immediately if the author declines research
 - Interview completed
 - Outline with materials completed
 - Ready for writing
 
 **Writing & Review** (managed by later skills):
 - First draft completed
+- Fact-check completed — checked after all fact-check findings have been resolved by the author in Step 5
 - Review completed
 - Translations completed
 - Finalized

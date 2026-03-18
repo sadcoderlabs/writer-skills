@@ -34,12 +34,14 @@
 - [ ] Article goals confirmed
 - [ ] Goal alignment confirmed
 - [ ] Language and translations confirmed
+- [ ] Research completed (or skipped)
 - [ ] Interview completed
 - [ ] Outline with materials completed
 - [ ] Ready for writing
 
 ### Writing & Review (managed by later skills)
 - [ ] First draft completed
+- [ ] Fact-check completed
 - [ ] Review completed
 - [ ] Translations completed
 - [ ] Finalized

@@ -257,15 +257,20 @@ Also update the Writing & Review checklist list (around line 57-61) to include a
 - Fact-check completed
 ```
 
-- [ ] **Step 4: Add documentation for new checklist items in brief-format.md**
+- [ ] **Step 4: Add documentation for checklist items in brief-format.md**
 
-After the existing checklist section text in `skills/article-preparation/references/brief-format.md` (after line 61, before `## Status Transitions`), add:
+In `skills/article-preparation/references/brief-format.md`, add descriptions for the two checklist items inline within the existing lists.
 
-```markdown
+In the **Preparation** list, after inserting "Research completed (or skipped)", append its description on the same line or as a sub-item:
 
-**New checklist items:**
-- **Research completed (or skipped)**: Checked after the author completes topic research in article-preparation Step 3, or immediately if the author declines research. Tracks that the research decision has been made.
-- **Fact-check completed**: Checked after all fact-check findings have been resolved by the author in article-writing Step 5. Tracks that factual claims have been verified.
+```
+- Research completed (or skipped) — checked after the author completes topic research in article-preparation Step 3, or immediately if the author declines research
+```
+
+In the **Writing & Review** list, same for "Fact-check completed":
+
+```
+- Fact-check completed — checked after all fact-check findings have been resolved by the author in article-writing Step 5
 ```
 
 - [ ] **Step 5: Verify changes**
