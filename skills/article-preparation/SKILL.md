@@ -48,12 +48,13 @@ The fields to complete:
 5. **Translations**: Ask if translations are needed and to which languages
 6. **Target Audience — Who**: Propose who would benefit from this article
 7. **Target Audience — Background**: Propose a brief description of the audience's context
-8. **Reader takeaway**: Propose what the reader will gain
-9. **Goal alignment**: Read `config.md` and **proactively suggest** how this article naturally connects to the writing goals
+8. **Target Audience — Prior state**: Propose what the reader already knows and what they're struggling with before reading this article
+9. **Reader takeaway**: Propose what the reader will gain
+10. **Goal alignment**: Read `config.md` and **proactively suggest** how this article naturally connects to the writing goals
    - This is especially important — users often forget or resist alignment, so make it natural
    - Example: "This article could naturally showcase your hands-on experience with agent tools, inviting readers to follow for more practical insights. Sound good?"
    - Never ask "how does this align?" — always propose alignment yourself
-10. **Writing Style**: Ask the author if they want to use the default style from `config.md`, or provide specific style references for this article (links to articles they like, descriptions of tone, specific rules). If they choose the default, leave this field empty.
+11. **Writing Style**: Ask the author if they want to use the default style from `config.md`, or provide specific style references for this article (links to articles they like, descriptions of tone, specific rules). If they choose the default, leave this field empty.
 
 After each field is confirmed, update `brief.md` and check the corresponding checklist item.
 

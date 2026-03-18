@@ -34,7 +34,7 @@ Change status in `brief.md` from `ready` to `writing`.
 
 ### Step 3: Write the First Draft
 
-Produce the complete article in one pass and write it to `article.md`.
+Produce the complete article in one pass and write it to `article.md`. **Write the full draft before revising** — do not loop back to polish earlier sections while still drafting later ones.
 
 **How to write each section:**
 - Read the section's **Purpose** to understand what it should achieve for the reader

@@ -14,8 +14,9 @@ Agent tool (general-purpose):
 
     **Article to review:** [ARTICLE_FILE_PATH]
     **Writing rules:** [WRITING_RULES_FILE_PATH]
+    **Brief (for audience context):** [BRIEF_FILE_PATH]
 
-    Read both files, then check the article for violations.
+    Read all three files, then check the article for violations.
 
     ## What to Check
 
@@ -24,6 +25,7 @@ Agent tool (general-purpose):
     | Prohibited patterns | Dash-connected contrasts, hollow opening questions, summary sentences at paragraph end, transition filler, filler phrases, listicle structure for non-list content, symmetrical sections |
     | Repetition | Paragraphs restating what a previous paragraph already said |
     | Specificity | Generic statements where the materials had concrete details |
+    | Reader perspective | Paragraphs where a reader in the target audience would lack context to follow the point — missing background, undefined jargon, or assumptions not established earlier in the article |
     | Voice | Passages that sound like AI summarizing a brief rather than the author writing |
 
     ## Calibration

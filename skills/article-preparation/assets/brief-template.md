@@ -11,6 +11,7 @@
 ## Target Audience
 - Who:
 - Background:
+- Prior state:
 
 ## Source Ideas
 - {references to original ideas from ideas.md, for traceability}

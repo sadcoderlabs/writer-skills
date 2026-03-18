@@ -87,6 +87,16 @@ The biggest improvement came from turning extended thinking up to high — with 
 
 Weave items into prose with causal connections, not isolated numbered points.
 
+- **Excessive em-dashes**: Keep to 1-2 per article. Convert the rest to commas, periods, or split into separate sentences.
+
+<example type="bad">
+The tool — which we built in two weeks — handled three tasks — parsing, validation, and routing — without any manual config.
+</example>
+
+<example type="good">
+The tool handled three tasks without any manual config: parsing, validation, and routing. We built it in two weeks.
+</example>
+
 - **Symmetrical sections**: Not every section needs the same length or structure. Let the content dictate the shape.
 
 ## Required Quality

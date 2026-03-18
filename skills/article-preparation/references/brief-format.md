@@ -22,6 +22,7 @@ The brief is copied from `templates/brief-template.md` when a new article is cre
 #### Target Audience
 - **Who**: One-line description of the target reader
 - **Background**: Brief description of the audience's context, needs, and knowledge level
+- **Prior state**: What the reader already knows and what they're struggling with or confused about before reading this article
 
 #### Source Ideas
 References to the original idea(s) from `ideas.md` that sparked this article. For traceability.
