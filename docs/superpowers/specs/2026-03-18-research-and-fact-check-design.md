@@ -47,6 +47,12 @@ articles/{YYYY-MM-DD}_{slug}/
 
 Both skills get renumbered to clean integers (no more 3.5, 3.6).
 
+### Status lifecycle
+
+The fact-check step occurs within the `writing` status. No new status values are needed. The existing status transitions remain: `draft` → `ready` → `writing` → `review` → `published`.
+
+Note: CLAUDE.md currently shows only four statuses (`draft` → `ready` → `writing` → `review`), but `brief-format.md` already documents `published`. When updating CLAUDE.md, include the full lifecycle.
+
 ## Article Preparation: New Step Sequence
 
 | Step | Content | Change |
@@ -73,7 +79,7 @@ If the author declines, skip to Step 4. If the author accepts:
 
 **3b. Author confirms or adjusts.** The author can remove, modify, or add their own research questions.
 
-**3c. Dispatch research subagent.** Send the confirmed research questions to the topic researcher subagent (see `topic-researcher-prompt.md`). The subagent searches online and produces structured research notes.
+**3c. Dispatch research subagent.** Send the confirmed research questions to the topic researcher subagent (see `topic-researcher-prompt.md`). The subagent searches online and produces structured research notes. This is a single dispatch — no retry loop. If results are thin, the author can refine questions and re-trigger research, or proceed without it.
 
 **3d. Write research.md.** The subagent's findings are written to `research.md` in the article directory.
 
@@ -97,7 +103,7 @@ If the author declines, skip to Step 4. If the author accepts:
 | **5** | **Fact-check review** | **New** |
 | 6 | Author review | Was Step 4 |
 | 7 | Revise based on feedback | Was Step 5 |
-| 8 | Finalize | Was Step 6 |
+| 8 | Complete | Was Step 6 |
 
 ### Step 1 update
 
@@ -176,25 +182,29 @@ After the author resolves all flagged issues, check "Fact-check completed" in th
 - ...
 ```
 
-The `## Research Notes` section is populated during article-preparation Step 3. The `## Fact-Check Sources` section is populated during article-writing Step 5. If the author skips research, the file may only contain the fact-check section (created during article-writing).
+The `## Research Notes` section is populated during article-preparation Step 3. The `## Fact-Check Sources` section is populated during article-writing Step 5. If the author skips research and `research.md` does not exist when fact-check sources need to be written, create it with only the `## Fact-Check Sources` section.
 
 ## Changes to Existing Files
 
 ### brief-template.md
 
-**Preparation checklist** — add one item before "Interview completed":
+**Preparation checklist** — insert after "Language and translations confirmed" and before "Interview completed":
 ```
 - [ ] Research completed (or skipped)
 ```
 
-**Writing & Review checklist** — add one item before "Review completed":
+**Writing & Review checklist** — insert after "First draft completed" and before "Review completed":
 ```
 - [ ] Fact-check completed
 ```
 
 ### brief-format.md
 
-Add documentation for the new checklist items. No new brief sections needed — research content lives in `research.md`.
+Add documentation for the two new checklist items:
+- **Research completed (or skipped):** Checked after the author completes topic research in Step 3, or immediately if the author declines research. Tracks that the research decision has been made.
+- **Fact-check completed:** Checked after all fact-check findings have been resolved by the author in Step 5. Tracks that factual claims have been verified.
+
+No new brief sections needed — research content lives in `research.md`.
 
 ### Outline materials format
 
@@ -227,6 +237,32 @@ Expand the "use author's materials" rule to acknowledge research as a legitimate
 - Add Step 3 (topic research) description
 - Update Step 5 (interview) to mention referencing research.md
 - Update Step 6 (outline) to document the `Research:` material prefix
+
+### CLAUDE.md
+
+Update the workspace structure section to include `research.md`:
+
+```
+articles/{YYYY-MM-DD}_{slug}/
+  article.md                 # Article content (clean prose, no metadata)
+  brief.md                   # Brief, materials, outline, progress tracking
+  research.md                # External research and fact-check sources
+  assets/                    # Images and other assets
+```
+
+Also update the article-preparation and article-writing step descriptions to reflect the new step numbers.
+
+## Subagent Prompt Templates
+
+The two new prompt templates follow the structural pattern of the existing `writing-reviewer-prompt.md`. The implementation plan should define their full content. Key requirements for each:
+
+### topic-researcher-prompt.md
+
+The research subagent receives: research questions (confirmed by author), brief fields (title, target audience, reader takeaway) for context. It requires web search tool access (WebSearch, WebFetch). It outputs findings in the `research.md` format defined above, including contrasting viewpoints. It does not filter or editorialize — all relevant findings are included for the author to review.
+
+### fact-check-reviewer-prompt.md
+
+The fact-check subagent receives: `article.md`, `brief.md`, and `research.md` (if exists) file paths. It requires web search tool access (WebSearch, WebFetch). It distinguishes opinion expressions from factual claims. It outputs in the fact-check review format defined above. It uses existing sources from `research.md` before searching for new ones.
 
 ## What Does NOT Change
 
