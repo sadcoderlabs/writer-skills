@@ -58,28 +58,49 @@ The fields to complete:
 
 After each field is confirmed, update `brief.md` and check the corresponding checklist item.
 
-### Step 3: Collect Existing Materials
+### Step 3: Topic Research (optional)
+
+After the brief fields are completed, ask the author: "Would you like to do some topic research before we continue?"
+
+If the author declines, check "Research completed (or skipped)" in the checklist and skip to Step 4.
+
+If the author accepts:
+
+**3a. Propose research questions.** Based on the brief's title, target audience, and reader takeaway, propose 2-3 research questions in ghostwriter mode. Examples:
+- "What are the current mainstream approaches to {topic} in the community?"
+- "What common problems does {target audience} encounter with {topic}?"
+- "Are there recent developments or data related to {reader takeaway}?"
+
+**3b. Author confirms or adjusts.** The author can remove, modify, or add their own research questions.
+
+**3c. Dispatch research subagent.** Send the confirmed questions to the topic researcher subagent — see [topic-researcher-prompt.md](topic-researcher-prompt.md) for the dispatch template. This is a single dispatch, no retry loop. If results are thin, the author can refine questions and re-trigger, or proceed without it.
+
+**3d. Present research summary.** After the subagent writes `research.md` in the article directory, present a concise summary to the author. Include contrasting or opposing viewpoints explicitly — research broadens perspective, not confirms bias.
+
+**3e. Check "Research completed (or skipped)" in the brief checklist.**
+
+### Step 4: Collect Existing Materials
 
 Before starting the interview, ask the author if they already have any materials for this article — outlines, notes, drafts, bullet points, reference links, or anything they've jotted down.
 
 **If the author provides materials:**
 1. Read and organize them into a `## Raw Materials` section in `brief.md`
 2. Summarize back to the author what you've received and identify what's already covered vs. what's missing
-3. Proceed to Step 4 (Interview) — but use these materials as the starting point, focusing questions on gaps and areas that need more depth
+3. Proceed to Step 5 (Interview) — but use these materials as the starting point, focusing questions on gaps and areas that need more depth
 
 **If the author has no existing materials:**
-- That's fine — proceed directly to Step 4 (Interview) starting from scratch
+- That's fine — proceed directly to Step 5 (Interview) starting from scratch
 
-### Step 4: Interview the Author
+### Step 5: Interview the Author
 
 **Purpose:** Extract the specific details, decisions, surprises, and insights that only someone who did the work would know. These materials are the factual foundation of the article.
 
-**If existing materials were collected in Step 3**, adapt your interview strategy:
+**If existing materials were collected in Step 4**, adapt your interview strategy:
 - Skip questions already answered by the materials
 - Use the materials as context to ask sharper, more specific follow-ups
 - Propose hypotheses based on the materials for the author to confirm or correct
 - Focus on gaps: missing concrete details, unexplained decisions, or sections that feel thin
-- If the materials are already comprehensive enough (concrete details, author perspectives, specifics per expected section), you may skip directly to Step 5 (Build Outline) — confirm with the author first
+- If the materials are already comprehensive enough (concrete details, author perspectives, specifics per expected section), you may skip directly to Step 6 (Build Outline) — confirm with the author first
 
 **Strategy: Open question → Topic dimensions → Specific follow-ups**
 
@@ -96,12 +117,13 @@ Before starting the interview, ask the author if they already have any materials
 - Don't follow the order rigidly — let the conversation flow naturally
 - Record materials to the `## Raw Materials` section in `brief.md` during the interview (append to existing materials if any)
 - **Resumability**: If the conversation was interrupted, read existing Raw Materials in `brief.md` and continue from where things left off
+- **Research-informed**: If `research.md` exists, reference research findings during the interview to prompt deeper discussion. For example: "The research found differing views on X — what's been your experience?"
 
 **When to wrap up:** When you have enough material to build a solid outline. A good heuristic: at least one concrete detail or author quote per expected section, and the author has addressed at least 3 of the 4 dimensions (decisions, surprises, insights, specifics). The author can always add more.
 
 After wrapping up, check "Interview completed" in the checklist.
 
-### Step 5: Build Outline with Materials
+### Step 6: Build Outline with Materials
 
 Based on the interview materials, propose an outline where each section includes its purpose and the materials that belong there.
 
@@ -113,6 +135,7 @@ Based on the interview materials, propose an outline where each section includes
 **Materials:**
 - Author quote: "exact words from interview"
 - Specific detail: numbers, timelines, technical choices
+- Research: {insight from research.md, confirmed by author for inclusion}
 - Context: background needed to understand this section
 
 ### 2. Section title
@@ -125,10 +148,11 @@ Based on the interview materials, propose an outline where each section includes
 - Structure follows materials — the outline is shaped by what the author actually has to say, not by a generic template
 - Every section must have materials — if a section has no materials, either interview more or cut the section
 - Remove the `## Raw Materials` staging area once all materials are organized into the outline (no author confirmation needed — the materials are still there, just reorganized)
+- Research materials use the `Research:` prefix — only include research insights the author has confirmed for inclusion in the article
 
 Iterate with the user until the outline is solid. Write the confirmed outline to the **Outline** section of `brief.md`. Check "Outline with materials completed" in the checklist.
 
-### Step 6: Readiness Check
+### Step 7: Readiness Check
 
 1. Verify all Preparation checklist items are checked (except "Ready for writing")
    - If existing materials were provided and the interview was skipped or abbreviated, "Interview completed" should still be checked
