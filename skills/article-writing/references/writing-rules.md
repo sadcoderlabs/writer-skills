@@ -102,7 +102,7 @@ The tool handled three tasks without any manual config: parsing, validation, and
 ## Required Quality
 
 ### Use the author's materials
-- Every claim, example, and number in the article must come from the materials in the outline. Never fabricate examples, statistics, or anecdotes.
+- Every claim, example, and number in the article must come from the outline materials. Materials include author-sourced content (from the interview) and research findings (from research.md) that the author has confirmed for inclusion. Never fabricate examples, statistics, or anecdotes.
 - If a section's materials are too thin to write well, flag it to the author rather than padding with generic statements.
 
 ### Preserve the author's voice
