@@ -24,7 +24,7 @@ writing.config.md            # At repo root — writing plan goals, direction, s
       assets/                # Images and other assets
 ```
 
-**Workspace resolution:** Read the `workspace` field from `writing.config.md` frontmatter. If absent or empty, default to `.` (repo root). All paths below are relative to the workspace directory.
+**Workspace resolution:** Read the `workspace` field from `writing.config.md` frontmatter. If absent or empty, default to `.` (repo root). If the value starts with `/`, use it as an absolute path; otherwise resolve it relative to the repo root. All paths below are relative to the workspace directory.
 
 ## Your Responsibilities
 
@@ -35,7 +35,8 @@ If `writing.config.md` does not exist at the repository root, the workspace need
 1. Ask the user if this repository has other purposes (e.g., it's a Hugo or Astro project) and where they'd like to keep writing files
    - If the user says no special directory is needed → workspace is `.`
    - If the user specifies a directory (e.g., `writing`) → workspace is that path
-   - Validate: no `..`, no leading/trailing `/`, maximum two levels deep
+   - If the user provides a path starting with `/`, use it as an absolute path
+   - If the user provides a path starting with `~`, ask them to use the full absolute path instead
 2. Create `writing.config.md` at the repository root with the workspace value — see [config format](references/config-format.md) and template at `${CLAUDE_SKILL_DIR}/assets/config-template.md`
 3. Create the workspace directory (if not `.`) and the structure inside it:
    - Copy `${CLAUDE_SKILL_DIR}/assets/ideas-template.md` to `{workspace}/ideas.md`
