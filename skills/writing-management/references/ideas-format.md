@@ -13,7 +13,7 @@
 > [YYYY-MM-DD] Suggestion about merging/developing ideas, with alignment notes
 
 ## Adopted
-- [YYYY-MM-DD] → articles/{date}_{slug} (from idea description)  <!-- date is when the idea was adopted -->
+- [YYYY-MM-DD] → {workspace}/articles/{date}_{slug} (from idea description)  <!-- date is when the idea was adopted -->
 ```
 
 ## Sections
@@ -26,7 +26,7 @@ An **append-only log**. New suggestions are appended (never edited or removed) w
 - A new idea is received that connects to existing ideas
 - The user asks for the current state of the idea pool
 
-Each suggestion should reference specific pending ideas and note how they relate to goals from `config.md`.
+Each suggestion should reference specific pending ideas and note how they relate to goals from `writing.config.md`.
 
 ### Adopted
 Ideas that have been developed into articles. Includes the adoption date and a link to the article directory.
