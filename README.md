@@ -49,7 +49,7 @@ Open Claude Code in your writing directory and say something like "I want to sta
 
 ## Workspace Structure
 
-`writing.config.md` lives at the repository root. The `workspace` frontmatter field (default: `.`) points to where writing files live.
+`writing.config.md` lives at the repository root. The `workspace` frontmatter field (default: `.`) points to where writing files live. Supports relative paths (from repo root) and absolute paths starting with `/`.
 
 ```
 writing.config.md            # At repo root — your writing goals, direction, and style
