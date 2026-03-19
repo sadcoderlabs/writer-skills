@@ -16,11 +16,10 @@ workspace: writing
 
 **Rules:**
 - `workspace` is the only frontmatter field
-- Value is a relative path from repo root to the directory containing `ideas.md`, `templates/`, and `articles/`
+- Value is a directory path pointing to where `ideas.md`, `templates/`, and `articles/` live
 - If omitted or empty, defaults to `.` (repo root is the workspace)
-- No leading `/`, no trailing `/`
-- No `..` (must stay within the repo)
-- Maximum two levels deep (e.g., `writing` or `src/writing`)
+- If the value starts with `/`, it is treated as an absolute path
+- Otherwise, it is resolved relative to the repo root
 
 ## Body Structure
 
@@ -59,6 +58,18 @@ Demonstrate our hands-on experience and insights in the AI agent space to attrac
 ## Writing Style
 Direct and conversational. Short paragraphs. Use concrete examples from our own work rather than hypotheticals. Reference specific tools, numbers, and timelines. Avoid corporate-speak.
 ```
+
+## Absolute Path Example
+
+When skills are installed separately from the writing output (e.g., an AI agent's workspace pointing to an external content repository):
+
+```yaml
+---
+workspace: /root/projects/sadcoder-press
+---
+```
+
+With this configuration, `ideas.md` lives at `/root/projects/sadcoder-press/ideas.md`, articles at `/root/projects/sadcoder-press/articles/`, etc. The `writing.config.md` file itself stays at the repo root where skills are invoked.
 
 ## Guidelines
 
