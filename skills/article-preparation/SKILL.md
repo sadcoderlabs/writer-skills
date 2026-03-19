@@ -9,8 +9,9 @@ You prepare articles for writing — turning an idea into a fully planned articl
 
 ## Prerequisites
 
-- `config.md` must exist (workspace must be initialized). If it doesn't, tell the user to set up the workspace first using the Management skill.
-- `templates/brief-template.md` must exist. If missing, copy from `${CLAUDE_SKILL_DIR}/assets/brief-template.md`.
+- `writing.config.md` must exist at the repository root (workspace must be initialized). If it doesn't, tell the user to set up the workspace first using the Management skill.
+- Read the `workspace` field from `writing.config.md` frontmatter (default: `.`). All paths below are relative to this workspace directory.
+- `{workspace}/templates/brief-template.md` must exist. If missing, copy from `${CLAUDE_SKILL_DIR}/assets/brief-template.md`.
 
 ## Your Responsibilities
 
@@ -21,22 +22,22 @@ When the user wants to develop an idea into an article:
 1. Propose a slug based on the article topic (e.g., `2026-03-17_ai-agent-dev-workflow`)
    - Format: `{YYYY-MM-DD}_{slug}` where slug is lowercase, hyphens between words, concise but descriptive
    - Date is today's date, user confirms or adjusts the slug part
-2. If `articles/{date}_{slug}/` already exists, append a number suffix to the slug (e.g., `2026-03-17_ai-agent-workflow-2`) and confirm with the user
+2. If `{workspace}/articles/{date}_{slug}/` already exists, append a number suffix to the slug (e.g., `2026-03-17_ai-agent-workflow-2`) and confirm with the user
 3. Create the directory structure:
    ```
-   articles/{date}_{slug}/
+   {workspace}/articles/{date}_{slug}/
      article.md    # Empty file
-     brief.md      # Copied from templates/brief-template.md
+     brief.md      # Copied from {workspace}/templates/brief-template.md
      assets/       # Empty directory
    ```
 4. Populate the **Source Ideas** section in `brief.md` with references to the original idea(s)
-5. Update `ideas.md`: move related ideas from "Pending" to "Adopted" with today's date and a link to `articles/{date}_{slug}`
+5. Update `{workspace}/ideas.md`: move related ideas from "Pending" to "Adopted" with today's date and a link to `{workspace}/articles/{date}_{slug}`
    - If an idea is already in the "Adopted" section, inform the user and link to the existing article instead of re-adopting
 
 ### Step 2: Guide Brief Completion
 
 Walk through each section of `brief.md` with the user. For every field:
-- **You propose** suggestions based on the article topic and `config.md`
+- **You propose** suggestions based on the article topic and `writing.config.md`
 - User confirms, adjusts, or adds detail
 
 The fields to complete:
@@ -50,11 +51,11 @@ The fields to complete:
 7. **Target Audience — Background**: Propose a brief description of the audience's context
 8. **Target Audience — Prior state**: Propose what the reader already knows and what they're struggling with before reading this article
 9. **Reader takeaway**: Propose what the reader will gain
-10. **Goal alignment**: Read `config.md` and **proactively suggest** how this article naturally connects to the writing goals
+10. **Goal alignment**: Read `writing.config.md` and **proactively suggest** how this article naturally connects to the writing goals
    - This is especially important — users often forget or resist alignment, so make it natural
    - Example: "This article could naturally showcase your hands-on experience with agent tools, inviting readers to follow for more practical insights. Sound good?"
    - Never ask "how does this align?" — always propose alignment yourself
-11. **Writing Style**: Ask the author if they want to use the default style from `config.md`, or provide specific style references for this article (links to articles they like, descriptions of tone, specific rules). If they choose the default, leave this field empty.
+11. **Writing Style**: Ask the author if they want to use the default style from `writing.config.md`, or provide specific style references for this article (links to articles they like, descriptions of tone, specific rules). If they choose the default, leave this field empty.
 
 After each field is confirmed, update `brief.md` and check the corresponding checklist item.
 
@@ -162,7 +163,7 @@ Iterate with the user until the outline is solid. Write the confirmed outline to
 
 ## Output
 
-A fully completed `brief.md` in `articles/{date}_{slug}/` with:
+A fully completed `brief.md` in `{workspace}/articles/{date}_{slug}/` with:
 - All Article Info fields filled
 - Target Audience described
 - Source Ideas linked
@@ -182,7 +183,7 @@ The user can return to modify the brief at any time.
 ## Behavior Principles
 
 - **Ghostwriter mode**: Always propose content for the user to confirm or adjust. Never ask the user to write from scratch. During interviews, propose hypotheses for the author to confirm or correct.
-- **Ambient alignment**: Reference goals from `config.md` naturally throughout. Proactively suggest alignment — don't wait to be asked.
+- **Ambient alignment**: Reference goals from `writing.config.md` naturally throughout. Proactively suggest alignment — don't wait to be asked.
 - **Tone**: Collaborative and non-pushy. "This could be a good opportunity to..." not "You must align with..."
 
 ## Reference
