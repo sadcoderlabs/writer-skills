@@ -4,15 +4,16 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What This Is
 
-A writing workflow system powered by AI agent skills, following the [Agent Skills open standard](https://agentskills.io/). Skills guide users from idea to published article through three stages: management → preparation → writing.
+A writing workflow system powered by AI agent skills, following the [Agent Skills open standard](https://agentskills.io/). Skills guide users from idea to published article through four stages: management → preparation → writing → translation.
 
 ## Architecture
 
-Three skills form a pipeline, each with clear boundaries:
+Four skills form a pipeline, each with clear boundaries:
 
 1. **writing-management** (`skills/writing-management/`) — Workspace init, goals/style config (`writing.config.md`), idea pool (`ideas.md`)
 2. **article-preparation** (`skills/article-preparation/`) — Creates article directory, guides brief completion, optional topic research, interviews author for materials, builds outline with materials
 3. **article-writing** (`skills/article-writing/`) — Writes draft from materials-based outline, runs automated review and fact-check loops, revises with author feedback
+4. **article-translation** (`skills/article-translation/`) — Translates completed articles into target languages, runs automated translation review loop
 
 Each skill has: `SKILL.md` (main definition with frontmatter), `references/` (supporting docs), `assets/` (templates).
 
@@ -34,7 +35,7 @@ writing.config.md                # At repo root — goals, direction, style (wor
   ideas.md                       # Idea pool (Pending → Adopted)
   templates/brief-template.md    # Article brief template
   articles/{YYYY-MM-DD}_{slug}/
-    article.md                   # Article content (clean prose, no metadata)
+    article.{lang}.md            # Article content (clean prose, no metadata). {lang} = original language code from brief.md
     brief.md                     # Brief, materials, outline, progress tracking
     research.md                  # External research and fact-check sources
     reviews/                     # Review reports from automated reviewers
