@@ -2,7 +2,7 @@
 
 A writing workflow system powered by AI agent skills. Guides users from idea to published article with ambient goal alignment.
 
-Works for individuals managing their own writing, or teams collaborating on a shared content pipeline. The workspace structure and skills are the same in both cases — a single person uses `config.md` to describe their own goals and style, while a team uses it to define shared direction that individual authors build on.
+Works for individuals managing their own writing, or teams collaborating on a shared content pipeline. The workspace structure and skills are the same in both cases — a single person uses `writing.config.md` to describe their own goals and style, while a team uses it to define shared direction that individual authors build on.
 
 ## Skills
 
@@ -49,17 +49,20 @@ Open Claude Code in your writing directory and say something like "I want to sta
 
 ## Workspace Structure
 
+`writing.config.md` lives at the repository root. The `workspace` frontmatter field (default: `.`) points to where writing files live.
+
 ```
-config.md                # Your writing goals, direction, and style
-ideas.md                 # Idea pool
-templates/
-  brief-template.md      # Article brief template (editable)
-articles/
-  {YYYY-MM-DD}_{slug}/
-    article.md           # Article content
-    article.{lang}.md    # Translated versions
-    brief.md             # Writing brief, materials, and progress tracking
-    assets/              # Images and other assets
+writing.config.md            # At repo root — your writing goals, direction, and style
+{workspace}/
+  ideas.md                   # Idea pool
+  templates/
+    brief-template.md        # Article brief template (editable)
+  articles/
+    {YYYY-MM-DD}_{slug}/
+      article.md             # Article content
+      article.{lang}.md      # Translated versions
+      brief.md               # Writing brief, materials, and progress tracking
+      assets/                # Images and other assets
 ```
 
 ## Design

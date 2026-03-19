@@ -10,7 +10,7 @@ A writing workflow system powered by AI agent skills, following the [Agent Skill
 
 Three skills form a pipeline, each with clear boundaries:
 
-1. **writing-management** (`skills/writing-management/`) — Workspace init, goals/style config (`config.md`), idea pool (`ideas.md`)
+1. **writing-management** (`skills/writing-management/`) — Workspace init, goals/style config (`writing.config.md`), idea pool (`ideas.md`)
 2. **article-preparation** (`skills/article-preparation/`) — Creates article directory, guides brief completion, optional topic research, interviews author for materials, builds outline with materials
 3. **article-writing** (`skills/article-writing/`) — Writes draft from materials-based outline, runs automated review and fact-check loops, revises with author feedback
 
@@ -21,21 +21,24 @@ The `reference/blog-writing/` directory contains a separate blog-writing skill s
 ## Key Design Principles
 
 - **Ghostwriter mode**: Skills propose content for the user to confirm/adjust. Never ask the user to write from scratch.
-- **Ambient alignment**: Goals from `config.md` are referenced naturally throughout, not forced. "This connects well with..." not "You must align with..."
+- **Ambient alignment**: Goals from `writing.config.md` are referenced naturally throughout, not forced. "This connects well with..." not "You must align with..."
 - **Materials are sacred**: Articles are written from author-sourced materials and author-confirmed research findings. Never fabricate examples, numbers, or anecdotes.
 
 ## Workspace Structure (created by skills in user's project)
 
+`writing.config.md` lives at the repository root. The `workspace` frontmatter field (default: `.`) points to where writing files live.
+
 ```
-config.md                    # Writing goals, direction, style
-ideas.md                     # Idea pool (Pending → Adopted)
-templates/brief-template.md  # Article brief template
-articles/{YYYY-MM-DD}_{slug}/
-  article.md                 # Article content (clean prose, no metadata)
-  brief.md                   # Brief, materials, outline, progress tracking
-  research.md                # External research and fact-check sources
-  reviews/                   # Review reports from automated reviewers
-  assets/                    # Images and other assets
+writing.config.md                # At repo root — goals, direction, style (workspace field in frontmatter)
+{workspace}/
+  ideas.md                       # Idea pool (Pending → Adopted)
+  templates/brief-template.md    # Article brief template
+  articles/{YYYY-MM-DD}_{slug}/
+    article.md                   # Article content (clean prose, no metadata)
+    brief.md                     # Brief, materials, outline, progress tracking
+    research.md                  # External research and fact-check sources
+    reviews/                     # Review reports from automated reviewers
+    assets/                      # Images and other assets
 ```
 
 ## Article Brief Lifecycle
