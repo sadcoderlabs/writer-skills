@@ -1,6 +1,6 @@
 ---
 name: writing-management
-description: Initialize and manage a writing workspace. Set writing goals, collect ideas, suggest which ideas could become articles. Use when the user wants to set up a writing project, add ideas, review the idea pool, or update goals.
+description: Initialize and manage a writing workspace. Set writing goals, collect ideas, suggest which ideas could become articles. Use when the user wants to set up a writing project, add ideas, review the idea pool, update goals, or mentions a topic that could become an article.
 ---
 
 # Writing Management
@@ -61,6 +61,9 @@ When the user shares an idea:
 3. **Ambient alignment**: Briefly and naturally mention how the idea relates to the goals in `writing.config.md`
    - Tone: "This connects well with your goal of..." not "You must align with..."
 4. If there are now 5+ pending ideas, include article suggestions alongside your response — which ideas could become articles, and why
+5. **Next step hint**: After recording the idea, let the user know they can start article preparation whenever they're ready
+   - Tone: "When you'd like to develop this into an article, just let me know and we can start preparing a brief."
+   - Keep it brief — one sentence, not a full explanation of the preparation process
 
 ### 3. Organize Idea Pool
 
