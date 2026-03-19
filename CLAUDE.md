@@ -26,7 +26,7 @@ The `reference/blog-writing/` directory contains a separate blog-writing skill s
 
 ## Workspace Structure (created by skills in user's project)
 
-`writing.config.md` lives at the repository root. The `workspace` frontmatter field (default: `.`) points to where writing files live.
+`writing.config.md` lives at the repository root. The `workspace` frontmatter field (default: `.`) points to where writing files live. It can be a relative path (resolved from repo root) or an absolute path starting with `/` (for cross-repo setups where skills and content live in different directories).
 
 ```
 writing.config.md                # At repo root — goals, direction, style (workspace field in frontmatter)
