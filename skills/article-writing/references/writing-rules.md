@@ -70,6 +70,18 @@ All three say "preparation matters." By the third time, the reader has stopped c
 State the point once. Each later mention must add something new: a different angle, a concrete method, or a counterexample. If there's nothing new to add, don't bring it up again.
 </example>
 
+- **Abstract conclusion sentences**: Don't end a point with a vague conclusion like "this changed my entire approach" or "this distinction is important." The reader learns nothing. Replace with a concrete outcome, example, or consequence that shows what actually changed.
+
+<example type="bad">
+The preparation phase determines content quality, while the writing phase determines expression. This distinction changed the entire direction of my system design.
+</example>
+
+<example type="good">
+Beyond writing technique, pre-writing preparation is a major factor. This shaped my design approach: extract raw materials first, then let AI do the writing.
+</example>
+
+The ending should show what concretely changed, not just assert that something changed.
+
 ### Structure-level
 - **Listicle structure for non-list content**: Don't force content into numbered lists when prose would be more natural.
 
