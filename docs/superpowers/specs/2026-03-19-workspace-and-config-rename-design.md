@@ -40,6 +40,12 @@ workspace: writing
 - `workspace` 是唯一的欄位，值是相對於 repo root 的目錄路徑
 - 如果省略 `workspace` 或值為空，預設為 `.`（repo root 就是 workspace）
 - 路徑不帶前導 `/` 也不帶尾端 `/`，例如 `writing`、`content/drafts`
+- 路徑不可包含 `..`（不允許指向 repo 外部）
+- 路徑只允許一到兩層深度（如 `writing` 或 `src/writing`，不允許更深）
+
+**「Repo root」的定義：**
+
+Skills 執行時的工作目錄（CWD）即為 repo root。使用者應從 repo 根目錄呼叫 skills。由於這些是 AI agent skills（prompt-based），agent 直接讀取 Markdown 檔案內容並解析 frontmatter，不需要程式化的 YAML parser。
 
 ### 2. Workspace 目錄結構
 
@@ -103,7 +109,15 @@ Writing-management skill 的 Step 1（Initialize Workspace）改為：
 4. 建立 workspace 目錄（如果不是 `.`）
 5. 在 workspace 內建立 `ideas.md`、`templates/`、`articles/`
 
-### 5. brief-template.md 的 Publishing 預留
+### 5. Workspace 目錄不存在時的處理
+
+如果 `writing.config.md` 存在但 workspace 目錄不存在（例如使用者 clone repo 後目錄被 gitignore），skills 應建立 workspace 目錄結構（`ideas.md`、`templates/`、`articles/`），就像初始化一樣。
+
+### 6. 為什麼 Publishing 配置不放在 writing.config.md
+
+CMS 整合研究中提到可以在 config 層級設定 publishing target（如 `Target: hugo`、`Content directory: content/posts`），但這個設計刻意不這樣做。Publishing 配置屬於「發布」的責任，不應與「寫作」的配置混在一起。未來的 publishing skill 會有自己的配置機制，可能是 `writing.config.md` frontmatter 的擴充，也可能是獨立的設定——這留給該 skill 的設計來決定。
+
+### 7. brief-template.md 的 Publishing 預留
 
 在 brief template 的 Article Info 下方新增空的 Publishing 區塊：
 
@@ -130,7 +144,7 @@ Writing-management skill 的 Step 1（Initialize Workspace）改為：
 - Slug: my-post
 ```
 
-### 6. 需要改動的檔案
+### 8. 需要改動的檔案
 
 **Skills（核心改動）：**
 
@@ -146,7 +160,7 @@ Writing-management skill 的 Step 1（Initialize Workspace）改為：
 
 **文件：**
 
-- `CLAUDE.md` — 更新 Workspace Structure 說明和路徑引用
+- `CLAUDE.md` — 更新 Workspace Structure 說明和所有 `config.md` 引用（包括 Key Design Principles 的 ambient alignment 描述）
 - `README.md` — 更新快速入門
 
 **不改動的檔案：**
@@ -155,6 +169,6 @@ Writing-management skill 的 Step 1（Initialize Workspace）改為：
 - `skills/article-writing/references/writing-rules.md`（不引用 config 路徑）
 - Reviewer prompt 檔案（不引用 config 路徑）
 
-### 7. 不做向後相容
+### 9. 不做向後相容
 
 這是 breaking change。目前沒有外部使用者，直接改名即可，不需要偵測舊 `config.md` 或提供遷移工具。
