@@ -19,7 +19,7 @@ writing.config.md            # At repo root — writing plan goals, direction, s
     brief-template.md        # Article brief template (user-editable)
   articles/
     {YYYY-MM-DD}_{slug}/
-      article.md             # Article content
+      article.{lang}.md      # Article content ({lang} = original language code from brief.md)
       brief.md               # Writing brief
       assets/                # Images and other assets
 ```
