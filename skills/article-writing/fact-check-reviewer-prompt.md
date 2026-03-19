@@ -50,7 +50,7 @@ Agent tool (general-purpose):
 
     1. Read the article and identify all factual claims
     2. Verify each claim using research.md and online sources
-    3. For claims that are incorrect or unverified, fix them directly in `article.md` using the Edit tool:
+    3. For claims that are incorrect or unverified, fix them directly in the article file using the Edit tool:
        - Incorrect claims: correct the information
        - Unverified claims that are non-essential: remove or rephrase as opinion
        - Unverified claims that are essential: keep but note in the report
@@ -84,4 +84,4 @@ Agent tool (general-purpose):
     ### 2. ...
 ~~~
 
-**Reviewer returns:** The complete review report as text, with all fixes already applied to `article.md`.
+**Reviewer returns:** The complete review report as text, with all fixes already applied to the article file.

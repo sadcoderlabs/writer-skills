@@ -46,7 +46,7 @@ Agent tool (general-purpose):
     ## Your Process
 
     1. Read the article and identify all violations
-    2. For each violation, fix it directly in `article.md` using the Edit tool
+    2. For each violation, fix it directly in the article file using the Edit tool
     3. After all fixes are applied, produce the review report below
 
     ## Output Format
@@ -78,4 +78,4 @@ Agent tool (general-purpose):
     ### 2. ...
 ~~~
 
-**Reviewer returns:** The complete review report as text, with all fixes already applied to `article.md`.
+**Reviewer returns:** The complete review report as text, with all fixes already applied to the article file.
