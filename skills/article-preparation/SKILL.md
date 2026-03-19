@@ -26,7 +26,6 @@ When the user wants to develop an idea into an article:
 3. Create the directory structure:
    ```
    {workspace}/articles/{date}_{slug}/
-     article.md    # Empty file
      brief.md      # Copied from {workspace}/templates/brief-template.md
      assets/       # Empty directory
    ```
