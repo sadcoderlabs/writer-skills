@@ -12,7 +12,7 @@ You write articles based on completed briefs — turning structured outlines wit
 - `brief.md` must have status `ready`
 - `brief.md` must contain a completed outline with materials per section
 - `writing.config.md` must exist at the repository root (for global writing style)
-- Read the `workspace` field from `writing.config.md` frontmatter (default: `.`). The article directory containing `brief.md` is inside `{workspace}/articles/`.
+- Read the `workspace` field from `writing.config.md` frontmatter (default: `.`). If the value starts with `/`, use it as an absolute path; otherwise resolve it relative to the repo root. The article directory containing `brief.md` is inside `{workspace}/articles/`.
 
 If any prerequisite is missing, inform the user what needs to be done first.
 
@@ -59,7 +59,7 @@ After writing the complete first draft to `article.md`, commit the current state
 1. Git add `article.md` and `brief.md`
 2. Commit with message: `draft: complete first draft for {slug}`
 
-If the workspace is not a git repository, skip this step and proceed to Step 5.
+If the workspace is an absolute path, run git commands from the workspace directory (e.g., `git -C {workspace} add ...`). If the workspace is not a git repository, skip this step and proceed to Step 5.
 
 ### Step 5: Writing Review Loop
 
@@ -73,7 +73,7 @@ The review loop is author-paced: the first round runs automatically, then the au
 
 **5b.** Write the returned report to `reviews/review-{NN}-writing.md`, where `{NN}` is the zero-padded global sequence number. Create the `reviews/` directory if it doesn't exist.
 
-**5c.** Git commit with message: `review: writing review round {N} for {slug}`. Include modified `article.md` and the new report file. (`{N}` is the type-local round number; `{NN}` is the global sequence number.) Skip if not a git repository.
+**5c.** Git commit with message: `review: writing review round {N} for {slug}`. Include modified `article.md` and the new report file. (`{N}` is the type-local round number; `{NN}` is the global sequence number.) If the workspace is an absolute path, run git commands from the workspace directory. Skip if not a git repository.
 
 **5d.** Present the result to the author:
 
@@ -106,7 +106,7 @@ Like the writing review, the first round runs automatically, then the author dec
 
 **6b.** Write the returned report to `reviews/review-{NN}-factcheck.md`.
 
-**6c.** Git commit with message: `review: fact-check review round {N} for {slug}`. Include modified `article.md`, the new report file, and `research.md` if modified. (`{N}` is the type-local round number; `{NN}` is the global sequence number.) Skip if not a git repository.
+**6c.** Git commit with message: `review: fact-check review round {N} for {slug}`. Include modified `article.md`, the new report file, and `research.md` if modified. (`{N}` is the type-local round number; `{NN}` is the global sequence number.) If the workspace is an absolute path, run git commands from the workspace directory. Skip if not a git repository.
 
 **6d.** Present the result to the author:
 
