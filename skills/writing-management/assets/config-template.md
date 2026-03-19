@@ -1,3 +1,7 @@
+---
+workspace: .
+---
+
 # Writing Plan
 
 ## About

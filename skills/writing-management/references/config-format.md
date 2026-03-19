@@ -1,8 +1,34 @@
-# config.md Format
+# writing.config.md Format
 
-## Structure
+## Location
+
+`writing.config.md` is always placed at the repository root. It is the entry point for all writing skills.
+
+## Frontmatter
+
+The file uses YAML frontmatter to declare the workspace directory:
+
+```yaml
+---
+workspace: writing
+---
+```
+
+**Rules:**
+- `workspace` is the only frontmatter field
+- Value is a relative path from repo root to the directory containing `ideas.md`, `templates/`, and `articles/`
+- If omitted or empty, defaults to `.` (repo root is the workspace)
+- No leading `/`, no trailing `/`
+- No `..` (must stay within the repo)
+- Maximum two levels deep (e.g., `writing` or `src/writing`)
+
+## Body Structure
 
 ```markdown
+---
+workspace: .
+---
+
 # Writing Plan
 
 ## About
@@ -18,6 +44,10 @@
 ## Example
 
 ```markdown
+---
+workspace: writing
+---
+
 # Writing Plan
 
 ## About
