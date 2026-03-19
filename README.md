@@ -59,9 +59,10 @@ writing.config.md            # At repo root — your writing goals, direction, a
     brief-template.md        # Article brief template (editable)
   articles/
     {YYYY-MM-DD}_{slug}/
-      article.md             # Article content
-      article.{lang}.md      # Translated versions
+      article.{lang}.md      # Article content (clean prose, no metadata). {lang} = language code
       brief.md               # Writing brief, materials, and progress tracking
+      research.md            # External research and fact-check sources
+      reviews/               # Review reports from automated reviewers
       assets/                # Images and other assets
 ```
 
