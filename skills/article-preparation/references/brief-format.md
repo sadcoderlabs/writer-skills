@@ -19,6 +19,9 @@ The brief is copied from `templates/brief-template.md` when a new article is cre
 - **Original language**: The language the article will be written in (e.g., "Chinese", "English")
 - **Translations**: Comma-separated language codes for translated versions (e.g., "en, zh"). Translated files are named `article.{lang}.md`
 
+#### Publishing
+Reserved for publishing tools. Initially empty. When an article is published to a CMS, the publishing tool writes target, path, date, and slug here. Writing skills do not read or write this section.
+
 #### Target Audience
 - **Who**: One-line description of the target reader
 - **Background**: Brief description of the audience's context, needs, and knowledge level
@@ -29,10 +32,10 @@ References to the original idea(s) from `ideas.md` that sparked this article. Fo
 
 #### Article Goals
 - **Reader takeaway**: What the reader will gain from reading this article
-- **Goal alignment**: How this article connects to the goals in `config.md`
+- **Goal alignment**: How this article connects to the goals in `writing.config.md`
 
 #### Writing Style
-Optional. Article-specific style references that replace the global style in `config.md`. Can be a prose description, links to reference articles, or specific rules. Leave empty to use the global default.
+Optional. Article-specific style references that replace the global style in `writing.config.md`. Can be a prose description, links to reference articles, or specific rules. Leave empty to use the global default.
 
 #### Outline
 The article's structure, built after the author interview. Each section includes:

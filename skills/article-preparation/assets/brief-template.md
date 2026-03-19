@@ -8,6 +8,9 @@
 - Original language:
 - Translations:  <!-- e.g., en, zh -->
 
+## Publishing
+<!-- Managed by publishing tools. Leave empty during writing. -->
+
 ## Target Audience
 - Who:
 - Background:
@@ -21,7 +24,7 @@
 - Goal alignment:
 
 ## Writing Style
-{Optional — article-specific style references that replace the global style in config.md. Leave empty to use the global default.}
+{Optional — article-specific style references that replace the global style in writing.config.md. Leave empty to use the global default.}
 
 ## Outline
 
