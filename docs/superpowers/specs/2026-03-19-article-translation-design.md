@@ -22,19 +22,39 @@ The sadcoder-press blog (Astro 6) supports i18n with `en` (default) and `zh` loc
 
 `article-translation` is the fourth skill in the pipeline. It runs after the author has approved the final draft (status `review` or `published`), translating the article into the languages specified in `brief.md`.
 
+### SKILL.md frontmatter
+
+```yaml
+---
+name: article-translation
+description: Translate a completed article into target languages specified in the brief
+---
+```
+
+### Prerequisites
+
+- `writing.config.md` exists at the repository root (read `workspace` field to locate the writing workspace; resolve relative paths from repo root, absolute paths as-is)
+- Article directory exists under `{workspace}/articles/`
+- `brief.md` exists in the article directory with status `review` or `published`
+- `article.{original_lang}.md` exists in the article directory
+
 ### Trigger conditions
 
 - Article status is `review` or `published`
 - `brief.md` has a non-empty `Translations` field
 - The original article file `article.{original_lang}.md` exists
+- The `Translations` field contains only supported languages (`en`, `zh`). If unsupported languages are listed, inform the user and skip those.
 
 ### Input
 
 | Source | Purpose |
 |--------|---------|
+| `writing.config.md` | Workspace path resolution |
 | `brief.md` | Original language, target languages, title, target audience context |
 | `article.{original_lang}.md` | The source text to translate |
 | `writing-rules.md` | Quality constraints that apply to translated output |
+
+Note: `writing.config.md` is read only for workspace resolution. Global writing style from `writing.config.md` does not affect translation tone — the skill always uses a professional, rational style.
 
 ### Output
 
@@ -42,6 +62,10 @@ The sadcoder-press blog (Astro 6) supports i18n with `en` (default) and `zh` loc
 |------|---------|
 | `article.{target_lang}.md` | Translated article, one per target language |
 | `brief.md` (updated) | "Translations completed" checklist item checked |
+
+### Status transitions
+
+The translation skill does not change the article's status field. Status transitions (`review` → `published`) are triggered by finalization, not by translation completion. The skill only updates the checklist item.
 
 ### Out of scope
 
@@ -54,9 +78,11 @@ The sadcoder-press blog (Astro 6) supports i18n with `en` (default) and `zh` loc
 
 ### Step 1: Read context
 
+Read `writing.config.md` to resolve the workspace path.
+
 Read `brief.md` to determine:
-- Original language (`Original language` field)
-- Target language(s) (`Translations` field)
+- Original language (`Original language` field, a language code: `zh` or `en`)
+- Target language(s) (`Translations` field, comma-separated language codes)
 - Article title, target audience, and article goals (for translation context)
 
 Read `article.{original_lang}.md` as the source text.
@@ -74,8 +100,8 @@ Translate the article into each target language with a professional, rational to
 | Element | Rule |
 |---------|------|
 | Punctuation | Convert to target language conventions (e.g., Chinese `。` `，` `「」` → English `. ` `, ` `""` and vice versa) |
-| Code blocks — Chinese comments | Translate to target language |
-| Code blocks — English comments | Keep as-is |
+| Code blocks — source language comments | Translate to target language |
+| Code blocks — target language comments | Keep as-is |
 | Code blocks — code itself | Keep unchanged (variable names, function names, etc.) |
 | Image alt text | Translate to target language |
 | Image paths | Keep unchanged |
@@ -92,7 +118,7 @@ Translate the article into each target language with a professional, rational to
 
 ### Step 3: Automated review loop (max 3 rounds)
 
-Dispatch a translation review subagent to check the translated output. The subagent:
+Dispatch a translation review subagent using the prompt in `references/translation-review-prompt.md`. The subagent:
 
 1. Reads both the original article and the translation
 2. Checks for common AI translation errors:
@@ -114,22 +140,29 @@ The review subagent does not produce a review report file. It reads, checks, fix
 
 ## Changes to Existing System
 
-### article-writing skill
+### article-writing skill (`skills/article-writing/SKILL.md`)
 
 The output filename changes from `article.md` to `article.{lang}.md`, where `{lang}` comes from `brief.md`'s `Original language` field (e.g., `article.zh.md` for a Chinese-original article).
 
-This is the only change to existing skills.
+Files that reference `article.md` and need updating:
+- `skills/article-writing/SKILL.md` — all references to `article.md` in Steps 3-8 and Output section
+- `skills/article-preparation/SKILL.md` — creates empty `article.md` during article directory setup
+- `CLAUDE.md` — workspace structure diagram shows `article.md`
+- `skills/article-writing/references/writing-reviewer-prompt.md` — if it references `article.md`
+- `skills/article-writing/references/fact-check-reviewer-prompt.md` — if it references `article.md`
+
+### brief-format.md
+
+Update `Original language` field description to use language codes (`zh` / `en`) instead of full words (`"Chinese"` / `"English"`). The current live brief (`2026-03-18_building-writer-skills`) already uses `zh`, so this aligns documentation with practice.
 
 ### brief-template.md
 
-Ensure the `Original language` field description uses language codes (`zh` / `en`) consistently, not full words. The current live brief (`2026-03-18_building-writer-skills`) already uses `zh`, so this is mostly a template documentation update.
+Update the `Original language` field placeholder to show language codes (e.g., `<!-- zh, en -->`).
 
 ### No changes needed
 
-- article-preparation skill — already collects language and translation info
 - writing-management skill — not involved
 - writing-rules.md — referenced by translation skill, not modified
-- brief-format.md — already describes `article.{lang}.md` naming and Translations field
 
 ## New Files
 
