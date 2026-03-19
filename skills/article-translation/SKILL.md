@@ -64,6 +64,8 @@ Write the translation to `article.{target_lang}.md` in the same article director
 
 Run an automated review loop (max 3 rounds) to catch common AI translation errors.
 
+**Timeout:** Each review round reads multiple files (original article, translated article, translation rules, writing rules) and performs detailed comparison. If your tool supports configuring a timeout for subagent tasks, set it to at least 5 minutes per round. The default timeout of many tools is too short for this workload.
+
 See [translation-review-prompt.md](references/translation-review-prompt.md) for the dispatch template.
 
 **3a.** Dispatch the translation review subagent with paths to the original article, the translated article, `references/translation-rules.md`, `writing-rules.md`, the target language, and the current round number.
