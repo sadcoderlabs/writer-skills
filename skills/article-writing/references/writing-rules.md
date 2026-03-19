@@ -135,3 +135,15 @@ The tool handled three tasks without any manual config: parsing, validation, and
 ### Advance, don't repeat
 - Each paragraph should move the article forward. The reader should learn something new in every paragraph.
 - If you find yourself restating a point, you're either padding or the outline has a structural issue.
+
+### Make abstract concepts tangible
+- When explaining abstract concepts or methodology, use metaphors or concrete sensory experiences so the reader can *feel* it, not just understand it.
+- A well-chosen metaphor grounds the reader. Pair it with specific emotional or physical scenarios they can identify with.
+
+<example type="bad">
+Instead of making AI write better, I shifted to helping authors extract the materials from their minds.
+</example>
+
+<example type="good">
+Through Q&A, extract the author's experiential materials — use these as raw ingredients and let AI cook them into a dish. Find the article's "soul": maybe it's the frustration of debugging for half a day only to find a trivial fix, or the satisfaction of changing one line and watching everything work.
+</example>
