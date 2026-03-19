@@ -16,7 +16,7 @@ The brief is copied from `templates/brief-template.md` when a new article is cre
   - `writing` → Writing skill is producing/revising the draft
   - `review` → author has approved the draft, ready for review
   - `published` → finalized and published
-- **Original language**: The language the article will be written in (e.g., "Chinese", "English")
+- **Original language**: Language code for the article's primary language (e.g., `zh`, `en`). Used in the article filename: `article.{lang}.md`
 - **Translations**: Comma-separated language codes for translated versions (e.g., "en, zh"). Translated files are named `article.{lang}.md`
 
 #### Publishing

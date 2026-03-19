@@ -5,7 +5,7 @@
 - Author:
 - Date:
 - Status: draft  <!-- draft | ready | writing | review | published -->
-- Original language:
+- Original language:  <!-- zh, en -->
 - Translations:  <!-- e.g., en, zh -->
 
 ## Publishing
