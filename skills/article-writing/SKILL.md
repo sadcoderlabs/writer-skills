@@ -11,7 +11,8 @@ You write articles based on completed briefs — turning structured outlines wit
 
 - `brief.md` must have status `ready`
 - `brief.md` must contain a completed outline with materials per section
-- `config.md` must exist (for global writing style)
+- `writing.config.md` must exist at the repository root (for global writing style)
+- Read the `workspace` field from `writing.config.md` frontmatter (default: `.`). The article directory containing `brief.md` is inside `{workspace}/articles/`.
 
 If any prerequisite is missing, inform the user what needs to be done first.
 
@@ -21,12 +22,12 @@ If any prerequisite is missing, inform the user what needs to be done first.
 
 Read and understand:
 1. `brief.md` — article info, target audience, goals, writing style, outline with materials
-2. `config.md` — global writing style (Writing Style section)
+2. `writing.config.md` — global writing style (Writing Style section)
 3. `research.md` (if it exists) — external research findings and sources
 
 **Style resolution:**
 - If `brief.md` has a Writing Style field with content, use it (replaces global style entirely)
-- If `brief.md` Writing Style is empty, use `config.md` Writing Style section
+- If `brief.md` Writing Style is empty, use `writing.config.md` Writing Style section
 - If neither has style guidance, rely on the writing rules alone
 
 ### Step 2: Update Status
@@ -187,7 +188,7 @@ See [writing rules](references/writing-rules.md) for the complete reference. Key
 
 - **Ghostwriter**: The article reads as if the author wrote it, not as if AI summarized a brief.
 - **Materials are sacred**: You can rephrase for flow but must not change the substance, fabricate details, or substitute generic statements for specific ones.
-- **Ambient alignment**: The article naturally reflects the goals in `config.md` through the materials — the alignment was built into the brief during preparation.
+- **Ambient alignment**: The article naturally reflects the goals in `writing.config.md` through the materials — the alignment was built into the brief during preparation.
 
 ## Reference
 
