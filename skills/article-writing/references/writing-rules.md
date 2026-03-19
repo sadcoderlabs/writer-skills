@@ -114,6 +114,12 @@ The tool handled three tasks without any manual config: parsing, validation, and
 - Names over categories: "we used Redis" not "we used a caching solution"
 - Stories over summaries: "On day one, the deploy failed because..." not "We encountered some initial challenges"
 
+### Cite sources with links
+- When the article references data, statistics, findings, or claims that originate from `research.md` or materials in `brief.md`, include a Markdown link to the source.
+- Use inline links naturally within the prose: "according to [the official documentation](https://...)" or "a [2024 survey](https://...) found that..."
+- If the source URL is available in `research.md` or the materials, use it. Do not fabricate URLs.
+- Not every sentence needs a link — link the key data points, not common knowledge or the author's own opinions/experiences.
+
 ### Advance, don't repeat
 - Each paragraph should move the article forward. The reader should learn something new in every paragraph.
 - If you find yourself restating a point, you're either padding or the outline has a structural issue.

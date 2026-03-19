@@ -42,6 +42,7 @@ Produce the complete article in one pass and write it to `article.md`. **Write t
 - Read the section's **Purpose** to understand what it should achieve for the reader
 - Read the section's **Materials** — these are your source of truth
 - Write prose that presents the materials in a readable way, following the purpose
+- When referencing data, statistics, or findings from `research.md` or the materials, include Markdown links to the source URLs where available
 - Follow the writing rules — see [writing rules](references/writing-rules.md)
 - Follow the style reference (if any)
 
@@ -68,7 +69,7 @@ The review loop is author-paced: the first round runs automatically, then the au
 
 **Global review sequence counter:** Initialize a counter at 1. This counter increments for every review dispatch (writing or fact-check) and is used for report filenames.
 
-**5a.** Dispatch the writing-reviewer subagent with paths to `article.md`, `references/writing-rules.md`, `brief.md`, and the current review round number. The reviewer fixes issues directly in `article.md` and returns a structured review report.
+**5a.** Dispatch the writing-reviewer subagent with paths to `article.md`, `references/writing-rules.md`, `brief.md`, `research.md` (if it exists), and the current review round number. The reviewer fixes issues directly in `article.md` and returns a structured review report.
 
 **5b.** Write the returned report to `reviews/review-{NN}-writing.md`, where `{NN}` is the zero-padded global sequence number. Create the `reviews/` directory if it doesn't exist.
 

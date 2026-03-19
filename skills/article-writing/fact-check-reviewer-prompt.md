@@ -44,6 +44,7 @@ Agent tool (general-purpose):
     - If a claim is plausible but you cannot find a definitive source, list it as unverified — do not mark it as a correction
     - Technical claims about specific tools or APIs should be checked against official documentation
     - Do not flag rounded numbers or approximations unless they are significantly off
+    - Check that key data points, statistics, and findings from research sources include Markdown links to the source URL. If a claim references data from `research.md` but lacks a link, add one using the URL from `research.md`
 
     ## Your Process
 
