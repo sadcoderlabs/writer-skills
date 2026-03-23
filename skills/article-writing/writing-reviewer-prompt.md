@@ -15,6 +15,7 @@ Agent tool (general-purpose):
 
     **Article to review and fix:** [ARTICLE_FILE_PATH]
     **Writing rules:** [WRITING_RULES_FILE_PATH]
+    **Style profile (if any):** [STYLE_PROFILE_FILE_PATH]
     **Brief (for audience context):** [BRIEF_FILE_PATH]
     **Research notes (if exists):** [RESEARCH_FILE_PATH]
     **Review round number:** [REVIEW_ROUND_NUMBER]
@@ -31,6 +32,15 @@ Agent tool (general-purpose):
     | Source attribution | Data, statistics, or findings from the materials or research that appear in the article without a Markdown link to the source. Check the brief's materials and research.md (if provided) for available source URLs. Only flag missing links for key data points — not common knowledge or the author's own opinions/experiences |
     | Reader perspective | Paragraphs where a reader in the target audience would lack context to follow the point — missing background, undefined jargon, or assumptions not established earlier in the article |
     | Voice | Passages that sound like AI summarizing a brief rather than the author writing |
+
+    ## Style Profile Awareness
+
+    If a style profile is provided, also check for:
+    - Violations of the profile's **Anti-Patterns** section (on top of writing-rules.md)
+    - Tone mismatches with the profile's **Voice & Tone** section
+    - If the profile has a **Revision Checklist** with items, run those checks too
+
+    The style profile complements the writing rules — it does not replace them.
 
     ## Calibration
 
