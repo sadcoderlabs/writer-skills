@@ -10,7 +10,7 @@ A writing workflow system powered by AI agent skills, following the [Agent Skill
 
 Four skills form a pipeline, each with clear boundaries:
 
-1. **writing-management** (`skills/writing-management/`) — Workspace init, goals/style config (`writing.config.md`), idea pool (`ideas.md`)
+1. **writing-management** (`skills/writing-management/`) — Workspace init, goals/style config (`writing.config.md`), style profiles (`profiles/`), idea pool (`ideas.md`)
 2. **article-preparation** (`skills/article-preparation/`) — Creates article directory, guides brief completion, optional topic research, interviews author for materials, builds outline with materials
 3. **article-writing** (`skills/article-writing/`) — Writes draft from materials-based outline, runs automated review and fact-check loops, revises with author feedback
 4. **article-translation** (`skills/article-translation/`) — Translates completed articles into target languages, runs automated translation review loop
@@ -33,6 +33,8 @@ The `reference/blog-writing/` directory contains a separate blog-writing skill s
 writing.config.md                # At repo root — goals, direction, style (workspace field in frontmatter)
 {workspace}/
   ideas.md                       # Idea pool (Pending → Adopted)
+  profiles/                      # Style profiles (shareable writing voices)
+  writing-rules.md               # Customizable writing rules (copied from skill source)
   templates/brief-template.md    # Article brief template
   articles/{YYYY-MM-DD}_{slug}/
     article.{lang}.md            # Article content (clean prose, no metadata). {lang} = original language code from brief.md
@@ -48,7 +50,7 @@ writing.config.md                # At repo root — goals, direction, style (wor
 
 ## Writing Rules (article-writing skill)
 
-The writing rules in `skills/article-writing/references/writing-rules.md` define prohibited AI patterns and quality requirements. The article-writing skill commits the first draft (Step 4), then runs an author-paced writing review loop (Step 5) that dispatches a writing reviewer subagent, followed by a fact-check review loop (Step 6) that dispatches a fact-check reviewer subagent. Both reviewers produce structured review reports saved to the article's `reviews/` directory.
+The writing rules define prohibited AI patterns and quality requirements. The built-in rules are at `skills/article-writing/references/writing-rules.md`; on workspace init, a customizable copy is placed at `{workspace}/writing-rules.md` for users to modify. The article-writing skill commits the first draft (Step 4), then runs an author-paced writing review loop (Step 5) that dispatches a writing reviewer subagent, followed by a fact-check review loop (Step 6) that dispatches a fact-check reviewer subagent. Both reviewers produce structured review reports saved to the article's `reviews/` directory.
 
 ## Design Documents
 

@@ -75,6 +75,6 @@ With this configuration, `ideas.md` lives at `/root/projects/sadcoder-press/idea
 
 - "About" should be factual: who you are, what you do, your direction
 - "Writing Goals" combines purpose, target audience, and tone in one paragraph
-- "Writing Style" describes how articles should read — tone, structure preferences, reference articles, or specific rules. This applies to all articles by default; individual articles can override it in their brief.
+- "Writing Style" describes how articles should read — tone, structure preferences, reference articles, or specific rules. This is the global fallback for all articles. Individual articles select a Style Profile in their brief for a more specific writing voice; if no profile is selected, this section applies.
 - Keep all sections concise — one paragraph each
 - This file is the anchor for ambient goal alignment and style consistency across all skills
