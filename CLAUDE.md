@@ -52,6 +52,11 @@ writing.config.md                # At repo root — goals, direction, style (wor
 
 The writing rules define prohibited AI patterns and quality requirements. The built-in rules are at `skills/article-writing/references/writing-rules.md`; on workspace init, a customizable copy is placed at `{workspace}/writing-rules.md` for users to modify. The article-writing skill commits the first draft (Step 4), then runs an author-paced writing review loop (Step 5) that dispatches a writing reviewer subagent, followed by a fact-check review loop (Step 6) that dispatches a fact-check reviewer subagent. Both reviewers produce structured review reports saved to the article's `reviews/` directory.
 
+## Language Convention
+
+- `skills/` directory (SKILL.md, references, assets, templates): English
+- `docs/` directory (specs, plans): Traditional Chinese (繁體中文)
+
 ## Design Documents
 
 Specs and implementation plans are in `docs/superpowers/`:
