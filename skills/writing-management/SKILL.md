@@ -1,6 +1,6 @@
 ---
 name: writing-management
-description: Initialize and manage a writing workspace. Set writing goals, collect ideas, suggest which ideas could become articles. Use when the user wants to set up a writing project, add ideas, review the idea pool, update goals, or mentions a topic that could become an article.
+description: Initialize and manage a writing workspace. Set writing goals, manage style profiles, collect ideas, suggest which ideas could become articles. Use when the user wants to set up a writing project, create or update a style profile, add ideas, review the idea pool, update goals, or mentions a topic that could become an article.
 ---
 
 # Writing Management
@@ -28,6 +28,15 @@ writing.config.md            # At repo root — writing plan goals, direction, s
 
 ## Your Responsibilities
 
+### Workspace Migration
+
+Before executing any responsibility, check if the workspace needs migration:
+
+1. If `writing.config.md` exists but `{workspace}/profiles/` does not, create the directory
+2. If `writing.config.md` exists but `{workspace}/writing-rules.md` does not, copy from `${CLAUDE_SKILL_DIR}/../article-writing/references/writing-rules.md`
+
+This ensures existing workspaces created before the style profile system are automatically upgraded.
+
 ### 1. Initialize Workspace (first use)
 
 If `writing.config.md` does not exist at the repository root, the workspace needs initialization:
@@ -41,6 +50,8 @@ If `writing.config.md` does not exist at the repository root, the workspace need
 3. Create the workspace directory (if not `.`) and the structure inside it:
    - Copy `${CLAUDE_SKILL_DIR}/assets/ideas-template.md` to `{workspace}/ideas.md`
    - Copy the brief template from the article-preparation skill's assets to `{workspace}/templates/brief-template.md`
+   - Create `{workspace}/profiles/` directory
+   - Copy `${CLAUDE_SKILL_DIR}/../article-writing/references/writing-rules.md` to `{workspace}/writing-rules.md` (customizable copy — users can modify this without touching skill source files)
 4. Guide the user to describe who they are and their writing goals
    - Propose suggestions based on what you know from the conversation
    - User confirms or adjusts
@@ -87,6 +98,34 @@ If `writing.config.md` already exists and the user wants to change goals:
 2. Guide the user to update — propose new wording, user confirms
 3. Rewrite the relevant section in `writing.config.md`
 4. Note: existing articles are not retroactively checked; alignment only applies going forward
+
+### 5. Manage Style Profiles
+
+Style profiles capture shareable writing voices. See [profile format](references/profile-format.md) for the full specification and [profile template](assets/profile-template.md) for the template.
+
+#### Create a New Profile
+
+When the user wants to create a style profile:
+
+1. **Name** — Ask what to call this style. The filename will be lowercase with hyphens (e.g., "Pragmatic Builder" → `pragmatic-builder.md`).
+   - If the name matches the creator's own name, remind them: "Other team members may also use this style to write. Is that OK with you?" If they mind, guide them toward a style-descriptive name.
+2. **Provide examples** — Ask for 2-3 articles they've written or admire (links or pasted fragments). These help you understand their voice.
+3. **AI interview** — One question at a time, ghostwriter mode:
+   - Voice: "What feeling do you want your writing to convey? Formal or conversational?"
+   - Boundaries: "What tone feels completely wrong for you?"
+   - Structure: "How do your articles typically progress? How do you like to open?"
+   - React to examples: "This paragraph has X quality — is that what you like about it?"
+   - Follow up on abstract answers — ask for concrete examples
+4. **Synthesize draft** — Produce Level 1 sections (Voice & Tone, Structure, Anti-Patterns) based on the interview. Propose to user for confirmation.
+5. **Save** — Copy the profile template from `${CLAUDE_SKILL_DIR}/assets/profile-template.md`, fill in all sections (Level 1 with interview content, Level 2 with placeholders), and save to `{workspace}/profiles/{style-name}.md`.
+
+#### Update an Existing Profile
+
+When the user wants to update a profile:
+
+1. Show current profile content
+2. Guide updates to specific sections — or accept direct instructions (e.g., "Add an anti-pattern: don't use rhetorical questions")
+3. Save changes to the profile file
 
 ## You Do NOT
 
