@@ -51,11 +51,11 @@
 
 **9a. 檢查是否需要萃取。** 如果作者在 Step 7/8 沒有任何修訂（自動審核後直接通過），跳過整步，直接進入 Step 10。
 
-**9b. 提取 diff。** 比對最後一輪自動審核 commit 的版本（Step 5 或 Step 6 結束時）和作者修訂後的當前版本。這個 diff 代表所有作者造成的修改。
+**9b. 提取 diff。** 比對 Step 7 開始前的最後一個包含 `article.{lang}.md` 的 commit（通常是 Step 5/6 的 review commit 或 Step 6f 的 fact-check finalize commit）和作者修訂後的當前版本。這個 diff 代表所有作者造成的修改。具體做法：用 `git log` 找到最近一個修改了 `article.{lang}.md` 的 commit，以該 commit 為基準。
 
-**9c. 回顧對話。** 回顧 Step 7/8 的對話內容，提取作者表達的修正理由 — 偏好、不喜歡的地方、品質問題、風格意見。
+**9c. 回顧對話。** 回顧 Step 7/8 的對話內容，提取作者表達的修正理由 — 偏好、不喜歡的地方、品質問題、風格意見。如果寫作過程跨越了多個對話（例如作者在新的 session 繼續修訂），對話上下文可能不完整，此時主要依賴 diff（Step 9b）和 commit message 來推斷修正意圖。
 
-**9d. 歸納模式。** 從 diff 和對話中辨識出重複或顯著的修正模式。每個模式包含：
+**9d. 歸納模式。** 從 diff 和對話中辨識出值得記錄的修正模式。判斷標準：同一類修正在 diff 中出現 2 次以上，或作者在對話中明確表達了偏好（即使只出現 1 次）。單次的小幅措辭調整不需要歸納為模式。每個模式包含：
 - **模式名稱**：簡短描述（例如「在實用段落中避免學術語氣」）
 - **反例**：作者修訂前的文字（來自實際文章）
 - **正例**：作者修訂後的文字（來自實際文章）
@@ -91,7 +91,9 @@
 
 **9h. 套用已確認的回饋。**
 
-對於要加到 **Style Profile**（`{workspace}/profiles/{style}.md`）的模式：
+對於要加到 **Style Profile** 的模式：
+- 從 `brief.md` 的 `Style:` 欄位讀取目標 profile 路徑（`{workspace}/profiles/{style}.md`）
+- 如果 `Style:` 為空（使用全域風格或 legacy 格式），將歸類為「個人偏好」的模式跳過，並告知作者：「這些模式可以在你建立 Style Profile 後加入。」
 - 根據模式的性質判斷最適合的 section：
   - 語氣/風格偏好 → Voice & Tone 或 Sentence-Level Preferences
   - 要避免的模式 → Anti-Patterns（附正反例）
@@ -101,11 +103,12 @@
 - 如果目標 section 還是 Level 2 的 placeholder（「Not yet defined — will evolve through writing.」），用新內容取代 placeholder。這就是 profile 從 Level 1 自然成長到 Level 2 的機制。
 - 如果 section 已經有內容，把新模式附加到後面。
 
-對於要加到 **writing-rules.md**（`{workspace}/writing-rules.md`）的模式：
+對於要加到 **writing-rules.md** 的模式：
+- 寫入 `{workspace}/writing-rules.md`。如果該檔案不存在，先從 `${CLAUDE_SKILL_DIR}/references/writing-rules.md` 複製一份到 workspace，再附加新規則。
 - 加到適當的分類下（Sentence-level / Paragraph-level / Structure-level / Required Quality）
 - 使用現有格式，搭配 `<example type="bad">` 和 `<example type="good">` 標籤
 
-**9i. Commit。** 如果有檔案被更新，以 `feedback: extract revision patterns for {slug}` 為 commit message。包含修改過的 profile 和/或 writing-rules.md 檔案。
+**9i. Commit。** 如果有檔案被更新，以 `feedback: extract revision patterns for {slug}` 為 commit message。只包含修改過的 profile 和/或 writing-rules.md 檔案，不包含 `article.{lang}.md`（這一步不修改文章本身）。
 
 ### Step 10: Complete（從 Step 9 重新編號）
 
