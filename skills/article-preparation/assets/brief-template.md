@@ -3,6 +3,7 @@
 ## Article Info
 - Title:
 - Author:
+- Style:  <!-- profile filename without .md, e.g., pragmatic-builder. Leave empty for global default. -->
 - Date:
 - Status: draft  <!-- draft | ready | writing | review | published -->
 - Original language:  <!-- zh, en -->
@@ -22,9 +23,6 @@
 ## Article Goals
 - Reader takeaway:
 - Goal alignment:
-
-## Writing Style
-{Optional — article-specific style references that replace the global style in writing.config.md. Leave empty to use the global default.}
 
 ## Outline
 

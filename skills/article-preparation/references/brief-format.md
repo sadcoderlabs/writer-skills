@@ -9,6 +9,7 @@ The brief is copied from `templates/brief-template.md` when a new article is cre
 #### Article Info
 - **Title**: Article title (proposed by AI, confirmed by user)
 - **Author**: Who is writing this article
+- **Style**: Profile filename without the `.md` extension (e.g., `pragmatic-builder`). Points to `{workspace}/profiles/{style}.md`. Leave empty to use the global style from `writing.config.md`.
 - **Date**: Creation date
 - **Status**: One of `draft`, `ready`, `writing`, `review`, `published`
   - `draft` → initial state when article directory is created
@@ -34,8 +35,8 @@ References to the original idea(s) from `ideas.md` that sparked this article. Fo
 - **Reader takeaway**: What the reader will gain from reading this article
 - **Goal alignment**: How this article connects to the goals in `writing.config.md`
 
-#### Writing Style
-Optional. Article-specific style references that replace the global style in `writing.config.md`. Can be a prose description, links to reference articles, or specific rules. Leave empty to use the global default.
+#### Style (in Article Info)
+The `Style` field in Article Info replaces the former `## Writing Style` section. It points to a style profile file in `{workspace}/profiles/`. If empty, article-writing falls back to `## Writing Style` in `writing.config.md`.
 
 #### Outline
 The article's structure, built after the author interview. Each section includes:
