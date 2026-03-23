@@ -54,7 +54,11 @@ The fields to complete:
    - This is especially important — users often forget or resist alignment, so make it natural
    - Example: "This article could naturally showcase your hands-on experience with agent tools, inviting readers to follow for more practical insights. Sound good?"
    - Never ask "how does this align?" — always propose alignment yourself
-11. **Writing Style**: Ask the author if they want to use the default style from `writing.config.md`, or provide specific style references for this article (links to articles they like, descriptions of tone, specific rules). If they choose the default, leave this field empty.
+11. **Style**: List available profiles from `{workspace}/profiles/` and let the author pick one.
+   - If profiles exist, show the list with a brief description (the profile's `# {Style Name}` heading and `created_by` from frontmatter)
+   - If no profiles exist, inform the author they can create one later via the Management skill, and proceed with the global default
+   - If the author wants to create a new profile now, guide them to use the Management skill's profile creation flow first, then return to continue the brief
+   - If the author doesn't want any profile, leave `Style:` empty — falls back to `writing.config.md` global style
 
 After each field is confirmed, update `brief.md` and check the corresponding checklist item.
 
@@ -167,7 +171,7 @@ A fully completed `brief.md` in `{workspace}/articles/{date}_{slug}/` with:
 - Target Audience described
 - Source Ideas linked
 - Article Goals defined with goal alignment
-- Writing Style specified (or empty for global default)
+- Style profile selected (or empty for global default)
 - Outline with materials per section
 - All Preparation checklist items checked
 - Status set to `ready`
