@@ -141,7 +141,11 @@ If Status is "Issues Found": present the choice.
 
 ### Step 7: Author Review
 
-Present the draft to the author and ask for feedback. Point the author to the `reviews/` directory where they can read the full review reports for context on changes made during automated review. The author can:
+Before starting author review, explain the full review-and-feedback process to the author:
+
+> "You can now freely revise the article — edit the file directly or tell me in conversation what to adjust. After you're satisfied, I'll review your revisions and extract patterns that can improve future writing — suggesting additions to your Style Profile or the team's writing rules. So if you have specific preferences while revising (e.g., 'this is too academic', 'I don't like this kind of opening'), feel free to say them — they'll become reference for future articles."
+
+Then present the draft and ask for feedback. Point the author to the `reviews/` directory where they can read the full review reports for context on changes made during automated review. The author can:
 - Edit `article.{lang}.md` directly (you read the changes and continue from there)
 - Give feedback in conversation (you apply the changes)
 - Approve the draft as-is
