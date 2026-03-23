@@ -22,14 +22,23 @@ If any prerequisite is missing, inform the user what needs to be done first.
 ### Step 1: Read All Inputs
 
 Read and understand:
-1. `brief.md` — article info, target audience, goals, writing style, outline with materials
-2. `writing.config.md` — global writing style (Writing Style section)
-3. `research.md` (if it exists) — external research findings and sources
+1. `brief.md` — article info (including `Style:` field), target audience, goals, outline with materials
+2. Style profile from `{workspace}/profiles/{style}.md` (if `Style:` is specified in brief)
+3. `writing.config.md` — global writing style (Writing Style section)
+4. `research.md` (if it exists) — external research findings and sources
 
 **Style resolution:**
-- If `brief.md` has a Writing Style field with content, use it (replaces global style entirely)
-- If `brief.md` Writing Style is empty, use `writing.config.md` Writing Style section
+- If `brief.md` has a `Style:` field, read `{workspace}/profiles/{style}.md` for the style profile
+  - If the profile file does not exist (deleted or renamed), warn the author and fall back to `writing.config.md`
+- If `brief.md` `Style:` is empty but has a `## Writing Style` section with content (legacy format), use it (backward compatibility with briefs created before the profile system)
+- Otherwise, use `writing.config.md` Writing Style section
 - If neither has style guidance, rely on the writing rules alone
+
+**Writing rules resolution:**
+- Read `{workspace}/writing-rules.md` if it exists (user-customizable copy)
+- Otherwise, fall back to `references/writing-rules.md` (skill built-in)
+- Writing rules always apply, independent of the style layers
+- Resolve this path once and pass it to all subagents (writing reviewer, fact-check reviewer)
 
 ### Step 2: Update Status
 
@@ -45,7 +54,7 @@ Produce the complete article in one pass and write it to `article.{lang}.md`. **
 - Write prose that presents the materials in a readable way, following the purpose
 - When referencing data, statistics, or findings from `research.md` or the materials, include Markdown links to the source URLs where available
 - Follow the writing rules — see [writing rules](references/writing-rules.md)
-- Follow the style reference (if any)
+- Follow the style profile (if any) — Voice & Tone sets the overall tone, Structure guides the article arc, Anti-Patterns are additional patterns to avoid, and any Level 2 sections that have been filled in (Sentence-Level Preferences, Signature Moves, Examples, Revision Checklist) further guide the writing
 
 **The article file is clean prose:**
 - No metadata (that lives in brief.md)
@@ -70,7 +79,7 @@ The review loop is author-paced: the first round runs automatically, then the au
 
 **Global review sequence counter:** Initialize a counter at 1. This counter increments for every review dispatch (writing or fact-check) and is used for report filenames.
 
-**5a.** Dispatch the writing-reviewer subagent with paths to `article.{lang}.md`, `references/writing-rules.md`, `brief.md`, `research.md` (if it exists), and the current review round number. The reviewer fixes issues directly in `article.{lang}.md` and returns a structured review report.
+**5a.** Dispatch the writing-reviewer subagent with paths to `article.{lang}.md`, the resolved `writing-rules.md` path, `brief.md`, the style profile path (if any), `research.md` (if it exists), and the current review round number. The reviewer fixes issues directly in `article.{lang}.md` and returns a structured review report.
 
 **5b.** Write the returned report to `reviews/review-{NN}-writing.md`, where `{NN}` is the zero-padded global sequence number. Create the `reviews/` directory if it doesn't exist.
 
@@ -194,4 +203,5 @@ See [writing rules](references/writing-rules.md) for the complete reference. Key
 
 ## Reference
 
-- See [writing rules](references/writing-rules.md) for prohibited patterns and quality requirements
+- Writing rules: read from `{workspace}/writing-rules.md` (user-customizable) or fall back to [built-in writing rules](references/writing-rules.md)
+- See [profile format](../writing-management/references/profile-format.md) for style profile details
