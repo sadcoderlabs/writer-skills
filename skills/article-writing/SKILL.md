@@ -161,7 +161,68 @@ The article stays in `writing` status throughout all revision rounds.
 
 **If materials are insufficient for a section:** Ask the author to provide more details in conversation. Do not fabricate content. If the issue is structural (a section should be cut or merged), suggest the author revisit the outline before continuing.
 
-### Step 9: Complete
+### Step 9: Feedback Extraction
+
+After the author is satisfied with the article, extract revision patterns to improve future writing. This step feeds the author's preferences back into their Style Profile or the team's writing rules.
+
+**9a.** Check if extraction is needed. If the author made no revisions during Step 7/8 (approved the draft as-is after automated review), skip this step entirely and proceed to Step 10.
+
+**9b.** Extract diff. Use `git log` to find the most recent commit that modified `article.{lang}.md` before Step 7 began (typically the last review commit from Step 5/6). Compare that version against the current version to identify all author-caused changes.
+
+**9c.** Review conversation. Review the Step 7/8 conversation to extract the author's stated reasons for changes — preferences, dislikes, quality concerns, and stylistic opinions. If the writing session spanned multiple conversations (e.g., author resumed in a new session), rely primarily on the diff (9b) and commit messages, without conversation context.
+
+**9d.** Synthesize patterns. From the diff and conversation, identify revision patterns worth recording. A pattern qualifies if: the same type of correction appears 2+ times in the diff, OR the author explicitly stated a preference in conversation (even if it only appears once). Single minor wording tweaks do not qualify. For each pattern, produce:
+- **Pattern name**: Short description (e.g., "Avoid academic tone in practical sections")
+- **Bad example**: The text before the author's revision (from the actual article)
+- **Good example**: The text after the author's revision (from the actual article)
+- **Reason**: Why the author made this change (from conversation context if available; otherwise infer from the nature of the change)
+
+**9e.** Classify each pattern. Determine where it belongs:
+
+- **Personal preference → Style Profile**: Patterns related to tone, style, rhythm, voice, subjective taste. Signals: author expressed subjective preference ("I don't like...", "I prefer..."), the pattern is about style rather than clarity, different authors might disagree on this.
+- **Universal issue → writing-rules.md**: Patterns related to clarity, logic, reader comprehension, structural problems. Signals: the issue would be a problem regardless of writing style, it affects reader understanding, it can be stated as a general rule.
+- **Default to Profile when uncertain.** Adding to a profile has a small blast radius (one style); adding to writing-rules.md affects all articles and all authors. Be conservative with global rules.
+
+**9f.** Present proposal in ghostwriter mode:
+
+> Here are some revision patterns from this article that could improve future writing:
+>
+> **Suggested for your Style Profile:**
+> 1. {Pattern name}
+>    - Bad: "{bad example}"
+>    - Good: "{good example}"
+>    - Reason: {reason}
+>    - → Suggested section: {Anti-Patterns / Voice & Tone / Sentence-Level Preferences / etc.}
+>
+> **Suggested for writing-rules.md:**
+> (None this time)
+>
+> Would you like to add any of these? You can also change where they go (e.g., move a personal suggestion to writing-rules.md if you think it should apply to everyone).
+
+**9g.** Author confirms. The author can:
+- Accept a suggestion as-is
+- Adjust the wording before accepting
+- Change the classification (Profile ↔ writing-rules.md)
+- Skip a suggestion entirely
+
+**9h.** Apply confirmed feedback.
+
+For patterns going to the **Style Profile**: read the `Style:` field from `brief.md` to determine the target profile at `{workspace}/profiles/{style}.md`. If `Style:` is empty (no profile selected), skip profile-targeted patterns and inform the author: "These patterns can be added once you create a Style Profile."
+
+For each confirmed profile pattern, determine the most appropriate section:
+- Tone/style preferences → Voice & Tone or Sentence-Level Preferences
+- Patterns to avoid → Anti-Patterns (with bad/good examples)
+- Distinctive techniques the author added → Signature Moves
+- Illustrative examples → Examples
+- Check items → Revision Checklist
+
+If the target section still has its Level 2 placeholder ("Not yet defined — will evolve through writing."), replace the placeholder with the new content. If the section already has content, append the new pattern.
+
+For patterns going to **writing-rules.md**: write to `{workspace}/writing-rules.md`. If the file does not exist, copy from `${CLAUDE_SKILL_DIR}/references/writing-rules.md` first, then append the new rule. Add under the appropriate category (Sentence-level / Paragraph-level / Structure-level / Required Quality) using the existing format with `<example type="bad">` and `<example type="good">` tags.
+
+**9i.** Commit. If any files were updated, commit with message: `feedback: extract revision patterns for {slug}`. Include only modified profile and/or writing-rules.md files — do not include `article.{lang}.md` (this step does not modify the article itself).
+
+### Step 10: Complete
 
 When the author approves the draft:
 1. Check "First draft completed" in the brief checklist
