@@ -24,11 +24,20 @@
 
 | 技能 | 變更 |
 |---|---|
-| `writing-management` | 擴展：ideas.md 的 `[post]` 標記、config 的 `## Social` 區塊、`social-style-guide.md` 初始化、`posts/` 目錄 |
+| `writing-management` | 擴展：ideas.md 的 `[post]` 標記、config 的 `## Social` 區塊、`social-style-guide.md` 初始化、`posts/` 目錄、批次風格提取 |
 | `post-writing`（新） | 完整的貼文撰寫流程 |
 | `article-writing` | 不變 |
 | `article-preparation` | 不變 |
 | `article-translation` | 不變 |
+
+**條件性初始化**：`writing-management` 的社群相關初始化（建立 `posts/`、複製 `social-style-guide-template.md`、設定 `## Social` 區塊）僅在 `post-writing` 技能存在時執行。如果使用者只安裝文章相關技能，`writing-management` 不會建立社群相關的檔案和配置。
+
+**需要更新的現有檔案**：
+- `skills/writing-management/references/config-format.md` — 新增 `## Social` 區塊的格式說明（此區塊為選擇性，僅在啟用社群功能時加入）
+- `skills/writing-management/assets/config-template.md` — 新增 `## Social` 區塊模板
+- `skills/writing-management/references/ideas-format.md` — 新增 type 標記格式說明
+- `skills/writing-management/assets/ideas-template.md` — 更新範例以包含 type 標記
+- `skills/writing-management/SKILL.md` — 「Receive New Ideas」和「Organize Idea Pool」sections 擴展以支援 type 標記；「You Do NOT」清單補充「不撰寫貼文內容（that's the post-writing skill）」
 
 ### Idea 管理
 
@@ -66,6 +75,8 @@
 ```
 
 type 值：`[article]`、`[post]`、`[article, post]`。
+
+**向後相容**：無 type 標記的既有 idea 預設視為 `[article]`。技能在讀取 ideas.md 時，遇到無標記的項目一律當作 `[article]` 處理，不需要使用者回溯補標記。
 
 Adopted 區塊連結到對應的產出路徑：
 
@@ -131,7 +142,7 @@ Adopted 區塊連結到對應的產出路徑：
 ```markdown
 ---
 type: single | thread
-status: draft | writing | review | published
+status: draft | review | published
 source: standalone | article
 source_article: articles/2026-03-24_claude-code-remote-control/ # only if source: article
 original_language: en
@@ -219,7 +230,9 @@ Full writeup: [link]
 - 串文的每則控制在合理長度
 - 文章衍生的貼文忠於原文素材——不扭曲、不誇大（素材至聖原則）
 
-寫入貼文檔案，更新狀態：`draft` → `writing`。
+寫入貼文檔案。狀態維持 `draft`。
+
+Git commit：`draft: write post {slug}`
 
 **Step 4 — 輕量審查**
 
@@ -229,9 +242,9 @@ Full writeup: [link]
 - 如果是文章衍生：素材準確性（不扭曲原文意思）
 - 禁止的 AI 模式（類似 writing-rules.md 的社群版）
 
-子代理直接修正貼文並在對話中呈現簡短審查結果（不另存 reviews/ 目錄）。
+子代理直接修正貼文並在對話中呈現簡短審查結果（不另存 reviews/ 目錄）。子代理只負責修正和回傳結果，狀態更新由 `post-writing` 主流程在子代理完成後執行。
 
-更新狀態：`writing` → `review`。
+更新狀態：`draft` → `review`。
 
 **Step 5 — 作者確認與翻譯**
 
@@ -248,6 +261,8 @@ Full writeup: [link]
 ```
 
 更新狀態：`review` → `published`。
+
+Git commit：`content: finalize post {slug}`
 
 **Step 6 — 風格反饋提取**（選擇性）
 
@@ -272,11 +287,13 @@ Full writeup: [link]
 
 #### 階段 3 — 批次提取（手動觸發）
 
-當累積足夠多的已發布貼文（例如 20+），使用者可要求技能回顧所有 `posts/` 中的貼文，進行全面模式提取：
+當累積足夠多的已發布貼文（例如 20+），使用者可透過 `writing-management` 要求回顧所有 `posts/` 中的貼文，進行全面模式提取：
 - 分析字數分布、開頭模式、修辭手法頻率
 - 類似 jackbutcher.md 的統計摘要
 - 提議更新風格指南的各區塊
 - 作者審閱確認
+
+批次提取放在 `writing-management` 而非 `post-writing`，因為它本質上是管理性的操作（分析所有貼文、更新風格指南），與 `writing-management` 管理風格檔案的既有職責一致。
 
 #### 風格指南在撰寫時的使用
 
@@ -293,9 +310,34 @@ Full writeup: [link]
 
 素材至聖原則同樣適用——貼文內容必須忠於原文，不扭曲、不誇大。
 
+獨立創作模式下，使用者在 Step 1 和 Step 2 中提供的描述和確認的方向即為素材來源。貼文內容不應超出使用者提供的範圍。
+
 #### 與 ideas.md 的關聯
 
 標記為 `[article, post]` 的 idea 在 Adopted 區塊顯示多個產出路徑，建立文章與貼文之間的可追溯連結。
+
+### 5. 解析規則
+
+貼文檔案中有三種 `---` 分隔符，解析時依以下規則辨識：
+
+1. **YAML frontmatter**：檔案的前兩個 `---`（第一行必須是 `---`，第二個 `---` 結束 frontmatter）
+2. **語言分隔符**：完全匹配 `---lang:{code}---` 格式（例如 `---lang:zh---`），標記翻譯版本的開始
+3. **串文分隔符**：frontmatter 之後、語言分隔符之前的純 `---` 一律視為串文中各則貼文的分隔
+
+解析順序：先剝離 frontmatter，再以 `---lang:{code}---` 切分語言版本，最後在每個語言版本內以 `---` 切分串文各則。
+
+### 6. 平台字數限制
+
+各平台的字數限制在 `references/post-rules.md` 中定義。撰寫時以 frontmatter 中指定的 platforms 中最嚴格的限制為準。參考值：
+
+| 平台 | 單則字元限制 |
+|---|---|
+| Twitter/X | 280 |
+| Bluesky | 300 |
+| Threads | 500 |
+| Mastodon | 500 |
+
+串文的每則貼文各自遵守字元限制。
 
 ## 工作區結構變更
 
@@ -319,17 +361,19 @@ writing.config.md                # 擴展：新增 ## Social 區塊
 
 ```
 skills/
+  writing-management/
+    assets/
+      social-style-guide-template.md  # 新增：風格指南模板（jackbutcher.md 骨架）
+      # 與現有的 config-template.md、ideas-template.md、profile-template.md 並列
   post-writing/
     SKILL.md                     # 技能定義（frontmatter + 工作流）
     post-reviewer-prompt.md      # 審查子代理提示
     references/
-      post-format.md             # 貼文檔案格式規範
-      post-rules.md              # 社群貼文寫作規則（禁止模式等）
-    assets/
-      social-style-guide-template.md  # 風格指南模板（jackbutcher.md 骨架）
+      post-format.md             # 貼文檔案格式規範（含解析規則）
+      post-rules.md              # 社群貼文寫作規則（禁止模式、平台字數限制等）
 ```
 
-`social-style-guide-template.md` 在 `writing-management` 初始化時被複製到工作區。
+`social-style-guide-template.md` 放在 `writing-management/assets/` 下，與現有模板並列。`writing-management` 在條件性初始化時將其複製到工作區。這避免了 `writing-management` 需要引用 `post-writing` 目錄下資源的跨技能依賴。
 
 ## 設計原則
 
@@ -339,7 +383,7 @@ skills/
 - **素材至聖**：文章衍生的貼文忠於原文素材
 - **環境對齊**：自然參考 `writing.config.md` 的目標
 - **可恢復性**：狀態保存在檔案中，對話中斷可恢復
-- **狀態驅動**：`draft` → `writing` → `review` → `published`
+- **狀態驅動**：`draft` → `review` → `published`（比文章的五狀態精簡）
 
 新增的原則：
 - **活文件風格指南**：風格指南不是一次性定義，而是隨寫作持續演進
