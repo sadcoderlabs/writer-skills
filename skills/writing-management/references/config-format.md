@@ -71,6 +71,51 @@ workspace: /root/projects/sadcoder-press
 
 With this configuration, `ideas.md` lives at `/root/projects/sadcoder-press/ideas.md`, articles at `/root/projects/sadcoder-press/articles/`, etc.
 
+## Social Section (Optional)
+
+When the `post-writing` skill is installed, `writing.config.md` includes an additional `## Social` section:
+
+```markdown
+## Social
+- Platforms: twitter, threads, bluesky
+- Social style guide: {workspace}/social-style-guide.md
+- Default post language: en
+- Translations: zh
+```
+
+**Fields:**
+- `Platforms` — comma-separated list of target social platforms. Used by `post-writing` to determine character limits and formatting constraints.
+- `Social style guide` — path to the social style guide file (relative to repo root). Resolved the same way as the workspace path.
+- `Default post language` — the primary language for social posts (ISO 639-1 code).
+- `Translations` — comma-separated list of additional languages for post translations.
+
+This section is only added during workspace initialization when the `post-writing` skill is detected. Existing workspaces without this section continue to work — social features are simply unavailable.
+
+## Example with Social
+
+```markdown
+---
+workspace: writing
+---
+
+# Writing Plan
+
+## About
+sadcoder builds AI agent tools. We envision a future where people rely heavily on AI agents to get work done, and we're building products for that world.
+
+## Writing Goals
+Demonstrate our hands-on experience and insights in the AI agent space to attract people interested in AI agents — getting them to follow us on Twitter or leave their email on our website. Tone should be practical and opinionated, like a team that's actually building this stuff sharing what they've learned.
+
+## Writing Style
+Direct and conversational. Short paragraphs. Use concrete examples from our own work rather than hypotheticals. Reference specific tools, numbers, and timelines. Avoid corporate-speak.
+
+## Social
+- Platforms: twitter, threads, bluesky
+- Social style guide: writing/social-style-guide.md
+- Default post language: en
+- Translations: zh
+```
+
 ## Guidelines
 
 - "About" should be factual: who you are, what you do, your direction
@@ -78,3 +123,4 @@ With this configuration, `ideas.md` lives at `/root/projects/sadcoder-press/idea
 - "Writing Style" describes how articles should read — tone, structure preferences, reference articles, or specific rules. This is the global fallback for all articles. Individual articles select a Style Profile in their brief for a more specific writing voice; if no profile is selected, this section applies.
 - Keep all sections concise — one paragraph each
 - This file is the anchor for ambient goal alignment and style consistency across all skills
+- "Social" is optional — only present when the post-writing skill is installed. It configures target platforms, style guide path, and language preferences for social media posts.

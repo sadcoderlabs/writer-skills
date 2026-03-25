@@ -12,3 +12,9 @@ workspace: .
 
 ## Writing Style
 {Global writing style preferences — prose description, reference article links, or specific rules}
+
+## Social
+- Platforms: twitter, threads, bluesky
+- Social style guide: {workspace}/social-style-guide.md
+- Default post language: en
+- Translations: zh
