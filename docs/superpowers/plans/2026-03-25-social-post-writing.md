@@ -78,53 +78,64 @@ git commit -m "feat(writing-management): add social style guide template"
 - Modify: `skills/writing-management/references/ideas-format.md`
 - Modify: `skills/writing-management/assets/ideas-template.md`
 
-- [ ] **Step 1: Update ideas-format.md**
+- [ ] **Step 1: Replace ideas-format.md with updated version**
 
-Add the type tag system after the existing Structure section. The updated file should have these changes:
+Replace the entire content of `skills/writing-management/references/ideas-format.md` with:
 
-In the `## Structure` code block, update the Pending and Adopted lines to show type tags:
+````markdown
+# ideas.md Format
+
+## Structure
 
 ```markdown
+# Idea Pool
+
 ## Pending
 - [YYYY-MM-DD] idea description `[article]`
 - [YYYY-MM-DD] @contributor: idea description `[post]`
 - [YYYY-MM-DD] idea description `[article, post]` — notes
+
+## AI Suggestions
+> [YYYY-MM-DD] Suggestion about merging/developing ideas, with alignment notes
+
+## Adopted
+- [YYYY-MM-DD] → {workspace}/articles/{date}_{slug} (from idea description) `[article]`
+- [YYYY-MM-DD] → {workspace}/posts/{date}_{slug}.md (from idea description) `[post]`
+- [YYYY-MM-DD] idea description `[article, post]`
+  - → {workspace}/articles/{date}_{slug}
+  - → {workspace}/posts/{date}_{slug}.md
 ```
 
-In the `## Sections` area, after the existing `### Pending` description, add a new subsection:
+## Sections
 
-```markdown
+### Pending
+New ideas go here. Each entry has a date and description. Contributor attribution (@name) is optional — useful for teams, unnecessary for individual use.
+
 #### Type Tags
 
 Each idea has an optional type tag in backtick-code format at the end of the description:
 
-- `` `[article]` `` — this idea targets a long-form article
-- `` `[post]` `` — this idea targets a social media post or thread
-- `` `[article, post]` `` — this idea targets both formats
+- `[article]` — this idea targets a long-form article
+- `[post]` — this idea targets a social media post or thread
+- `[article, post]` — this idea targets both formats
 
 **Backward compatibility:** Ideas without a type tag default to `[article]`. Existing ideas do not need retroactive tagging.
-```
 
-Update the `### Adopted` section to show the multi-output format:
+### AI Suggestions
+An **append-only log**. New suggestions are appended (never edited or removed) when:
+- A new idea is received that connects to existing ideas
+- The user asks for the current state of the idea pool
 
-```markdown
+Each suggestion should reference specific pending ideas and note how they relate to goals from `writing.config.md`.
+
 ### Adopted
 Ideas that have been developed into articles or posts. Includes the adoption date and links to the output paths.
 
-For ideas with multiple outputs (`[article, post]`), each output is listed as a sub-item:
+For ideas with multiple outputs (`[article, post]`), each output is listed as a sub-item under the same Adopted entry.
 
-` `` `markdown
-- [2026-03-24] Claude Code remote control → articles/2026-03-24_claude-code-remote-control/
-  - → posts/2026-03-25_claude-code-remote-control-key-insight.md
-` `` `
-```
-
-Also update `## When to Suggest Articles` to `## When to Suggest Content`:
-
-```markdown
 ## When to Suggest Content
 When receiving a new idea and there are 5 or more pending ideas, include content suggestions in the response alongside the idea confirmation. Suggest which ideas could become articles, posts, or both based on the idea's nature (long-form analysis → article, punchy observation → post, major insight → both).
-```
+````
 
 - [ ] **Step 2: Update ideas-template.md**
 
@@ -224,6 +235,8 @@ In the `## Guidelines` section, add:
 
 Add the `## Social` section to the template. Since the template is used during initialization, and initialization is conditional on post-writing skill presence, the template should include the section but the writing-management SKILL.md will control when to include it.
 
+**Important:** The `{workspace}` in the template's `Social style guide` field is a placeholder. During initialization, the writing-management skill resolves it to the actual workspace path (just as it resolves `{workspace}` in other template fields). For example, if the workspace is `writing`, the resulting line becomes `Social style guide: writing/social-style-guide.md`.
+
 Append to the end of `skills/writing-management/assets/config-template.md`:
 
 ```markdown
@@ -260,7 +273,7 @@ This is the most complex modification — adding conditional social initializati
 
 - [ ] **Step 1: Update Workspace Structure section**
 
-Add `posts/` and `social-style-guide.md` to the workspace structure diagram (lines 14-25). After the `articles/` section, add:
+In the workspace structure diagram (the code block under `## Workspace Structure`), after the `articles/` block ending with `assets/`, add:
 
 ```
   posts/                     # Social media posts (flat files)
@@ -272,7 +285,7 @@ These are marked as conditional — only present when post-writing skill is inst
 
 - [ ] **Step 2: Update Workspace Migration section**
 
-After the existing migration checks (lines 31-38), add a new migration check:
+After the existing two migration checks (ending with "automatically upgraded"), add new migration checks:
 
 ```markdown
 3. If `writing.config.md` exists and `${CLAUDE_SKILL_DIR}/../post-writing/SKILL.md` exists but `{workspace}/posts/` does not, create the directory and copy `${CLAUDE_SKILL_DIR}/assets/social-style-guide-template.md` to `{workspace}/social-style-guide.md`
@@ -281,7 +294,7 @@ After the existing migration checks (lines 31-38), add a new migration check:
 
 - [ ] **Step 3: Update Initialize Workspace section**
 
-In the initialization flow (step 3, lines 50-54), after the existing items, add conditional initialization:
+In the `### 1. Initialize Workspace` section, step 3 (which creates the workspace directory structure), after the existing items ending with the `writing-rules.md` copy, add conditional initialization:
 
 ```markdown
    - **If `${CLAUDE_SKILL_DIR}/../post-writing/SKILL.md` exists** (social features enabled):
@@ -292,17 +305,17 @@ In the initialization flow (step 3, lines 50-54), after the existing items, add 
 
 - [ ] **Step 4: Update Receive New Ideas section**
 
-Update lines 65-78 to support type tags. The key changes:
+Update `### 2. Receive New Ideas` section to support type tags. The key changes:
 
-After "Record it to `{workspace}/ideas.md` under 'Pending' with today's date" (line 69), add:
+After the line "Record it to `{workspace}/ideas.md` under 'Pending' with today's date", add:
 
 ```markdown
    - Add a type tag based on the nature of the idea: `[article]` for long-form analysis, `[post]` for punchy observations or social content, `[article, post]` for ideas that work as both. Propose the type in ghostwriter mode — the user confirms or changes it.
 ```
 
-Update line 75 from "include article suggestions" to "include content suggestions — which ideas could become articles, posts, or both, and why".
+Update the line containing "include article suggestions" to "include content suggestions — which ideas could become articles, posts, or both, and why".
 
-Update line 77 (next step hint) to also mention posts:
+Update the next step hint paragraph to also mention posts:
 
 ```markdown
    - Tone: "When you'd like to develop this into an article or a social post, just let me know."
@@ -310,7 +323,7 @@ Update line 77 (next step hint) to also mention posts:
 
 - [ ] **Step 5: Update Organize Idea Pool section**
 
-Update lines 80-91. Change "Suggest which ideas could be developed into articles" to "Suggest which ideas could be developed into articles or posts".
+In `### 3. Organize Idea Pool`, change "Suggest which ideas could be developed into articles" to "Suggest which ideas could be developed into articles or posts".
 
 Update the adoption flow to support multi-output linking:
 
@@ -349,7 +362,7 @@ This is a management operation — analyzing all posts and updating the style gu
 
 - [ ] **Step 7: Update You Do NOT section**
 
-Add to the existing list (lines 130-134):
+Add to the existing `## You Do NOT` list (after "Review articles"):
 
 ```markdown
 - Write social media posts (that's the post-writing skill)
@@ -982,15 +995,25 @@ git commit -m "feat(post-writing): add main skill definition with 6-step workflo
 **Files:**
 - Modify: `CLAUDE.md`
 
-- [ ] **Step 1: Update Architecture section**
+- [ ] **Step 1: Update "What This Is" section**
 
-Change "Four skills form a pipeline" to "Five skills form a pipeline" and add `post-writing` as item 5:
+Change the introductory paragraph from:
+
+> A writing workflow system powered by AI agent skills, following the Agent Skills open standard. Skills guide users from idea to published article through four stages: management → preparation → writing → translation.
+
+To:
+
+> A writing workflow system powered by AI agent skills, following the [Agent Skills open standard](https://agentskills.io/). Skills guide users from idea to published content — articles through four stages (management → preparation → writing → translation) and social posts through a parallel lightweight workflow (management → post-writing).
+
+- [ ] **Step 2: Update Architecture section**
+
+Change "Four skills form a pipeline" to "Five skills form a pipeline, each with clear boundaries" and add `post-writing` as item 5:
 
 ```markdown
 5. **post-writing** (`skills/post-writing/`) — Writes social media posts (single or thread), supports article-derived and standalone creation, lightweight automated review, in-file translation, style feedback extraction
 ```
 
-- [ ] **Step 2: Update Workspace Structure**
+- [ ] **Step 3: Update Workspace Structure**
 
 Add `posts/` and `social-style-guide.md` to the workspace structure diagram. After `templates/brief-template.md`, add:
 
@@ -999,7 +1022,7 @@ Add `posts/` and `social-style-guide.md` to the workspace structure diagram. Aft
   posts/{YYYY-MM-DD}_{slug}.md   # Social media posts (flat files, with in-file translations)
 ```
 
-- [ ] **Step 3: Add Post Lifecycle section**
+- [ ] **Step 4: Add Post Lifecycle section**
 
 After `## Article Brief Lifecycle`, add:
 
@@ -1009,7 +1032,7 @@ After `## Article Brief Lifecycle`, add:
 Post status transitions: `draft` → `review` → `published`
 ```
 
-- [ ] **Step 4: Update Writing Rules section**
+- [ ] **Step 5: Update Writing Rules section**
 
 After the existing writing rules paragraph, add a note about post rules:
 
@@ -1017,15 +1040,16 @@ After the existing writing rules paragraph, add a note about post rules:
 The post-writing skill has its own rules at `skills/post-writing/references/post-rules.md`, covering social-specific prohibited patterns (engagement bait, thread padding, artificial structure) and platform character limits.
 ```
 
-- [ ] **Step 5: Verify all sections are consistent**
+- [ ] **Step 6: Verify all sections are consistent**
 
 Read the complete updated CLAUDE.md and verify:
+- "What This Is" mentions both articles and social posts
 - Architecture lists 5 skills
 - Workspace structure includes posts/ and social-style-guide.md
 - Post lifecycle is documented
 - Post rules are mentioned
 
-- [ ] **Step 6: Commit**
+- [ ] **Step 7: Commit**
 
 ```bash
 git add CLAUDE.md
