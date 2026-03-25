@@ -30,7 +30,7 @@
 | `article-preparation` | 不變 |
 | `article-translation` | 不變 |
 
-**條件性初始化**：`writing-management` 的社群相關初始化（建立 `posts/`、複製 `social-style-guide-template.md`、設定 `## Social` 區塊）僅在 `post-writing` 技能存在時執行。如果使用者只安裝文章相關技能，`writing-management` 不會建立社群相關的檔案和配置。
+**條件性初始化**：`writing-management` 的社群相關初始化（建立 `posts/`、複製 `social-style-guide-template.md`、設定 `## Social` 區塊）僅在 `post-writing` 技能存在時執行。偵測方式：檢查 `${CLAUDE_SKILL_DIR}/../post-writing/SKILL.md` 是否存在。如果使用者只安裝文章相關技能，`writing-management` 不會建立社群相關的檔案和配置。
 
 **需要更新的現有檔案**：
 - `skills/writing-management/references/config-format.md` — 新增 `## Social` 區塊的格式說明（此區塊為選擇性，僅在啟用社群功能時加入）
@@ -38,6 +38,7 @@
 - `skills/writing-management/references/ideas-format.md` — 新增 type 標記格式說明
 - `skills/writing-management/assets/ideas-template.md` — 更新範例以包含 type 標記
 - `skills/writing-management/SKILL.md` — 「Receive New Ideas」和「Organize Idea Pool」sections 擴展以支援 type 標記；「You Do NOT」清單補充「不撰寫貼文內容（that's the post-writing skill）」
+- `CLAUDE.md` — 架構段落新增 `post-writing` 為第五個技能；工作區結構新增 `posts/` 和 `social-style-guide.md`；新增貼文狀態生命週期說明（`draft` → `review` → `published`）
 
 ### Idea 管理
 
