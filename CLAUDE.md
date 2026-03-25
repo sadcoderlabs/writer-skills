@@ -4,16 +4,17 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What This Is
 
-A writing workflow system powered by AI agent skills, following the [Agent Skills open standard](https://agentskills.io/). Skills guide users from idea to published article through four stages: management → preparation → writing → translation.
+A writing workflow system powered by AI agent skills, following the [Agent Skills open standard](https://agentskills.io/). Skills guide users from idea to published content — articles through four stages (management → preparation → writing → translation) and social posts through a parallel lightweight workflow (management → post-writing).
 
 ## Architecture
 
-Four skills form a pipeline, each with clear boundaries:
+Five skills form a pipeline, each with clear boundaries:
 
-1. **writing-management** (`skills/writing-management/`) — Workspace init, goals/style config (`writing.config.md`), style profiles (`profiles/`), idea pool (`ideas.md`)
+1. **writing-management** (`skills/writing-management/`) — Workspace init, goals/style config (`writing.config.md`), style profiles (`profiles/`), idea pool (`ideas.md`), social style guide, batch style extraction
 2. **article-preparation** (`skills/article-preparation/`) — Creates article directory, guides brief completion, optional topic research, interviews author for materials, builds outline with materials
 3. **article-writing** (`skills/article-writing/`) — Writes draft from materials-based outline, runs automated review and fact-check loops, revises with author feedback
 4. **article-translation** (`skills/article-translation/`) — Translates completed articles into target languages, runs automated translation review loop
+5. **post-writing** (`skills/post-writing/`) — Writes social media posts (single or thread), supports article-derived and standalone creation, lightweight automated review, in-file translation, style feedback extraction
 
 Each skill has: `SKILL.md` (main definition with frontmatter), `references/` (supporting docs), `assets/` (templates).
 
@@ -36,6 +37,8 @@ writing.config.md                # At repo root — goals, direction, style (wor
   profiles/                      # Style profiles (shareable writing voices)
   writing-rules.md               # Customizable writing rules (copied from skill source)
   templates/brief-template.md    # Article brief template
+  social-style-guide.md          # Social style guide (evolving, jackbutcher.md-inspired)
+  posts/{YYYY-MM-DD}_{slug}.md   # Social media posts (flat files, with in-file translations)
   articles/{YYYY-MM-DD}_{slug}/
     article.{lang}.md            # Article content (clean prose, no metadata). {lang} = original language code from brief.md
     brief.md                     # Brief, materials, outline, progress tracking
@@ -48,9 +51,15 @@ writing.config.md                # At repo root — goals, direction, style (wor
 
 `brief.md` status transitions: `draft` → `ready` → `writing` → `review` → `published`
 
+## Post Lifecycle
+
+Post status transitions: `draft` → `review` → `published`
+
 ## Writing Rules (article-writing skill)
 
 The writing rules define prohibited AI patterns and quality requirements. The built-in rules are at `skills/article-writing/references/writing-rules.md`; on workspace init, a customizable copy is placed at `{workspace}/writing-rules.md` for users to modify. The article-writing skill commits the first draft (Step 4), then runs an author-paced writing review loop (Step 5) that dispatches a writing reviewer subagent, followed by a fact-check review loop (Step 6) that dispatches a fact-check reviewer subagent. Both reviewers produce structured review reports saved to the article's `reviews/` directory.
+
+The post-writing skill has its own rules at `skills/post-writing/references/post-rules.md`, covering social-specific prohibited patterns (engagement bait, thread padding, artificial structure) and platform character limits.
 
 ## Language Convention
 
