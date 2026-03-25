@@ -1,6 +1,6 @@
 ---
 name: writing-management
-description: Initialize and manage a writing workspace. Set writing goals, manage style profiles, collect ideas, suggest which ideas could become articles. Use when the user wants to set up a writing project, create or update a style profile, add ideas, review the idea pool, update goals, or mentions a topic that could become an article.
+description: Initialize and manage a writing workspace. Set writing goals, manage style profiles, collect ideas, suggest which ideas could become articles or social posts. Use when the user wants to set up a writing project, create or update a style profile, add ideas, review the idea pool, update goals, analyze social writing patterns, or mentions a topic that could become an article or post.
 ---
 
 # Writing Management
@@ -22,6 +22,9 @@ writing.config.md            # At repo root — writing plan goals, direction, s
       article.{lang}.md      # Article content ({lang} = original language code from brief.md)
       brief.md               # Writing brief
       assets/                # Images and other assets
+  posts/                     # Social media posts (flat files, conditional on post-writing skill)
+    {YYYY-MM-DD}_{slug}.md   # Post content with frontmatter
+  social-style-guide.md      # Social style guide (evolving, conditional on post-writing skill)
 ```
 
 **Workspace resolution:** Read the `workspace` field from `writing.config.md` frontmatter. If absent or empty, default to `.`. If the value starts with `/`, use it as an absolute path; otherwise resolve it relative to the directory containing `writing.config.md`. All paths below are relative to the workspace directory.
@@ -36,6 +39,9 @@ Before executing any responsibility, check if the workspace needs migration:
 2. If `writing.config.md` exists but `{workspace}/writing-rules.md` does not, copy from `${CLAUDE_SKILL_DIR}/../article-writing/references/writing-rules.md`
 
 This ensures existing workspaces created before the style profile system are automatically upgraded.
+
+3. If `writing.config.md` exists and `${CLAUDE_SKILL_DIR}/../post-writing/SKILL.md` exists but `{workspace}/posts/` does not, create the directory and copy `${CLAUDE_SKILL_DIR}/assets/social-style-guide-template.md` to `{workspace}/social-style-guide.md`
+4. If `writing.config.md` exists and `${CLAUDE_SKILL_DIR}/../post-writing/SKILL.md` exists but `writing.config.md` does not contain a `## Social` section, append the Social section from the config template
 
 ### 1. Initialize Workspace (first use)
 
@@ -52,6 +58,10 @@ If `writing.config.md` does not exist, the workspace needs initialization:
    - Copy the brief template from the article-preparation skill's assets to `{workspace}/templates/brief-template.md`
    - Create `{workspace}/profiles/` directory
    - Copy `${CLAUDE_SKILL_DIR}/../article-writing/references/writing-rules.md` to `{workspace}/writing-rules.md` (customizable copy — users can modify this without touching skill source files)
+   - **If `${CLAUDE_SKILL_DIR}/../post-writing/SKILL.md` exists** (social features enabled):
+     - Create `{workspace}/posts/` directory
+     - Copy `${CLAUDE_SKILL_DIR}/assets/social-style-guide-template.md` to `{workspace}/social-style-guide.md`
+     - Include `## Social` section when writing `writing.config.md` (see [config format](references/config-format.md))
 4. Guide the user to describe who they are and their writing goals
    - Propose suggestions based on what you know from the conversation
    - User confirms or adjusts
@@ -68,13 +78,14 @@ When the user shares an idea:
 
 1. Record it to `{workspace}/ideas.md` under "Pending" with today's date
    - Include `@contributor` if the user identifies themselves or someone else
+   - Add a type tag based on the nature of the idea: `[article]` for long-form analysis, `[post]` for punchy observations or social content, `[article, post]` for ideas that work as both. Propose the type in ghostwriter mode — the user confirms or changes it.
 2. Check for connections with existing pending ideas
    - If connections exist, append a suggestion to "AI Suggestions" noting how ideas could be merged or developed together
 3. **Ambient alignment**: Briefly and naturally mention how the idea relates to the goals in `writing.config.md`
    - Tone: "This connects well with your goal of..." not "You must align with..."
-4. If there are now 5+ pending ideas, include article suggestions alongside your response — which ideas could become articles, and why
+4. If there are now 5+ pending ideas, include content suggestions alongside your response — which ideas could become articles, posts, or both, and why
 5. **Next step hint**: After recording the idea, let the user know they can start article preparation whenever they're ready
-   - Tone: "When you'd like to develop this into an article, just let me know and we can start preparing a brief."
+   - Tone: "When you'd like to develop this into an article or a social post, just let me know."
    - Keep it brief — one sentence, not a full explanation of the preparation process
 
 ### 3. Organize Idea Pool
@@ -82,13 +93,14 @@ When the user shares an idea:
 When the user asks about the idea pool:
 
 1. Present the current state of pending ideas
-2. Suggest which ideas could be developed into articles
+2. Suggest which ideas could be developed into articles or posts
 3. For each suggestion, note goal alignment
 4. Append suggestions to the "AI Suggestions" section
 
-When an idea is adopted (developed into an article by the Article Preparation skill):
+When an idea is adopted (developed into an article or post):
 
-1. Move it from "Pending" to "Adopted" with today's date and a link to the article directory
+1. Move it from "Pending" to "Adopted" with today's date and a link to the output path
+2. If the idea has type `[article, post]` and one output already exists, add the new output as a sub-item under the existing Adopted entry
 
 ### 4. Update Goals
 
@@ -127,11 +139,32 @@ When the user wants to update a profile:
 2. Guide updates to specific sections — or accept direct instructions (e.g., "Add an anti-pattern: don't use rhetorical questions")
 3. Save changes to the profile file
 
+### 6. Batch Social Style Extraction
+
+When the user requests a comprehensive review of their social writing style (e.g., "analyze my post writing style", "extract patterns from my posts"):
+
+1. Read all published posts from `{workspace}/posts/` (files where frontmatter `status: published`)
+2. If fewer than 10 published posts exist, inform the user that more posts are needed for meaningful pattern extraction
+3. Analyze across all posts:
+   - Word count distribution (average, median, range)
+   - Opening patterns (how posts typically start)
+   - Rhetorical patterns (contrast frames, repetition, hooks)
+   - Vocabulary frequency (recurring terms and phrases)
+   - Structure patterns (single vs. thread ratio, thread length distribution)
+4. Present findings in a statistical summary similar to jackbutcher.md style
+5. Propose updates to `{workspace}/social-style-guide.md` for each section
+6. Author confirms which updates to apply
+7. Write confirmed updates to the style guide
+8. Commit with message: `style: batch extract social writing patterns`
+
+This is a management operation — analyzing all posts and updating the style guide. It complements the per-post feedback extraction in the `post-writing` skill (Step 6).
+
 ## You Do NOT
 
 - Create article directories (that's the Article Preparation skill)
 - Write articles (that's the Writing skill)
 - Review articles (that's the Review skill)
+- Write social media posts (that's the post-writing skill)
 
 ## Behavior Principles
 
