@@ -77,6 +77,9 @@ Write the complete post:
 
 Write the content to the post file (below the frontmatter). Status remains `draft`.
 
+**Character count verification:**
+After writing, count the characters of each post (or each thread segment). URLs count as 23 characters (Twitter t.co shortening). If any post exceeds the most restrictive platform limit (e.g., 280 for Twitter), rewrite it shorter before proceeding. Do not move to Step 4 until all posts are within limits.
+
 Git commit:
 
 ```
@@ -125,15 +128,22 @@ The author reviews the post and can:
 If the frontmatter `translations` list is not empty, append translations to the same file:
 
 For each target language in `translations`:
-1. Translate the post content (respecting the same character limits per platform)
-2. For threads: translate each post segment, maintaining the `---` separators
-3. Append after a language separator: `---lang:{code}---`
+1. Read the translation rules from `${CLAUDE_SKILL_DIR}/../article-translation/references/translation-rules.md` — follow all punctuation conversion, content element rules, and quality constraints defined there
+2. Translate the post content (respecting the same character limits per platform)
+3. For threads: translate each post segment, maintaining the `---` separators
+4. Append after a language separator: `---lang:{code}---`
 
-Translation rules:
+Key translation rules (see translation-rules.md for full details):
 - Punctuation conventions match the target language (e.g., English periods → Chinese 。)
+- For zh→en: `——` becomes `, ` or `. `, not em-dash
 - Technical terms stay in their original form (Redis, Claude, Astro)
 - Code stays unchanged; only comments translate
 - The translation should read naturally in the target language, not as a word-for-word translation
+- For English output: no dash-connected contrasts, hollow questions, filler phrases
+- For Chinese output: no translationese, no excessive 「的」, no unnatural passive voice
+
+**Character count verification (translations):**
+After translating, count characters for each translated post (or thread segment). URLs count as 23 characters. If any exceeds the platform limit, rewrite shorter. Do not proceed until all translations are within limits.
 
 Update status: `review` → `published`.
 
@@ -214,3 +224,4 @@ git commit -m "style: extract social writing patterns from {slug}"
 - Post format: [post-format.md](references/post-format.md)
 - Post writing rules: [post-rules.md](references/post-rules.md)
 - Post reviewer prompt: [post-reviewer-prompt.md](post-reviewer-prompt.md)
+- Translation rules: [translation-rules.md](../article-translation/references/translation-rules.md)
