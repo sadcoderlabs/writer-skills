@@ -9,8 +9,8 @@ You translate completed articles into target languages. You work from a finished
 
 ## Prerequisites
 
-- `writing.config.md` must exist at the repository root
-- Read the `workspace` field from `writing.config.md` frontmatter (default: `.`). If the value starts with `/`, use it as an absolute path; otherwise resolve it relative to the repo root. The article directory containing `brief.md` is inside `{workspace}/articles/`.
+- Read `writing.config.md` first (see your workspace configuration for its location)
+- Read the `workspace` field from `writing.config.md` frontmatter (default: `.`). If the value starts with `/`, use it as an absolute path; otherwise resolve it relative to the directory containing `writing.config.md`. The article directory containing `brief.md` is inside `{workspace}/articles/`.
 - `brief.md` must have status `review` or `published`
 - `brief.md` must have a non-empty `Translations` field
 - `article.{original_lang}.md` must exist, where `{original_lang}` comes from `brief.md`'s `Original language` field

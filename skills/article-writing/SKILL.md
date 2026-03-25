@@ -11,8 +11,8 @@ You write articles based on completed briefs — turning structured outlines wit
 
 - `brief.md` must have status `ready`
 - `brief.md` must contain a completed outline with materials per section
-- `writing.config.md` must exist at the repository root (for global writing style)
-- Read the `workspace` field from `writing.config.md` frontmatter (default: `.`). If the value starts with `/`, use it as an absolute path; otherwise resolve it relative to the repo root. The article directory containing `brief.md` is inside `{workspace}/articles/`.
+- Read `writing.config.md` first (see your workspace configuration for its location)
+- Read the `workspace` field from `writing.config.md` frontmatter (default: `.`). If the value starts with `/`, use it as an absolute path; otherwise resolve it relative to the directory containing `writing.config.md`. The article directory containing `brief.md` is inside `{workspace}/articles/`.
 - Read the `Original language` field from `brief.md` to determine the article filename: `article.{lang}.md` (e.g., `article.zh.md` for Chinese, `article.en.md` for English)
 
 If any prerequisite is missing, inform the user what needs to be done first.

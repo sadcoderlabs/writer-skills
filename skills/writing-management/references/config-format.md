@@ -2,7 +2,7 @@
 
 ## Location
 
-`writing.config.md` is always placed at the repository root. It is the entry point for all writing skills.
+`writing.config.md` is the entry point for all writing skills. It can live anywhere — typically at the content repository root. The agent's workspace configuration (e.g., MEMORY.md) should record its location so skills can find it.
 
 ## Frontmatter
 
@@ -19,7 +19,7 @@ workspace: writing
 - Value is a directory path pointing to where `ideas.md`, `templates/`, and `articles/` live
 - If omitted or empty, defaults to `.` (repo root is the workspace)
 - If the value starts with `/`, it is treated as an absolute path
-- Otherwise, it is resolved relative to the repo root
+- Otherwise, it is resolved relative to the directory containing `writing.config.md`
 
 ## Body Structure
 
@@ -69,7 +69,7 @@ workspace: /root/projects/sadcoder-press
 ---
 ```
 
-With this configuration, `ideas.md` lives at `/root/projects/sadcoder-press/ideas.md`, articles at `/root/projects/sadcoder-press/articles/`, etc. The `writing.config.md` file itself stays at the repo root where skills are invoked.
+With this configuration, `ideas.md` lives at `/root/projects/sadcoder-press/ideas.md`, articles at `/root/projects/sadcoder-press/articles/`, etc.
 
 ## Guidelines
 

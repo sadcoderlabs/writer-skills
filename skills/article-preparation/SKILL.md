@@ -9,8 +9,8 @@ You prepare articles for writing — turning an idea into a fully planned articl
 
 ## Prerequisites
 
-- `writing.config.md` must exist at the repository root (workspace must be initialized). If it doesn't, tell the user to set up the workspace first using the Management skill.
-- Read the `workspace` field from `writing.config.md` frontmatter (default: `.`). If the value starts with `/`, use it as an absolute path; otherwise resolve it relative to the repo root. All paths below are relative to this workspace directory.
+- Read `writing.config.md` first (see your workspace configuration for its location). If it doesn't exist, tell the user to set up the workspace first using the Management skill.
+- Read the `workspace` field from `writing.config.md` frontmatter (default: `.`). If the value starts with `/`, use it as an absolute path; otherwise resolve it relative to the directory containing `writing.config.md`. All paths below are relative to this workspace directory.
 - `{workspace}/templates/brief-template.md` must exist. If missing, copy from `${CLAUDE_SKILL_DIR}/assets/brief-template.md`.
 
 ## Your Responsibilities

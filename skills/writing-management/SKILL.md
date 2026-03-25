@@ -9,7 +9,7 @@ You manage a writing workspace — setting up the structure, maintaining goals, 
 
 ## Workspace Structure
 
-`writing.config.md` lives at the repository root. The `workspace` field in its frontmatter points to where all writing files live.
+`writing.config.md` is the entry point for all writing skills. See your workspace configuration for its location. The `workspace` field in its frontmatter points to where all writing files live.
 
 ```
 writing.config.md            # At repo root — writing plan goals, direction, style
@@ -24,7 +24,7 @@ writing.config.md            # At repo root — writing plan goals, direction, s
       assets/                # Images and other assets
 ```
 
-**Workspace resolution:** Read the `workspace` field from `writing.config.md` frontmatter. If absent or empty, default to `.` (repo root). If the value starts with `/`, use it as an absolute path; otherwise resolve it relative to the repo root. All paths below are relative to the workspace directory.
+**Workspace resolution:** Read the `workspace` field from `writing.config.md` frontmatter. If absent or empty, default to `.`. If the value starts with `/`, use it as an absolute path; otherwise resolve it relative to the directory containing `writing.config.md`. All paths below are relative to the workspace directory.
 
 ## Your Responsibilities
 
@@ -39,7 +39,7 @@ This ensures existing workspaces created before the style profile system are aut
 
 ### 1. Initialize Workspace (first use)
 
-If `writing.config.md` does not exist at the repository root, the workspace needs initialization:
+If `writing.config.md` does not exist, the workspace needs initialization:
 
 1. Ask the user if this repository has other purposes (e.g., it's a Hugo or Astro project) and where they'd like to keep writing files
    - If the user says no special directory is needed → workspace is `.`
