@@ -19,6 +19,14 @@ If any prerequisite is missing, inform the user what needs to be done first.
 
 ## Your Responsibilities
 
+### Step 0: Check Think Level (When Available)
+
+Before starting the writing workflow, check your current think level **if your runtime exposes it**.
+
+- If you can check and the level is **not `high`**: **do not start writing yet**. Ask the author to run `/think high`, then continue only after the level is high.
+- If you can check and the level is `high`: continue to Step 1.
+- If your runtime cannot check think level: skip this step and continue normally.
+
 ### Step 1: Read All Inputs
 
 Read and understand:
