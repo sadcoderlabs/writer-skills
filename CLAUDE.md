@@ -8,13 +8,14 @@ A writing workflow system powered by AI agent skills, following the [Agent Skill
 
 ## Architecture
 
-Five skills form a pipeline, each with clear boundaries:
+Six skills form the system, each with clear boundaries:
 
 1. **writing-management** (`skills/writing-management/`) — Workspace init, goals/style config (`writing.config.md`), style profiles (`profiles/`), idea pool (`ideas.md`), social style guide, batch style extraction
 2. **article-preparation** (`skills/article-preparation/`) — Creates article directory, guides brief completion, optional topic research, interviews author for materials, builds outline with materials
 3. **article-writing** (`skills/article-writing/`) — Writes draft from materials-based outline, runs automated review and fact-check loops, revises with author feedback
 4. **article-translation** (`skills/article-translation/`) — Translates completed articles into target languages, runs automated translation review loop
-5. **post-writing** (`skills/post-writing/`) — Writes social media posts (single or thread), supports article-derived and standalone creation, lightweight automated review, in-file translation, style feedback extraction
+5. **post-writing** (`skills/post-writing/`) — Writes social media posts (single or thread), supports article-derived, standalone, and engagement-sourced creation, lightweight automated review, in-file translation, style feedback extraction
+6. **x-engagement** (`skills/x-engagement/`) — Daily X engagement discovery via Grok x_search, tweet verification via Syndication API, agent-curated recommendations with draft copy, shared inbox for human execution
 
 Each skill has: `SKILL.md` (main definition with frontmatter), `references/` (supporting docs), `assets/` (templates).
 
@@ -39,6 +40,10 @@ writing.config.md                # At repo root — goals, direction, style (wor
   templates/brief-template.md    # Article brief template
   social-style-guide.md          # Social style guide (evolving, jackbutcher.md-inspired)
   posts/{YYYY-MM-DD}_{slug}.md   # Social media posts (flat files, with in-file translations)
+  engagement/                    # X engagement data (conditional on x-engagement skill)
+    interests.yaml               # Interest list for X discovery
+    inbox.yaml                   # Rolling recommendation log
+    candidates.yaml              # Discovery temp (overwritten each run)
   articles/{YYYY-MM-DD}_{slug}/
     article.{lang}.md            # Article content (clean prose, no metadata). {lang} = original language code from brief.md
     brief.md                     # Brief, materials, outline, progress tracking
