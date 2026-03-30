@@ -98,7 +98,6 @@ async function callGrokXSearch(
     input: [{ role: "user", content: prompt }],
     tools,
     tool_choice: "required",
-    include: ["inline_citations"],
   };
 
   // If there are tracked accounts, do an additional search with allowed_x_handles
