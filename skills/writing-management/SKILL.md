@@ -48,6 +48,8 @@ This ensures existing workspaces created before the style profile system are aut
 4. If `writing.config.md` exists and `${CLAUDE_SKILL_DIR}/../post-writing/SKILL.md` exists but `writing.config.md` does not contain a `## Social` section, append the Social section from the config template
 5. If `writing.config.md` exists and `${CLAUDE_SKILL_DIR}/../x-engagement/SKILL.md` exists but `{workspace}/engagement/` does not exist, create the directory and create `{workspace}/engagement/interests.yaml` with empty structure (`keywords: []`, `hashtags: []`, `accounts: []`)
 6. If `writing.config.md` exists and `${CLAUDE_SKILL_DIR}/../x-engagement/SKILL.md` exists but `writing.config.md` does not contain a `## Engagement` section, do NOT auto-append — the x-engagement skill handles its own setup interactively (it asks the user for notification channel preferences)
+7. If `{workspace}/social-style-guide.md` exists but does not contain a `## Persona` section, prepend the Persona placeholder section at the top (after the `# Social Style Guide` heading): `## Persona\n\n(Not yet defined — will be set up on first use of post-writing or x-engagement.)\n`
+8. If `{workspace}/social-style-guide.md` exists but does not contain a `## Good/Bad Examples` section, append it at the end: `## Good/Bad Examples\n\n(No examples yet — will accumulate through feedback from post-writing and x-engagement.)\n`
 
 ### 1. Initialize Workspace (first use)
 
