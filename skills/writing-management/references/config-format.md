@@ -124,3 +124,21 @@ Direct and conversational. Short paragraphs. Use concrete examples from our own 
 - Keep all sections concise — one paragraph each
 - This file is the anchor for ambient goal alignment and style consistency across all skills
 - "Social" is optional — only present when the post-writing skill is installed. It configures target platforms, style guide path, and language preferences for social media posts.
+
+## Engagement Section (Optional)
+
+When the `x-engagement` skill is installed and first used, `writing.config.md` includes an additional `## Engagement` section:
+
+```markdown
+## Engagement
+- Notification channel: slack:C0AMED6RYHJ
+- Schedule: "11:00 GMT+9"
+- Language: en
+```
+
+**Fields:**
+- `Notification channel` — where to send daily engagement recommendations. Format is a soft description (e.g., `slack:CHANNEL_ID`, `discord:#channel`, `terminal`). No default — the x-engagement skill asks the user during first use.
+- `Schedule` — preferred time for the daily engagement run. For scheduler reference only — the skill itself does not handle scheduling.
+- `Language` — search language for X discovery. Currently only `en` is supported.
+
+Unlike the `## Social` section, `## Engagement` is NOT added during workspace initialization. It is created interactively by the x-engagement skill when first used, because it requires user input (notification channel preference).

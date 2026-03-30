@@ -25,6 +25,10 @@ writing.config.md            # At repo root — writing plan goals, direction, s
   posts/                     # Social media posts (flat files, conditional on post-writing skill)
     {YYYY-MM-DD}_{slug}.md   # Post content with frontmatter
   social-style-guide.md      # Social style guide (evolving, conditional on post-writing skill)
+  engagement/                # X engagement data (conditional on x-engagement skill)
+    interests.yaml           # Fixed interest list (manually maintained)
+    inbox.yaml               # Rolling log of engagement recommendations
+    candidates.yaml          # Discovery temp (overwritten each run)
 ```
 
 **Workspace resolution:** Read the `workspace` field from `writing.config.md` frontmatter. If absent or empty, default to `.`. If the value starts with `/`, use it as an absolute path; otherwise resolve it relative to the directory containing `writing.config.md`. All paths below are relative to the workspace directory.
@@ -42,6 +46,8 @@ This ensures existing workspaces created before the style profile system are aut
 
 3. If `writing.config.md` exists and `${CLAUDE_SKILL_DIR}/../post-writing/SKILL.md` exists but `{workspace}/posts/` does not, create the directory and copy `${CLAUDE_SKILL_DIR}/assets/social-style-guide-template.md` to `{workspace}/social-style-guide.md`
 4. If `writing.config.md` exists and `${CLAUDE_SKILL_DIR}/../post-writing/SKILL.md` exists but `writing.config.md` does not contain a `## Social` section, append the Social section from the config template
+5. If `writing.config.md` exists and `${CLAUDE_SKILL_DIR}/../x-engagement/SKILL.md` exists but `{workspace}/engagement/` does not exist, create the directory and create `{workspace}/engagement/interests.yaml` with empty structure (`keywords: []`, `hashtags: []`, `accounts: []`)
+6. If `writing.config.md` exists and `${CLAUDE_SKILL_DIR}/../x-engagement/SKILL.md` exists but `writing.config.md` does not contain a `## Engagement` section, do NOT auto-append — the x-engagement skill handles its own setup interactively (it asks the user for notification channel preferences)
 
 ### 1. Initialize Workspace (first use)
 
@@ -62,6 +68,10 @@ If `writing.config.md` does not exist, the workspace needs initialization:
      - Create `{workspace}/posts/` directory
      - Copy `${CLAUDE_SKILL_DIR}/assets/social-style-guide-template.md` to `{workspace}/social-style-guide.md`
      - Include `## Social` section when writing `writing.config.md` (see [config format](references/config-format.md))
+   - **If `${CLAUDE_SKILL_DIR}/../x-engagement/SKILL.md` exists** (engagement features enabled):
+     - Create `{workspace}/engagement/` directory
+     - Create `{workspace}/engagement/interests.yaml` with empty structure (`keywords: []`, `hashtags: []`, `accounts: []`)
+     - Note: `## Engagement` section in `writing.config.md` is NOT added during init — the x-engagement skill handles setup interactively when first used
 4. Guide the user to describe who they are and their writing goals
    - Propose suggestions based on what you know from the conversation
    - User confirms or adjusts
