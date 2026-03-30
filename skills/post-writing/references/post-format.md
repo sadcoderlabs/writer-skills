@@ -22,8 +22,9 @@ platforms: [twitter, threads, bluesky]
 
 - `type` — `single` for a standalone post, `thread` for a multi-post thread
 - `status` — lifecycle state: `draft` → `review` → `published`
-- `source` — `standalone` for independently created posts, `article` for posts derived from an article
+- `source` — `standalone` for independently created posts, `article` for posts derived from an article, `engagement` for posts inspired by an engagement recommendation
 - `source_article` — relative path from workspace to the source article directory (only when `source: article`)
+- `source_tweet` — URL of the inspiring tweet (only when `source: engagement`)
 - `original_language` — ISO 639-1 code for the primary language (e.g., `en`, `zh`)
 - `translations` — list of ISO 639-1 codes for translated versions included in this file
 - `platforms` — list of target social platforms; determines character limits for the post
