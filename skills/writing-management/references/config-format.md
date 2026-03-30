@@ -134,11 +134,13 @@ When the `x-engagement` skill is installed and first used, `writing.config.md` i
 - Notification channel: slack:C0AMED6RYHJ
 - Schedule: "11:00 GMT+9"
 - Language: en
+- User language: zh
 ```
 
 **Fields:**
 - `Notification channel` — where to send daily engagement recommendations. Format is a soft description (e.g., `slack:CHANNEL_ID`, `discord:#channel`, `terminal`). No default — the x-engagement skill asks the user during first use.
 - `Schedule` — preferred time for the daily engagement run. For scheduler reference only — the skill itself does not handle scheduling.
 - `Language` — search language for X discovery. Currently only `en` is supported.
+- `User language` — the language the user reads and thinks in (ISO 639-1 code). When this differs from `Language`, notifications include bilingual content: original tweets with translations, and draft copy in both languages. Defaults to the same value as `Language` if omitted.
 
 Unlike the `## Social` section, `## Engagement` is NOT added during workspace initialization. It is created interactively by the x-engagement skill when first used, because it requires user input (notification channel preference).

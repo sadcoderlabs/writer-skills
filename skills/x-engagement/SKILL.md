@@ -19,7 +19,8 @@ If `writing.config.md` does not have a `## Engagement` section, guide the user t
 1. Ask for their preferred notification channel (e.g., `slack:CHANNEL_ID`, `discord:#channel`, `terminal`)
 2. Ask for their preferred schedule time (e.g., `11:00 GMT+9`)
 3. Confirm search language (default: `en`)
-4. Append the `## Engagement` section to `writing.config.md`
+4. Ask for the user's language — the language they read and think in (default: same as search language). When user language differs from search language, notifications include bilingual content.
+5. Append the `## Engagement` section to `writing.config.md`
 
 If `{workspace}/engagement/` does not exist, create:
 - `{workspace}/engagement/` directory
@@ -100,28 +101,24 @@ After adding all items, update `author` and `content` fields in `{workspace}/eng
 
 ### Step 4 — Notify User
 
-Read the notification channel from `writing.config.md` → `## Engagement` → `Notification channel`.
+Read the notification channel and user language from `writing.config.md` → `## Engagement`.
+
+**Bilingual mode:** When `User language` differs from `Language` (search language), all content in the notification must be bilingual — original tweet content, draft copy, and UI text all appear in both languages. This lets the user understand everything at a glance in their own language while having ready-to-post English copy.
 
 Format the daily recommendation summary:
 
+**Monolingual** (user language = search language):
+
 ```
-🐦 今日 X 互動推薦
+🐦 Today's X Engagement Recommendations
 
 📌 Reply to @author
 https://x.com/author/status/123
-原文：「Original tweet content...」
+Original: "Tweet content..."
 
-版本 A: 「Draft A...」
-版本 B: 「Draft B...」
-版本 C: 「Draft C...」
-
-📌 Quote @author
-https://x.com/author/status/456
-原文：「Original tweet content...」
-
-版本 A: 「Draft A...」
-版本 B: 「Draft B...」
-版本 C: 「Draft C...」
+Version A: "Draft A..."
+Version B: "Draft B..."
+Version C: "Draft C..."
 
 🔁 Retweet @author
 https://x.com/author/status/789
@@ -129,14 +126,61 @@ https://x.com/author/status/789
 👍 Like @author
 https://x.com/author/status/012
 
+💡 New post idea (inspired by @author)
+Version A: "Draft A..."
+Version B: "Draft B..."
+Version C: "Draft C..."
+
+---
+Run post-writing skill to refine drafts
+```
+
+**Bilingual** (e.g., user language: zh, search language: en):
+
+```
+🐦 今日 X 互動推薦
+
+📌 Reply to @author
+https://x.com/author/status/123
+原文：「English tweet content...」
+翻譯：「中文翻譯...」
+
+版本 A:
+  EN: "English draft A..."
+  ZH: 「中文翻譯...」
+版本 B:
+  EN: "English draft B..."
+  ZH: 「中文翻譯...」
+版本 C:
+  EN: "English draft C..."
+  ZH: 「中文翻譯...」
+
+🔁 Retweet @author
+https://x.com/author/status/789
+原文：「English tweet content...」
+翻譯：「中文翻譯...」
+
+👍 Like @author
+https://x.com/author/status/012
+原文：「English tweet content...」
+翻譯：「中文翻譯...」
+
 💡 新貼文靈感（受 @author 啟發）
-版本 A: 「Draft A...」
-版本 B: 「Draft B...」
-版本 C: 「Draft C...」
+版本 A:
+  EN: "English draft A..."
+  ZH: 「中文翻譯...」
+版本 B:
+  EN: "English draft B..."
+  ZH: 「中文翻譯...」
+版本 C:
+  EN: "English draft C..."
+  ZH: 「中文翻譯...」
 
 ---
 需要精修文案請執行 post-writing skill
 ```
+
+The EN lines are copy-paste ready for posting on X. The user-language lines help the user understand and choose.
 
 Send via the configured notification channel. If the channel is `terminal`, display the summary directly in the conversation.
 
