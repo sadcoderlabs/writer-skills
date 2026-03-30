@@ -1,6 +1,8 @@
 # Engagement Rules
 
-Rules for curating X engagement recommendations. These guide the agent during the Curate step.
+Rules for curating X engagement recommendations. These guide the agent during the Curate step when selecting which tweets to engage with and what action type to use.
+
+Draft quality is governed by shared resources: `post-rules.md` (prohibited patterns, quality requirements) and `social-style-guide.md` (Persona, Voice, Good/Bad Examples).
 
 ## Curation Criteria
 
@@ -17,27 +19,6 @@ Rules for curating X engagement recommendations. These guide the agent during th
 - Promotional tweets or product launches (unless directly relevant)
 - Rage bait or controversy-farming tweets
 - Tweets with no engagement (0 likes, 0 replies) — likely low visibility
-
-## Draft Rules
-
-### Reply drafts
-
-- Add value: share your experience, a specific example, or a contrasting perspective
-- Don't just agree ("Great point!") — extend the conversation
-- Keep within platform character limits (280 for X)
-- Match the tone of the original tweet (casual reply to casual tweet)
-
-### Quote retweet drafts
-
-- Add context or your own take — don't just repeat what the original said
-- Good for connecting the tweet to something you've written or experienced
-- The quote should make sense on its own (your followers may not click through)
-
-### Post drafts (inspired standalone)
-
-- The original tweet is inspiration, not source material
-- Your post should stand alone without the reader knowing what inspired it
-- Follow the social style guide for voice and structure
 
 ## Action Type Selection
 
