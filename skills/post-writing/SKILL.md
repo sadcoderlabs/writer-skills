@@ -20,7 +20,22 @@ If any prerequisite is missing, inform the user. If `## Social` is missing, sugg
 
 ### Step 1: Choose Source
 
-Ask the user what they want to write about. Three source modes:
+**Engagement inbox check:** Before presenting source options, check if `{workspace}/engagement/inbox.yaml` exists. If it does, read it and filter for items with `status: pending` and `action` in (`reply`, `quote`, `post`). If there are pending items:
+
+> 📬 You have {N} pending engagement recommendations:
+> {For each: action type + @author + content preview (first 50 chars)}
+>
+> Would you like to work on one of these, or write something else?
+
+If the user selects an engagement item:
+- For `reply` / `quote`: bring the original tweet content and 3 draft versions into the drafting flow. The drafts serve as initial versions — the user can pick one, edit, or ask for new options. Skip Step 2 (direction is already set by the action type and drafts). Proceed to Step 3 with the selected/edited draft.
+- For `post`: treat as standalone with context. The inspiring tweet is reference material (not source material — the post should stand alone). Proceed to Step 2 for direction proposal.
+
+After the user confirms the final post in Step 5, update the corresponding item in `{workspace}/engagement/inbox.yaml`: set `status` to `done`.
+
+If no engagement inbox exists or it's empty, proceed normally with the four source modes below.
+
+Ask the user what they want to write about. Four source modes:
 
 **From ideas.md:** The user picks a `[post]` or `[article, post]` idea from `{workspace}/ideas.md`. Read the idea description as the starting point.
 
@@ -33,13 +48,16 @@ The article's original language is in `brief.md`'s `Original language` field.
 
 **Standalone:** The user describes a topic or shares a thought directly in conversation. Their description is the source material.
 
+**From engagement inbox:** The user selects a pending item from `{workspace}/engagement/inbox.yaml`. The item includes the original tweet, action type, and draft versions. See the engagement inbox check above for how each action type flows.
+
 After determining the source:
 1. Propose a slug for the post file. Format: `{YYYY-MM-DD}_{slug}` (e.g., `2026-03-25_ghostwriter-mode-insight`)
 2. Create the post file at `{workspace}/posts/{YYYY-MM-DD}_{slug}.md` with frontmatter:
    - `type`: propose `single` or `thread` based on the content (user confirms)
    - `status`: `draft`
-   - `source`: `standalone` or `article`
+   - `source`: `standalone`, `article`, or `engagement`
    - `source_article`: path to article directory (only if source is article)
+   - `source_tweet`: URL of the inspiring tweet (only if source is engagement)
    - `original_language`: from `## Social` → `Default post language`
    - `translations`: from `## Social` → `Translations` (as a list)
    - `platforms`: from `## Social` → `Platforms` (as a list)
@@ -210,6 +228,7 @@ git commit -m "style: extract social writing patterns from {slug}"
 - Write articles (that's article-writing)
 - Run batch style analysis across all posts (that's writing-management's batch extraction)
 - Publish to social platforms (out of scope — this skill produces the content)
+- Discover engagement opportunities (that's x-engagement — this skill writes the content)
 - Fabricate claims, examples, or statistics not in the source material
 
 ## Behavior Principles
