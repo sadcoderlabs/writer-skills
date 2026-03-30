@@ -152,21 +152,32 @@ Format the daily recommendation summary:
 📌 Reply to @author
 https://x.com/author/status/123
 Original: "Tweet content..."
+Why this tweet: Reason for engaging — what makes this worth replying to.
 
 Version A: "Draft A..."
+  → Strategy: Why this version takes this angle (e.g., "self-deprecating confession — we have the same problem")
 Version B: "Draft B..."
+  → Strategy: Why this version takes a different angle
 Version C: "Draft C..."
+  → Strategy: Why this version takes yet another angle
 
 🔁 Retweet @author
 https://x.com/author/status/789
+Why: Reason for retweeting.
 
 👍 Like @author
 https://x.com/author/status/012
+Why: Reason for liking.
 
 💡 New post idea (inspired by @author)
+Why: What sparked this idea.
+
 Version A: "Draft A..."
+  → Strategy: What angle this version takes
 Version B: "Draft B..."
+  → Strategy: What angle this version takes
 Version C: "Draft C..."
+  → Strategy: What angle this version takes
 
 ---
 Run post-writing skill to refine drafts
@@ -181,37 +192,48 @@ Run post-writing skill to refine drafts
 https://x.com/author/status/123
 原文：「English tweet content...」
 翻譯：「中文翻譯...」
+為什麼選這則：為什麼值得回覆。
 
 版本 A:
   EN: "English draft A..."
   ZH: 「中文翻譯...」
+  策略：這個版本為什麼這樣寫（例如「自嘲認罪——我們有同樣問題」）
 版本 B:
   EN: "English draft B..."
   ZH: 「中文翻譯...」
+  策略：這個版本的不同切入角度
 版本 C:
   EN: "English draft C..."
   ZH: 「中文翻譯...」
+  策略：這個版本的另一個角度
 
 🔁 Retweet @author
 https://x.com/author/status/789
 原文：「English tweet content...」
 翻譯：「中文翻譯...」
+理由：為什麼值得轉推。
 
 👍 Like @author
 https://x.com/author/status/012
 原文：「English tweet content...」
 翻譯：「中文翻譯...」
+理由：為什麼值得按讚。
 
 💡 新貼文靈感（受 @author 啟發）
+理由：什麼啟發了這個想法。
+
 版本 A:
   EN: "English draft A..."
   ZH: 「中文翻譯...」
+  策略：這個版本的切入角度
 版本 B:
   EN: "English draft B..."
   ZH: 「中文翻譯...」
+  策略：這個版本的切入角度
 版本 C:
   EN: "English draft C..."
   ZH: 「中文翻譯...」
+  策略：這個版本的切入角度
 
 ---
 需要精修文案請執行 post-writing skill
