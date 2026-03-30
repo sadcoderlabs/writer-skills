@@ -83,11 +83,13 @@ Present the options to the user. They choose or adjust the direction.
 
 ### Step 3: Write Draft
 
-Read the post writing rules from `${CLAUDE_SKILL_DIR}/references/post-rules.md`.
+**Read quality resources (mandatory, in this order):**
+
+1. `{workspace}/social-style-guide.md` → **Persona** section. If it contains placeholder text ("Not yet defined"), guide the user to set up their Persona before continuing — read `writing.config.md` About + Writing Goals, then ask about social identity, expertise, image, and voice (one question at a time, ghostwriter mode). Write confirmed Persona to social-style-guide.md.
+2. `{workspace}/social-style-guide.md` → **Voice**, **Anti-Patterns**, **Good/Bad Examples** sections (skip any that are still placeholder — fall back to `writing.config.md` → `## Writing Style` for general voice guidance)
+3. `${CLAUDE_SKILL_DIR}/references/post-rules.md` → prohibited patterns, quality requirements
 
 Write the complete post:
-- Follow the social style guide's Voice, Structure, Rhetorical Patterns (if populated)
-- If the style guide is mostly empty, fall back to `writing.config.md` → `## Writing Style`
 - Respect platform character limits — use the most restrictive limit among the post's target platforms (see post-rules.md for the limits table)
 - For threads: each post between `---` separators must independently fit within the character limit
 - For article-derived posts: stay faithful to the source material — no exaggeration, no distortion (materials are sacred)
@@ -184,17 +186,19 @@ If the author made changes during Step 5 (editing the post before confirming), c
 
 **Skip this step if:** the author approved the post as-is after review, or the changes were minor wording tweaks (fewer than 3 words changed total).
 
-**6a.** Compare the post before and after author edits. Identify revision patterns:
-- Same type of correction appearing 2+ times
-- Author explicitly stating a preference ("I don't like...", "I prefer...")
+Follow the feedback extraction process defined in [feedback-extraction-format.md](references/feedback-extraction-format.md):
 
-**6b.** For each pattern, produce:
-- **Pattern name**: short description
-- **Bad example**: text before the author's revision
-- **Good example**: text after the author's revision
-- **Target section**: which section of `social-style-guide.md` this belongs in (Voice, Structure, Rhetorical Patterns, Opening Patterns, Signature Vocabulary, Anti-Patterns, Reference Posts)
+- `before`: the post content as written in Step 3 (before author edits)
+- `after`: the post content after author edits (the confirmed version)
+- `reason`: "" (inferred from diff — analyze the changes to determine why)
+- `source`: `"post"`
 
-**6c.** Present in ghostwriter mode:
+Read `{workspace}/social-style-guide.md` and `${CLAUDE_SKILL_DIR}/references/post-rules.md` to understand existing patterns before extracting.
+
+If no patterns found:
+> No repeatable patterns found in your edits.
+
+If patterns found, present in ghostwriter mode:
 
 > Here are some patterns from your edits that could improve future posts:
 >
@@ -205,16 +209,18 @@ If the author made changes during Step 5 (editing the post before confirming), c
 >
 > Would you like to add any of these to your social style guide?
 
-**6d.** Author confirms. They can accept, adjust, or skip each pattern.
+Author confirms. They can accept, adjust, or skip each pattern.
 
-**6e.** Apply confirmed patterns to `{workspace}/social-style-guide.md`. If a section still has its placeholder text ("Not yet defined — will evolve through writing."), replace the placeholder with the new content. If the section already has content, append.
+Apply confirmed patterns to `{workspace}/social-style-guide.md`. If a section still has its placeholder text, replace the placeholder with the new content. If the section already has content, append.
 
-**6f.** Commit if any changes were made:
+Commit if any changes were made:
 
 ```
 git add {workspace}/social-style-guide.md
 git commit -m "style: extract social writing patterns from {slug}"
 ```
+
+If the workspace is an absolute path, run git commands from the workspace directory. Skip if not a git repository.
 
 ## Output
 
@@ -243,4 +249,5 @@ git commit -m "style: extract social writing patterns from {slug}"
 - Post format: [post-format.md](references/post-format.md)
 - Post writing rules: [post-rules.md](references/post-rules.md)
 - Post reviewer prompt: [post-reviewer-prompt.md](post-reviewer-prompt.md)
+- Feedback extraction format: [feedback-extraction-format.md](references/feedback-extraction-format.md)
 - Translation rules: [translation-rules.md](../article-translation/references/translation-rules.md)
