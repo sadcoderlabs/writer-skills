@@ -59,22 +59,59 @@ This script:
 
 **After running:** Read `{workspace}/engagement/candidates.yaml` to see the verified candidates.
 
-### Step 3 — Curate
+### Step 3 — Curate and Review
 
-Read the curation rules from `${CLAUDE_SKILL_DIR}/references/engagement-rules.md`.
+#### 3a. Read quality resources (mandatory, in this order)
+
+Before drafting anything, read ALL of the following:
+
+1. `{workspace}/social-style-guide.md` → **Persona** section. If it contains placeholder text ("Not yet defined"), stop and guide the user to set up their Persona before continuing (see Prerequisites guidance below).
+2. `{workspace}/social-style-guide.md` → **Voice**, **Anti-Patterns**, **Good/Bad Examples** sections (skip any that are still placeholder)
+3. `${CLAUDE_SKILL_DIR}/../post-writing/references/post-rules.md` → prohibited patterns, quality requirements
+4. `${CLAUDE_SKILL_DIR}/references/engagement-rules.md` → curation criteria (what to engage with, action type, quantity)
+
+**Persona setup guidance:** Read `writing.config.md` About + Writing Goals as a starting point. Ask the user one question at a time in ghostwriter mode:
+- What is your identity on social media? (engineer, team account, founder...)
+- What is your core expertise? (what you actually build/do)
+- What image do you want to project? (practitioner, observer, educator...)
+- Who is "I" in your posts? (first person individual vs. team "we")
+Synthesize answers into a Persona paragraph, confirm with user, write to social-style-guide.md.
+
+#### 3b. Select candidates and draft
 
 Read `{workspace}/engagement/candidates.yaml` and combine with internal context:
 - Recent articles from `{workspace}/articles/` (scan titles and briefs from the past 2 weeks)
 - Recent posts from `{workspace}/posts/` (past 2 weeks)
 - Pending ideas from `{workspace}/ideas.md`
-- Social style guide from `{workspace}/social-style-guide.md` (if it exists)
 - Agent working memory (if available)
 
 For each candidate worth engaging:
 
-1. **Decide action type**: reply, quote, retweet, like, or post (see engagement-rules.md for selection criteria)
-2. **Draft copy** (for reply/quote/post actions): Write 3 versions following the style guide and engagement rules
-3. **Write to inbox**: Use the add script for each recommendation:
+1. **Decide action type**: reply, quote, retweet, like, or post (see engagement-rules.md)
+2. **Draft copy** (for reply/quote/post actions): Write 3 versions. Every version must:
+   - Sound like the person described in Persona (not a generic AI assistant)
+   - Include concrete details from your actual experience (project names, numbers, specific tools)
+   - Avoid all prohibited patterns from post-rules.md
+   - Not resemble any Bad Example in social-style-guide.md
+
+#### 3c. Automated review loop (max 3 rounds)
+
+Dispatch an **engagement-reviewer subagent** to batch-review all drafts. See [engagement-reviewer-prompt.md](engagement-reviewer-prompt.md) for the dispatch template.
+
+Provide the subagent with:
+- All recommended items + all their draft versions
+- `${CLAUDE_SKILL_DIR}/../post-writing/references/post-rules.md`
+- `{workspace}/social-style-guide.md`
+- Each item's original tweet content
+
+**After subagent returns:**
+- **All versions pass** → proceed to 3d
+- **Some versions fail** → rewrite only the failed versions using the subagent's specific feedback, then dispatch the subagent again with only the rewritten versions
+- **After 3 rounds, some still fail** → mark those items with `⚠️` in the notification (Step 4) to warn the user the draft quality is uncertain
+
+#### 3d. Write to inbox
+
+Use `bun scripts/add.ts` to write each recommendation to inbox (same as before):
 
 ```bash
 cd ${CLAUDE_SKILL_DIR} && bun scripts/add.ts \
@@ -184,6 +221,47 @@ The EN lines are copy-paste ready for posting on X. The user-language lines help
 
 Send via the configured notification channel. If the channel is `terminal`, display the summary directly in the conversation.
 
+### Step 5 — User Feedback (Optional)
+
+After the user receives the notification (Step 4), they may provide feedback on drafts before executing.
+
+**Skip this step if:** the user proceeds directly to copy-paste and execute without commenting on draft quality.
+
+#### Negative feedback
+
+1. User points out which version is bad and why (e.g., "Version A sounds like a consultant, not like us")
+2. Rewrite the rejected version based on the feedback
+3. Present the new version for confirmation
+4. Once confirmed, follow the feedback extraction process defined in `${CLAUDE_SKILL_DIR}/../post-writing/references/feedback-extraction-format.md`:
+   - `before`: the original rejected draft
+   - `after`: the confirmed rewrite
+   - `reason`: the user's stated reason
+   - `source`: `"engagement"`
+5. Present extracted patterns to the user for confirmation
+6. Write confirmed patterns to `{workspace}/social-style-guide.md` — replace placeholder text if the target section still has it, otherwise append
+7. Update the draft in `{workspace}/engagement/inbox.yaml`
+
+#### Positive feedback
+
+1. User marks a version as good (e.g., "Version C is great")
+2. If the user explains why, record the reason
+3. Follow the feedback extraction process defined in `${CLAUDE_SKILL_DIR}/../post-writing/references/feedback-extraction-format.md`:
+   - `before`: "" (empty — no bad version for positive feedback)
+   - `after`: the praised version
+   - `reason`: the user's explanation (if any)
+   - `source`: `"engagement"`
+4. Present extracted patterns to the user for confirmation
+5. Write confirmed patterns to `{workspace}/social-style-guide.md`
+
+#### Commit (if any patterns were extracted)
+
+```bash
+git add {workspace}/social-style-guide.md {workspace}/engagement/inbox.yaml
+git commit -m "style: extract engagement feedback patterns"
+```
+
+If the workspace is an absolute path, run git commands from the workspace directory. Skip if not a git repository.
+
 ## Inbox Management
 
 View current inbox:
@@ -217,4 +295,7 @@ The inbox is a rolling log:
 ## Reference
 
 - Engagement rules: [engagement-rules.md](references/engagement-rules.md)
+- Engagement reviewer prompt: [engagement-reviewer-prompt.md](engagement-reviewer-prompt.md)
+- Feedback extraction format: [feedback-extraction-format.md](../post-writing/references/feedback-extraction-format.md)
+- Post writing rules: [post-rules.md](../post-writing/references/post-rules.md)
 - Design spec: [x-engagement-design.md](../../docs/superpowers/specs/2026-03-30-x-engagement-design.md)
