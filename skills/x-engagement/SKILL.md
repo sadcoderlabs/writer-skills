@@ -108,7 +108,7 @@ Use the same output format specified in the prompt template (per-version pass/fa
 - **Some versions fail** → rewrite only the failed versions using the specific feedback, then review the rewritten versions again
 - **After 3 rounds, some still fail** → mark those items with `⚠️` in the notification (Step 4) to warn the user the draft quality is uncertain
 
-> **Platform note:** If your runtime supports blocking subagent dispatch (e.g., Claude Code Agent tool), you may run this review as a subagent for better isolation. Use [engagement-reviewer-prompt.md](engagement-reviewer-prompt.md) as the dispatch template.
+> **Platform note:** If your runtime supports blocking subagent dispatch (e.g., Claude Code Agent tool), you may run this review as a subagent for better isolation. Use [engagement-reviewer-prompt.md](engagement-reviewer-prompt.md) as the dispatch template. **OpenClaw agents: always use inline review — do not spawn a subagent for this step.**
 
 #### 3d. Write to inbox
 

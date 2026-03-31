@@ -68,7 +68,7 @@ Switch to translation reviewer perspective — set aside your role as translator
 
 **3a.** Perform a translation review using the criteria in [translation-review-prompt.md](references/translation-review-prompt.md). Read the original article, the translated article, `references/translation-rules.md`, and `writing-rules.md`. Fix issues directly in `article.{target_lang}.md`.
 
-> **Platform note:** If your runtime supports blocking subagent dispatch (e.g., Claude Code Agent tool), you may run this review as a subagent for better isolation. Use [translation-review-prompt.md](references/translation-review-prompt.md) as the dispatch template. Set timeout to at least 5 minutes per round.
+> **Platform note:** If your runtime supports blocking subagent dispatch (e.g., Claude Code Agent tool), you may run this review as a subagent for better isolation. Use [translation-review-prompt.md](references/translation-review-prompt.md) as the dispatch template. Set timeout to at least 5 minutes per round. **OpenClaw agents: always use inline review — do not spawn a subagent for this step.**
 
 **3b.** If the review finds no issues ("PASS"): proceed to Step 4.
 

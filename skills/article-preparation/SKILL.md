@@ -79,7 +79,7 @@ If the author accepts:
 
 **3c. Conduct topic research.** Research the confirmed questions using the criteria in [topic-researcher-prompt.md](topic-researcher-prompt.md). Write findings to `research.md` in the article directory. This is a single research pass, no retry loop. If results are thin, the author can refine questions and re-trigger, or proceed without it.
 
-> **Platform note:** If your runtime supports blocking subagent dispatch (e.g., Claude Code Agent tool), you may run this research as a subagent for better isolation. Use [topic-researcher-prompt.md](topic-researcher-prompt.md) as the dispatch template.
+> **Platform note:** If your runtime supports blocking subagent dispatch (e.g., Claude Code Agent tool), you may run this research as a subagent for better isolation. Use [topic-researcher-prompt.md](topic-researcher-prompt.md) as the dispatch template. **OpenClaw agents: always use inline review — do not spawn a subagent for this step.**
 
 **3d. Present research summary.** After writing `research.md`, present a concise summary to the author. Include contrasting or opposing viewpoints explicitly — research broadens perspective, not confirms bias.
 

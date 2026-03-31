@@ -89,7 +89,7 @@ Switch to reviewer perspective — set aside your role as draft author. You are 
 
 **5a.** Perform a writing review using the criteria in [writing-reviewer-prompt.md](writing-reviewer-prompt.md). Read `article.{lang}.md`, the resolved `writing-rules.md` path, `brief.md`, the style profile (if any), and `research.md` (if it exists). Fix issues directly in `article.{lang}.md` and produce a structured review report.
 
-> **Platform note:** If your runtime supports blocking subagent dispatch (e.g., Claude Code Agent tool), you may run this review as a subagent for better isolation. Use [writing-reviewer-prompt.md](writing-reviewer-prompt.md) as the dispatch template.
+> **Platform note:** If your runtime supports blocking subagent dispatch (e.g., Claude Code Agent tool), you may run this review as a subagent for better isolation. Use [writing-reviewer-prompt.md](writing-reviewer-prompt.md) as the dispatch template. **OpenClaw agents: always use inline review — do not spawn a subagent for this step.**
 
 **5b.** Write the returned report to `reviews/review-{NN}-writing.md`, where `{NN}` is the zero-padded global sequence number. Create the `reviews/` directory if it doesn't exist.
 
@@ -124,7 +124,7 @@ Like the writing review, the first round runs automatically, then the author dec
 
 **6a.** Perform a fact-check review using the criteria in [fact-check-reviewer-prompt.md](fact-check-reviewer-prompt.md). Read `article.{lang}.md`, `brief.md`, and `research.md` (if it exists). Fix issues directly in `article.{lang}.md` and produce a structured review report.
 
-> **Platform note:** If your runtime supports blocking subagent dispatch (e.g., Claude Code Agent tool), you may run this review as a subagent for better isolation. Use [fact-check-reviewer-prompt.md](fact-check-reviewer-prompt.md) as the dispatch template.
+> **Platform note:** If your runtime supports blocking subagent dispatch (e.g., Claude Code Agent tool), you may run this review as a subagent for better isolation. Use [fact-check-reviewer-prompt.md](fact-check-reviewer-prompt.md) as the dispatch template. **OpenClaw agents: always use inline review — do not spawn a subagent for this step.**
 
 **6b.** Write the returned report to `reviews/review-{NN}-factcheck.md`.
 

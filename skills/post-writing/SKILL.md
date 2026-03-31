@@ -118,7 +118,7 @@ Switch to reviewer perspective — set aside your role as draft author. You are 
 
 Fix violations directly in the post file and produce a brief review summary.
 
-> **Platform note:** If your runtime supports blocking subagent dispatch (e.g., Claude Code Agent tool), you may run this review as a subagent for better isolation. Use [post-reviewer-prompt.md](post-reviewer-prompt.md) as the dispatch template.
+> **Platform note:** If your runtime supports blocking subagent dispatch (e.g., Claude Code Agent tool), you may run this review as a subagent for better isolation. Use [post-reviewer-prompt.md](post-reviewer-prompt.md) as the dispatch template. **OpenClaw agents: always use inline review — do not spawn a subagent for this step.**
 
 After completing the review:
 
