@@ -58,6 +58,32 @@ async function readInterests(dir: string): Promise<Interests> {
   }
 }
 
+function parseGrokResponse(data: any): { text: string; citations: string[] } {
+  let text = "";
+  const citations: string[] = [];
+
+  for (const output of data.output ?? []) {
+    if (output.type === "message") {
+      for (const content of output.content ?? []) {
+        if (content.type === "output_text") {
+          text += content.text;
+          for (const ann of content.annotations ?? []) {
+            if (ann.type === "url_citation" && ann.url) {
+              citations.push(ann.url);
+            }
+          }
+        }
+      }
+    }
+  }
+
+  for (const cite of data.citations ?? []) {
+    if (cite.url) citations.push(cite.url);
+  }
+
+  return { text, citations };
+}
+
 function buildSearchPrompt(interests: Interests, supplementaryKeywords: string[]): string {
   const allKeywords = [
     ...(interests.keywords ?? []),
@@ -119,32 +145,7 @@ async function callGrokXSearch(
   }
 
   const data = await res.json();
-
-  // Extract text and citations from response
-  let text = "";
-  const citations: string[] = [];
-
-  for (const output of data.output ?? []) {
-    if (output.type === "message") {
-      for (const content of output.content ?? []) {
-        if (content.type === "output_text") {
-          text += content.text;
-          for (const ann of content.annotations ?? []) {
-            if (ann.type === "url_citation" && ann.url) {
-              citations.push(ann.url);
-            }
-          }
-        }
-      }
-    }
-  }
-
-  // Also check top-level citations
-  for (const cite of data.citations ?? []) {
-    if (cite.url) citations.push(cite.url);
-  }
-
-  responses.push({ text, citations });
+  responses.push(parseGrokResponse(data));
 
   // Additional search for tracked accounts (batched, max 10 per call)
   const accounts = interests.accounts ?? [];
@@ -181,26 +182,7 @@ async function callGrokXSearch(
 
     if (accountRes.ok) {
       const accountData = await accountRes.json();
-      let accountText = "";
-      const accountCitations: string[] = [];
-      for (const output of accountData.output ?? []) {
-        if (output.type === "message") {
-          for (const content of output.content ?? []) {
-            if (content.type === "output_text") {
-              accountText += content.text;
-              for (const ann of content.annotations ?? []) {
-                if (ann.type === "url_citation" && ann.url) {
-                  accountCitations.push(ann.url);
-                }
-              }
-            }
-          }
-        }
-      }
-      for (const cite of accountData.citations ?? []) {
-        if (cite.url) accountCitations.push(cite.url);
-      }
-      responses.push({ text: accountText, citations: accountCitations });
+      responses.push(parseGrokResponse(accountData));
     }
   }
 
@@ -211,19 +193,19 @@ async function callGrokXSearch(
   };
 }
 
+const TWEET_URL_RE = /https?:\/\/(?:twitter\.com|x\.com)\/(?:\w+|i)\/status\/\d+/;
+
 function extractTweetUrls(citations: string[], text: string): string[] {
   const urls = new Set<string>();
 
-  // From citations
   for (const url of citations) {
-    if (/(?:twitter\.com|x\.com)\/(?:\w+|i)\/status\/\d+/.test(url)) {
+    if (TWEET_URL_RE.test(url)) {
       urls.add(url);
     }
   }
 
-  // From text (in case some URLs are inline but not in citations)
-  const urlPattern = /https?:\/\/(?:twitter\.com|x\.com)\/(?:\w+|i)\/status\/\d+/g;
-  for (const match of text.matchAll(urlPattern)) {
+  // Some URLs may be inline in text but not in citations
+  for (const match of text.matchAll(new RegExp(TWEET_URL_RE, "g"))) {
     urls.add(match[0]);
   }
 
@@ -255,17 +237,27 @@ async function main() {
   const tweetUrls = extractTweetUrls(grokResult.citations, grokResult.text);
   console.log(`Found ${tweetUrls.length} tweet URLs`);
 
-  // 5. Verify each tweet via Syndication API
+  // 5. Verify tweets via Syndication API (parallel)
   console.log("Verifying tweets via Syndication API...");
-  const candidates: Candidate[] = [];
   const seen = new Set<string>();
-
+  const uniqueUrls: { url: string; id: string }[] = [];
   for (const url of tweetUrls) {
     const id = extractTweetId(url);
     if (!id || seen.has(id)) continue;
     seen.add(id);
+    uniqueUrls.push({ url, id });
+  }
 
-    const tweet = await fetchTweet(id);
+  const results = await Promise.all(
+    uniqueUrls.map(async ({ url, id }) => {
+      const tweet = await fetchTweet(id);
+      return { url, id, tweet };
+    })
+  );
+
+  const now = new Date().toISOString();
+  const candidates: Candidate[] = [];
+  for (const { url, id, tweet } of results) {
     if (!tweet) {
       console.log(`  ✗ ${url} — could not fetch (deleted/private?)`);
       continue;
@@ -283,7 +275,7 @@ async function main() {
       verified: true,
       note_tweet: tweet.note_tweet,
       searchQuery: "",
-      discoveredAt: new Date().toISOString(),
+      discoveredAt: now,
     });
     console.log(`  ✓ ${url} — @${tweet.author}: "${tweet.text.slice(0, 50)}..."`);
   }
