@@ -55,7 +55,7 @@ This script:
 3. Verifies each tweet via Twitter Syndication API (catches Grok hallucinations)
 4. Outputs verified candidates to `{workspace}/engagement/candidates.yaml`
 
-**Before running:** If you have access to working memory or recent context, share relevant supplementary keywords with the script (the agent reads candidates.yaml afterward and applies context during curation).
+**Before running:** Read the past week of working memory (MEMORY.md, recent conversation context). Extract supplementary keywords reflecting what the team is currently building, using, or discussing. Carry this context when interpreting and filtering search results after the script runs. This is mandatory — the team's recent experience shapes which tweets are worth engaging with.
 
 **After running:** Read `{workspace}/engagement/candidates.yaml` to see the verified candidates.
 
@@ -69,6 +69,7 @@ Before drafting anything, read ALL of the following:
 2. `{workspace}/social-style-guide.md` → **Voice**, **Anti-Patterns**, **Good/Bad Examples** sections (skip any that are still placeholder)
 3. `${CLAUDE_SKILL_DIR}/../post-writing/references/post-rules.md` → prohibited patterns, quality requirements
 4. `${CLAUDE_SKILL_DIR}/references/engagement-rules.md` → curation criteria (what to engage with, action type, quantity)
+5. `${CLAUDE_SKILL_DIR}/references/experience-verification.md` → experience level classification (determines draft angle per candidate)
 
 **Persona setup guidance:** Read `writing.config.md` About + Writing Goals as a starting point. Ask the user one question at a time in ghostwriter mode:
 - What is your identity on social media? (engineer, team account, founder...)
@@ -84,6 +85,8 @@ Read `{workspace}/engagement/candidates.yaml` and combine with internal context:
 - Recent posts from `{workspace}/posts/` (past 2 weeks)
 - Pending ideas from `{workspace}/ideas.md`
 - Agent working memory (if available)
+
+**Classify experience per candidate (mandatory):** For each candidate tweet, determine your experience level following `references/experience-verification.md`. Check working memory and the workspace content you just gathered. Classify as Direct, Adjacent, Inverse, or None. This classification determines your draft angle — if None, downgrade the action to like or skip (do not draft a reply/quote).
 
 For each candidate worth engaging:
 
