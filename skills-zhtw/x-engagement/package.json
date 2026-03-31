@@ -1,0 +1,17 @@
+{
+  "name": "x-engagement-scripts",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "discover": "bun scripts/discover.ts",
+    "add": "bun scripts/add.ts",
+    "list": "bun scripts/list.ts",
+    "test": "bun test"
+  },
+  "dependencies": {
+    "yaml": "^2.7.0"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  }
+}
