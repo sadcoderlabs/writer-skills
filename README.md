@@ -17,6 +17,15 @@ Works for individuals managing their own writing, or teams collaborating on a sh
 
 Skills follow the [Agent Skills open standard](https://agentskills.io/) and work with any compatible AI agent (Claude Code, OpenAI Codex, Cursor, Gemini CLI, and 30+ others).
 
+### Languages
+
+Each skill exists in two languages:
+
+- `skills/` — English (published version for installation)
+- `skills-zhtw/` — Traditional Chinese (source of truth for development)
+
+All edits happen in `skills-zhtw/` first, then get translated to `skills/`. See [CLAUDE.md](CLAUDE.md) for the sync workflow.
+
 ## Quick Start
 
 ### 1. Install
