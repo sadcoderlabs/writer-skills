@@ -62,7 +62,11 @@ Post status transitions: `draft` → `review` → `published`
 
 ## Writing Rules (article-writing skill)
 
-The writing rules define prohibited AI patterns and quality requirements. The built-in rules are at `skills/article-writing/references/writing-rules.md`; on workspace init, a customizable copy is placed at `{workspace}/writing-rules.md` for users to modify. The article-writing skill commits the first draft (Step 4), then runs an author-paced writing review loop (Step 5) that dispatches a writing reviewer subagent, followed by a fact-check review loop (Step 6) that dispatches a fact-check reviewer subagent. Both reviewers produce structured review reports saved to the article's `reviews/` directory.
+The writing rules define prohibited AI patterns and quality requirements. The built-in rules are at `skills/article-writing/references/writing-rules.md`; on workspace init, a customizable copy is placed at `{workspace}/writing-rules.md` for users to modify. The article-writing skill commits the first draft (Step 4), then runs an author-paced writing review loop (Step 5) followed by a fact-check review loop (Step 6). Both reviewers produce structured review reports saved to the article's `reviews/` directory.
+
+## Review Dispatch Model
+
+All review/research steps default to **inline execution** — the main agent switches to a reviewer perspective and applies the criteria from the corresponding `*-prompt.md` template. This ensures cross-platform compatibility (works on both synchronous and async agent runtimes). Each review step includes a **Platform note** indicating that runtimes supporting blocking subagent dispatch (e.g., Claude Code Agent tool) may optionally run the review as a subagent for better isolation. The `*-prompt.md` files serve dual purpose: inline review criteria and subagent dispatch templates.
 
 The post-writing skill has its own rules at `skills/post-writing/references/post-rules.md`, covering social-specific prohibited patterns (engagement bait, thread padding, artificial structure) and platform character limits.
 

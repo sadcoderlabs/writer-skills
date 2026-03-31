@@ -77,9 +77,11 @@ If the author accepts:
 
 **3b. Author confirms or adjusts.** The author can remove, modify, or add their own research questions.
 
-**3c. Dispatch research subagent.** Send the confirmed questions to the topic researcher subagent — see [topic-researcher-prompt.md](topic-researcher-prompt.md) for the dispatch template. This is a single dispatch, no retry loop. If results are thin, the author can refine questions and re-trigger, or proceed without it.
+**3c. Conduct topic research.** Research the confirmed questions using the criteria in [topic-researcher-prompt.md](topic-researcher-prompt.md). Write findings to `research.md` in the article directory. This is a single research pass, no retry loop. If results are thin, the author can refine questions and re-trigger, or proceed without it.
 
-**3d. Present research summary.** After the subagent writes `research.md` in the article directory, present a concise summary to the author. Include contrasting or opposing viewpoints explicitly — research broadens perspective, not confirms bias.
+> **Platform note:** If your runtime supports blocking subagent dispatch (e.g., Claude Code Agent tool), you may run this research as a subagent for better isolation. Use [topic-researcher-prompt.md](topic-researcher-prompt.md) as the dispatch template.
+
+**3d. Present research summary.** After writing `research.md`, present a concise summary to the author. Include contrasting or opposing viewpoints explicitly — research broadens perspective, not confirms bias.
 
 **3e. Check "Research completed (or skipped)" in the brief checklist.**
 

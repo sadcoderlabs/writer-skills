@@ -111,17 +111,16 @@ If the workspace is an absolute path, run git commands from the workspace direct
 
 ### Step 4: Lightweight Review
 
-Dispatch a post-reviewer subagent to check the draft. See [post-reviewer-prompt.md](post-reviewer-prompt.md) for the dispatch template.
+Switch to reviewer perspective — set aside your role as draft author. You are now a strict quality reviewer. Review the draft using the criteria in [post-reviewer-prompt.md](post-reviewer-prompt.md). Read and apply:
+- `${CLAUDE_SKILL_DIR}/references/post-rules.md`
+- Social style guide (from config)
+- If article-derived: brief and article files
 
-Provide the subagent with:
-- Post file path
-- Post rules path: `${CLAUDE_SKILL_DIR}/references/post-rules.md`
-- Social style guide path (from config)
-- If article-derived: brief and article file paths
+Fix violations directly in the post file and produce a brief review summary.
 
-The subagent fixes violations directly in the post file and returns a brief review summary.
+> **Platform note:** If your runtime supports blocking subagent dispatch (e.g., Claude Code Agent tool), you may run this review as a subagent for better isolation. Use [post-reviewer-prompt.md](post-reviewer-prompt.md) as the dispatch template.
 
-After the subagent returns:
+After completing the review:
 
 If Status is "Approved":
 > Post review complete — no issues found. Here's the final version for your review.

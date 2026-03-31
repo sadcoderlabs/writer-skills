@@ -81,13 +81,15 @@ If the workspace is an absolute path, run git commands from the workspace direct
 
 ### Step 5: Writing Review Loop
 
-After committing the first draft, dispatch a writing-reviewer subagent to check the draft against the writing rules. See [writing-reviewer-prompt.md](writing-reviewer-prompt.md) for the dispatch template.
+After committing the first draft, review the draft against the writing rules. See [writing-reviewer-prompt.md](writing-reviewer-prompt.md) for the review criteria.
 
-The review loop is author-paced: the first round runs automatically, then the author decides whether to continue.
+Switch to reviewer perspective — set aside your role as draft author. You are now a strict writing quality reviewer. The review loop is author-paced: the first round runs automatically, then the author decides whether to continue.
 
 **Global review sequence counter:** Initialize a counter at 1. This counter increments for every review dispatch (writing or fact-check) and is used for report filenames.
 
-**5a.** Dispatch the writing-reviewer subagent with paths to `article.{lang}.md`, the resolved `writing-rules.md` path, `brief.md`, the style profile path (if any), `research.md` (if it exists), and the current review round number. The reviewer fixes issues directly in `article.{lang}.md` and returns a structured review report.
+**5a.** Perform a writing review using the criteria in [writing-reviewer-prompt.md](writing-reviewer-prompt.md). Read `article.{lang}.md`, the resolved `writing-rules.md` path, `brief.md`, the style profile (if any), and `research.md` (if it exists). Fix issues directly in `article.{lang}.md` and produce a structured review report.
+
+> **Platform note:** If your runtime supports blocking subagent dispatch (e.g., Claude Code Agent tool), you may run this review as a subagent for better isolation. Use [writing-reviewer-prompt.md](writing-reviewer-prompt.md) as the dispatch template.
 
 **5b.** Write the returned report to `reviews/review-{NN}-writing.md`, where `{NN}` is the zero-padded global sequence number. Create the `reviews/` directory if it doesn't exist.
 
@@ -116,11 +118,13 @@ If Status is "Issues Found": present the choice.
 
 ### Step 6: Fact-Check Review Loop
 
-Dispatch a fact-check reviewer subagent to verify factual claims. See [fact-check-reviewer-prompt.md](fact-check-reviewer-prompt.md) for the dispatch template.
+Switch to fact-check reviewer perspective. Verify factual claims in the article. See [fact-check-reviewer-prompt.md](fact-check-reviewer-prompt.md) for the review criteria.
 
 Like the writing review, the first round runs automatically, then the author decides whether to continue.
 
-**6a.** Dispatch the fact-check reviewer with paths to `article.{lang}.md`, `brief.md`, `research.md` (if it exists), and the current review round number. The reviewer fixes issues directly in `article.{lang}.md` and returns a structured review report.
+**6a.** Perform a fact-check review using the criteria in [fact-check-reviewer-prompt.md](fact-check-reviewer-prompt.md). Read `article.{lang}.md`, `brief.md`, and `research.md` (if it exists). Fix issues directly in `article.{lang}.md` and produce a structured review report.
+
+> **Platform note:** If your runtime supports blocking subagent dispatch (e.g., Claude Code Agent tool), you may run this review as a subagent for better isolation. Use [fact-check-reviewer-prompt.md](fact-check-reviewer-prompt.md) as the dispatch template.
 
 **6b.** Write the returned report to `reviews/review-{NN}-factcheck.md`.
 

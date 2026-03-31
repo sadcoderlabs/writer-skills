@@ -64,15 +64,15 @@ Write the translation to `article.{target_lang}.md` in the same article director
 
 Run an automated review loop (max 3 rounds) to catch common AI translation errors.
 
-**Timeout:** Each review round reads multiple files (original article, translated article, translation rules, writing rules) and performs detailed comparison. If your tool supports configuring a timeout for subagent tasks, set it to at least 5 minutes per round. The default timeout of many tools is too short for this workload.
+Switch to translation reviewer perspective — set aside your role as translator. You are now a strict translation quality reviewer. See [translation-review-prompt.md](references/translation-review-prompt.md) for the review criteria.
 
-See [translation-review-prompt.md](references/translation-review-prompt.md) for the dispatch template.
+**3a.** Perform a translation review using the criteria in [translation-review-prompt.md](references/translation-review-prompt.md). Read the original article, the translated article, `references/translation-rules.md`, and `writing-rules.md`. Fix issues directly in `article.{target_lang}.md`.
 
-**3a.** Dispatch the translation review subagent with paths to the original article, the translated article, `references/translation-rules.md`, `writing-rules.md`, the target language, and the current round number.
+> **Platform note:** If your runtime supports blocking subagent dispatch (e.g., Claude Code Agent tool), you may run this review as a subagent for better isolation. Use [translation-review-prompt.md](references/translation-review-prompt.md) as the dispatch template. Set timeout to at least 5 minutes per round.
 
-**3b.** If the subagent returns "PASS": proceed to Step 4.
+**3b.** If the review finds no issues ("PASS"): proceed to Step 4.
 
-**3c.** If the subagent returns "FIXED": increment the round counter. If round < 3, go back to 3a. If round = 3, proceed to Step 4.
+**3c.** If issues were found and fixed ("FIXED"): increment the round counter. If round < 3, go back to 3a. If round = 3, proceed to Step 4.
 
 ### Step 4: Wrap Up
 

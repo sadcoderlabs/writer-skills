@@ -96,18 +96,19 @@ For each candidate worth engaging:
 
 #### 3c. Automated review loop (max 3 rounds)
 
-Dispatch an **engagement-reviewer subagent** to batch-review all drafts. See [engagement-reviewer-prompt.md](engagement-reviewer-prompt.md) for the dispatch template.
-
-Provide the subagent with:
-- All recommended items + all their draft versions
+Switch to reviewer perspective — set aside your role as draft author. You are now a strict quality reviewer. Batch-review all drafts using the criteria in [engagement-reviewer-prompt.md](engagement-reviewer-prompt.md). Read and apply:
 - `${CLAUDE_SKILL_DIR}/../post-writing/references/post-rules.md`
 - `{workspace}/social-style-guide.md`
 - Each item's original tweet content
 
-**After subagent returns:**
+Use the same output format specified in the prompt template (per-version pass/fail with specific reasons).
+
+**After completing the review:**
 - **All versions pass** → proceed to 3d
-- **Some versions fail** → rewrite only the failed versions using the subagent's specific feedback, then dispatch the subagent again with only the rewritten versions
+- **Some versions fail** → rewrite only the failed versions using the specific feedback, then review the rewritten versions again
 - **After 3 rounds, some still fail** → mark those items with `⚠️` in the notification (Step 4) to warn the user the draft quality is uncertain
+
+> **Platform note:** If your runtime supports blocking subagent dispatch (e.g., Claude Code Agent tool), you may run this review as a subagent for better isolation. Use [engagement-reviewer-prompt.md](engagement-reviewer-prompt.md) as the dispatch template.
 
 #### 3d. Write to inbox
 
