@@ -44,6 +44,7 @@ Agent tool (general-purpose):
     | Specificity | Does it contain concrete details (numbers, project names, specific experiences) or is it vague and generic? |
     | AI tells | Generic wisdom, consultant tone, LinkedIn voice, hollow affirmations, restating what the original tweet said |
     | Value add | Does this reply/quote actually add something new to the conversation, or just agree/restate? |
+    | Experience authenticity | Does the draft claim direct experience the team actually has? If the experience was classified as Adjacent or Inverse in Step 3b, does the draft honestly reflect that angle instead of inflating it to direct experience? Flag any fabricated or inflated claims. |
 
     ## Calibration
 
