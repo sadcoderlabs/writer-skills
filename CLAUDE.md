@@ -8,6 +8,10 @@ A writing workflow system powered by AI agent skills, following the [Agent Skill
 
 ## Architecture
 
+Each skill exists in two languages:
+- `skills/` — English (published version, translated from Chinese)
+- `skills-zhtw/` — Traditional Chinese (source of truth, where all edits happen)
+
 Six skills form the system, each with clear boundaries:
 
 1. **writing-management** (`skills/writing-management/`) — Workspace init, goals/style config (`writing.config.md`), style profiles (`profiles/`), idea pool (`ideas.md`), social style guide, batch style extraction
@@ -72,8 +76,21 @@ The post-writing skill has its own rules at `skills/post-writing/references/post
 
 ## Language Convention
 
-- `skills/` directory (SKILL.md, references, assets, templates): English
+- `skills-zhtw/` directory (SKILL.md, references, assets, templates): Traditional Chinese (繁體中文) — **source of truth**
+- `skills/` directory (SKILL.md, references, assets, templates): English — translated from `skills-zhtw/`
 - `docs/` directory (specs, plans): Traditional Chinese (繁體中文)
+
+## Sync Workflow (skills-zhtw → skills)
+
+`skills-zhtw/` is the source of truth. All `.md` edits happen there first.
+
+To sync changes to the English `skills/` directory:
+1. Complete all changes in `skills-zhtw/` and commit
+2. Run `git diff <last-sync-commit>..HEAD -- skills-zhtw/` to identify changed files
+3. Translate corresponding changes to `skills/`
+4. Commit the English updates
+
+Exception: TypeScript code in `x-engagement/scripts/` is edited in `skills-zhtw/` and copied directly to `skills/` (no translation needed).
 
 ## Design Documents
 
