@@ -321,6 +321,7 @@ The inbox is a rolling log:
 ## Reference
 
 - Engagement rules: [engagement-rules.md](references/engagement-rules.md)
+- Experience verification: [experience-verification.md](references/experience-verification.md)
 - Engagement reviewer prompt: [engagement-reviewer-prompt.md](engagement-reviewer-prompt.md)
 - Feedback extraction format: [feedback-extraction-format.md](../post-writing/references/feedback-extraction-format.md)
 - Post writing rules: [post-rules.md](../post-writing/references/post-rules.md)
